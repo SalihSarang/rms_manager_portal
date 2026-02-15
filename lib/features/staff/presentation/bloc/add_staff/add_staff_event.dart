@@ -1,27 +1,27 @@
-part of 'staff_bloc.dart';
+part of 'add_staff_bloc.dart';
 
-sealed class StaffEvent extends Equatable {
-  const StaffEvent();
+sealed class AddStaffEvent extends Equatable {
+  const AddStaffEvent();
 
   @override
   List<Object?> get props => [];
 }
 
-class FullNameChanged extends StaffEvent {
+class FullNameChanged extends AddStaffEvent {
   final String fullName;
   const FullNameChanged(this.fullName);
   @override
   List<Object?> get props => [fullName];
 }
 
-class EmailChanged extends StaffEvent {
+class EmailChanged extends AddStaffEvent {
   final String email;
   const EmailChanged(this.email);
   @override
   List<Object?> get props => [email];
 }
 
-class PhoneNumberChanged extends StaffEvent {
+class PhoneNumberChanged extends AddStaffEvent {
   final String phoneNumber;
   const PhoneNumberChanged(this.phoneNumber);
 
@@ -29,25 +29,24 @@ class PhoneNumberChanged extends StaffEvent {
   List<Object?> get props => [phoneNumber];
 }
 
-class PasswordChanged extends StaffEvent {
+class PasswordChanged extends AddStaffEvent {
   final String password;
   const PasswordChanged(this.password);
   @override
   List<Object?> get props => [password];
 }
 
-class StaffRoleChanged extends StaffEvent {
+class StaffRoleChanged extends AddStaffEvent {
   final String role;
   const StaffRoleChanged(this.role);
   @override
   List<Object?> get props => [role];
 }
 
-class AvatarChanged extends StaffEvent {
-  final String image;
-  const AvatarChanged(this.image);
-  @override
-  List<Object?> get props => [image];
-}
+class AvatarChanged extends AddStaffEvent {}
 
-class SubmitStaffAddForm extends StaffEvent {}
+class SubmitStaffAddForm extends AddStaffEvent {}
+
+class OpenAddStaffSidebar extends AddStaffEvent {}
+
+class CloseAddStaffSidebar extends AddStaffEvent {}

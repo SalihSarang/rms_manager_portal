@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 
 import 'package:manager_portal/core/utils/image_picker_service/cloudinary_service/cloudinary_service.dart';
 import 'package:manager_portal/core/utils/image_picker_service/image_picker/image_picker.dart';
@@ -10,10 +10,21 @@ class ImagePickerUsecase {
   ImagePickerUsecase({required this.imagePicker, required this.cloudinary});
 
   Future<String?> call({required String folder}) async {
-    final File? file = await imagePicker.pickImage();
+    final XFile? file = await imagePicker.pickImage();
 
     if (file == null) return null;
     final url = await cloudinary.uploadImage(file: file, folder: folder);
     return url;
+  }
+
+  Future<XFile?> pickImageOnly() async {
+    return await imagePicker.pickImage();
+  }
+
+  Future<String> uploadImageOnly({
+    required XFile file,
+    required String folder,
+  }) async {
+    return await cloudinary.uploadImage(file: file, folder: folder);
   }
 }

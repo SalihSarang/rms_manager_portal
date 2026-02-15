@@ -32,32 +32,41 @@ class AddUserAvatar extends StatelessWidget {
                 shape: BoxShape.circle,
                 color: NeutralColors.surface,
                 border: Border.all(color: NeutralColors.border),
-                image: image != null
-                    ? DecorationImage(image: image!, fit: BoxFit.cover)
-                    : null,
               ),
-
-              child: image == null
-                  ? Container(
-                      width: size,
-                      height: size,
-                      decoration: BoxDecoration(
+              child: ClipOval(
+                child: image != null
+                    ? Image(
+                        image: image!,
+                        fit: BoxFit.cover,
+                        width: size,
+                        height: size,
+                        errorBuilder: (context, error, stackTrace) {
+                          print('Avatar Image Load Error: $error');
+                          return Center(
+                            child: Icon(
+                              Icons.error,
+                              color: Colors.red,
+                              size: size * 0.5,
+                            ),
+                          );
+                        },
+                      )
+                    : Container(
+                        width: size,
+                        height: size,
                         color: NeutralColors.surface,
-                        shape: BoxShape.circle,
-                        border: Border.all(color: NeutralColors.border),
-                      ),
-                      child: Center(
-                        child: Text(
-                          initials,
-                          style: TextStyle(
-                            color: TextColors.inverse.withValues(alpha: 0.7),
-                            fontSize: size * 0.3,
-                            fontWeight: FontWeight.w500,
+                        child: Center(
+                          child: Text(
+                            initials,
+                            style: TextStyle(
+                              color: TextColors.inverse.withValues(alpha: 0.7),
+                              fontSize: size * 0.3,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         ),
                       ),
-                    )
-                  : null,
+              ),
             ),
 
             Positioned(

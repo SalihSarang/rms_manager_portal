@@ -1,5 +1,8 @@
+import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:manager_portal/features/staff/presentation/bloc/add_staff/add_staff_bloc.dart';
 import 'package:manager_portal/core/widgets/primary_add_button.dart';
 import 'package:manager_portal/features/staff/presentation/widgets/add_staff_sidebar/components/dialog_avatar.dart';
 import 'package:manager_portal/features/staff/presentation/widgets/add_staff_sidebar/components/dialog_form.dart';
@@ -42,7 +45,26 @@ class _AddStaffSidebarState extends State<AddStaffSidebar> {
                   child: Column(
                     children: [
                       // Avatar
-                      AddUserAvatar(initials: 'UN', onTap: () {}, image: null),
+                      BlocBuilder<AddStaffBloc, AddStaffState>(
+                        builder: (context, state) {
+                          String? avatarPath;
+                          if (state is StaffEditingState) {
+                            avatarPath = state.avatar;
+                          }
+                          return AddUserAvatar(
+                            initials: 'UN',
+                            onTap: () {
+                              context.read<AddStaffBloc>().add(AvatarChanged());
+                            },
+                            image: avatarPath != null
+                                ? ((kIsWeb || avatarPath.startsWith('http'))
+                                          ? NetworkImage(avatarPath)
+                                          : FileImage(File(avatarPath)))
+                                      as ImageProvider
+                                : null,
+                          );
+                        },
+                      ),
 
                       const SizedBox(height: 12),
                       const Text(
@@ -86,7 +108,9 @@ class _AddStaffSidebarState extends State<AddStaffSidebar> {
                   PrimaryAddButton(
                     height: 40,
                     onPressed: () {
-                      // Implement save logic
+                      if (_formKey.currentState!.validate()) {
+                        context.read<AddStaffBloc>().add(SubmitStaffAddForm());
+                      }
                     },
                     label: 'Save New Staff',
                   ),

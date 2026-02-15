@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:manager_portal/features/staff/presentation/bloc/add_staff/add_staff_bloc.dart';
 import 'package:manager_portal/features/staff/presentation/widgets/add_staff_sidebar/components/dialog_fields.dart';
 import 'package:rms_design_system/app_colors/neutral_colors.dart';
 import 'package:rms_design_system/app_colors/primary_colors.dart';
@@ -14,27 +16,38 @@ class AddStaffDialogFields extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const LabeledTextField(label: 'Full Name', hint: 'e.g. Sarah Jenkins'),
+        LabeledTextField(
+          label: 'Full Name',
+          hint: 'e.g. Sarah Jenkins',
+          onChanged: (value) =>
+              context.read<AddStaffBloc>().add(FullNameChanged(value)),
+        ),
         const SizedBox(height: 20),
 
-        const LabeledTextField(
+        LabeledTextField(
           label: 'Email Address',
           hint: 'e.g. sarah.j@bistro.com',
           keyboardType: TextInputType.emailAddress,
+          onChanged: (value) =>
+              context.read<AddStaffBloc>().add(EmailChanged(value)),
         ),
         const SizedBox(height: 20),
 
-        const LabeledTextField(
+        LabeledTextField(
           label: 'Phone Number',
           hint: '+1 (555) 000-1234',
           keyboardType: TextInputType.phone,
+          onChanged: (value) =>
+              context.read<AddStaffBloc>().add(PhoneNumberChanged(value)),
         ),
         const SizedBox(height: 20),
 
-        const LabeledTextField(
+        LabeledTextField(
           label: 'Password',
           hint: 'Enter password for staff',
           obscureText: true,
+          onChanged: (value) =>
+              context.read<AddStaffBloc>().add(PasswordChanged(value)),
         ),
         const SizedBox(height: 20),
 
@@ -60,7 +73,11 @@ class AddStaffDialogFields extends StatelessWidget {
                     (role) => DropdownMenuItem(value: role, child: Text(role)),
                   )
                   .toList(),
-              onChanged: (_) {},
+              onChanged: (value) {
+                if (value != null) {
+                  context.read<AddStaffBloc>().add(StaffRoleChanged(value));
+                }
+              },
               decoration: InputDecoration(
                 filled: true,
                 fillColor: NeutralColors.surface,
