@@ -1,3 +1,4 @@
+import 'package:image_picker/image_picker.dart';
 import 'package:manager_portal/core/utils/image_picker_service/image_picker_usecase/image_picker_usecase.dart';
 
 class StaffProfileImgPickerUsecase {
@@ -7,5 +8,13 @@ class StaffProfileImgPickerUsecase {
 
   Future<String?> call() {
     return base(folder: 'staff_profile');
+  }
+
+  Future<XFile?> pick() {
+    return base.pickImageOnly();
+  }
+
+  Future<String> upload(XFile file) {
+    return base.uploadImageOnly(file: file, folder: 'staff_profile');
   }
 }

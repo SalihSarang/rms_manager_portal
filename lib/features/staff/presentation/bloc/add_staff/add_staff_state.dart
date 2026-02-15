@@ -1,23 +1,26 @@
-part of 'staff_bloc.dart';
+part of 'add_staff_bloc.dart';
 
-sealed class StaffState extends Equatable {
-  const StaffState();
+sealed class AddStaffState extends Equatable {
+  const AddStaffState();
 
   @override
   List<Object?> get props => [];
 }
 
-final class StaffInitial extends StaffState {}
+final class AddStaffInitial extends AddStaffState {}
 
-class LoadingState extends StaffState {}
+class AddStaffSidebarOpenState extends AddStaffState {}
 
-class StaffEditingState extends StaffState {
+class AddStaffSidebarClosedState extends AddStaffState {}
+
+class StaffEditingState extends AddStaffState {
   final String fullName;
   final String email;
   final String phoneNumber;
   final String password;
   final String role;
   final String? avatar;
+  final XFile? pickedFile;
 
   const StaffEditingState({
     this.fullName = "",
@@ -26,6 +29,7 @@ class StaffEditingState extends StaffState {
     this.password = "",
     this.role = "Waiter",
     this.avatar,
+    this.pickedFile,
   });
 
   StaffEditingState copyWith({
@@ -35,6 +39,7 @@ class StaffEditingState extends StaffState {
     String? password,
     String? role,
     String? avatar,
+    XFile? pickedFile,
   }) {
     return StaffEditingState(
       fullName: fullName ?? this.fullName,
@@ -43,6 +48,7 @@ class StaffEditingState extends StaffState {
       password: password ?? this.password,
       role: role ?? this.role,
       avatar: avatar ?? this.avatar,
+      pickedFile: pickedFile ?? this.pickedFile,
     );
   }
 
@@ -54,37 +60,24 @@ class StaffEditingState extends StaffState {
     password,
     role,
     avatar,
+    pickedFile,
   ];
 }
 
-class FormSubmitting extends StaffState {}
+class FormSubmitting extends AddStaffState {}
 
-class StaffFormIsInvalid extends StaffState {
+class StaffFormIsInvalid extends AddStaffState {
   final String reason;
   const StaffFormIsInvalid(this.reason);
   @override
   List<Object?> get props => [reason];
 }
 
-class StaffCreated extends StaffState {}
+class StaffCreated extends AddStaffState {}
 
-class StaffCreateFailed extends StaffState {
+class StaffCreateFailed extends AddStaffState {
   final String error;
   const StaffCreateFailed(this.error);
   @override
   List<Object?> get props => [error];
-}
-
-class AllStaffs extends StaffState {
-  final List<StaffModel> stafs;
-  const AllStaffs(this.stafs);
-  @override
-  List<Object?> get props => [stafs];
-}
-
-class StaffDetails extends StaffState {
-  final StaffModel staff;
-  const StaffDetails(this.staff);
-  @override
-  List<Object?> get props => [staff];
 }
