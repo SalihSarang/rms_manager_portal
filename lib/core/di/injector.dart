@@ -19,5 +19,5 @@ void setupDI() {
   setUpImagePicker();
 
   // Staff Manage DI
-  // setUpStaffDI();
+  setUpStaffDI();
 }
