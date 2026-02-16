@@ -1,150 +1,165 @@
+import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
+import 'package:rms_shared_package/models/staff_model/staff_model.dart';
+import 'package:manager_portal/core/widgets/reusable_table.dart';
+import 'package:rms_design_system/app_colors/text_colors.dart';
+import 'package:rms_design_system/app_colors/neutral_colors.dart';
+import 'package:rms_design_system/app_colors/primary_colors.dart';
+import 'package:manager_portal/features/staff/presentation/widgets/staff_listing_table/components/action_button.dart';
+import 'package:manager_portal/features/staff/presentation/widgets/staff_listing_table/components/staff_table_footer.dart';
+import 'package:manager_portal/features/staff/presentation/utils/staff_utils.dart';
 
-class StaffTable extends StatelessWidget {
-  const StaffTable({super.key});
+class StaffListTable extends StatefulWidget {
+  final List<StaffModel> staffList;
+
+  const StaffListTable({super.key, required this.staffList});
+
+  @override
+  State<StaffListTable> createState() => _StaffListTableState();
+}
+
+class _StaffListTableState extends State<StaffListTable> {
+  int _currentPage = 1;
+  final int _itemsPerPage = 10;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: const Color(0xFF0F172A),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
-      ),
-      child: Column(
-        children: [
-          _buildHeader(),
-          const Divider(color: Colors.white12),
-          _buildRow(),
-          const SizedBox(height: 16),
-          _buildFooter(),
-        ],
-      ),
-    );
-  }
+    final List<StaffModel> sourceList = widget.staffList;
+    final int totalItems = sourceList.length;
+    final int totalPages = (totalItems / _itemsPerPage).ceil();
 
-  Widget _buildHeader() {
-    return Row(
-      children: const [
-        _HeaderText('Name', flex: 2),
-        _HeaderText('Role'),
-        _HeaderText('Email Address', flex: 2),
-        _HeaderText('Status'),
-        _HeaderText('Last Active'),
-        _HeaderText('Actions'),
+    // Ensure valid page
+    if (totalItems > 0 && _currentPage > totalPages) {
+      _currentPage = totalPages;
+    }
+
+    final int startIndex = (_currentPage - 1) * _itemsPerPage;
+    final int endIndex = (startIndex + _itemsPerPage < totalItems)
+        ? startIndex + _itemsPerPage
+        : totalItems;
+
+    // Safety check for empty list
+    final List<StaffModel> currentData = sourceList.isEmpty
+        ? []
+        : sourceList.sublist(startIndex, endIndex);
+
+    return Column(
+      children: [
+        Expanded(
+          child: ReusableTable<StaffModel>(
+            data: currentData,
+            columns: const [
+              DataColumn2(label: Text('Name'), size: ColumnSize.L),
+              DataColumn2(label: Text('Role')),
+              DataColumn2(label: Text('Email Address'), size: ColumnSize.L),
+              DataColumn2(label: Text('Last Active')),
+              DataColumn2(label: Text('Actions'), fixedWidth: 80),
+            ],
+            rowBuilder: (staff) => _buildStaffRow(staff),
+          ),
+        ),
+        if (totalItems > _itemsPerPage)
+          StaffTableFooter(
+            startIndex: startIndex,
+            endIndex: endIndex,
+            totalItems: totalItems,
+            currentPage: _currentPage,
+            totalPages: totalPages,
+            onPageChanged: (page) {
+              setState(() {
+                _currentPage = page;
+              });
+            },
+          ),
       ],
     );
   }
 
-  Widget _buildRow() {
-    return Row(
-      children: [
-        Expanded(
-          flex: 2,
-          child: Row(
+  DataRow2 _buildStaffRow(StaffModel staff) {
+    const headerTextColor = TextColors.secondary;
+    const badgeBgColor = NeutralColors.surface;
+    const badgeTextColor = PrimaryColors.defaultColor;
+    const badgeBorderColor = NeutralColors.border;
+
+    return DataRow2(
+      cells: [
+        // Name
+        DataCell(
+          Row(
             children: [
               CircleAvatar(
-                radius: 18,
-                backgroundColor: Colors.blueGrey.shade700,
-                child: const Text("AL", style: TextStyle(color: Colors.white)),
+                backgroundColor: const Color(0xFF272B34),
+                radius: 16,
+                child: Text(
+                  StaffUtils.getInitials(staff.name),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 11,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
               const SizedBox(width: 12),
-              const Text("Alex Johnson", style: TextStyle(color: Colors.white)),
+              Flexible(
+                child: Text(
+                  staff.name,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
             ],
           ),
         ),
-        _roleChip("Manager"),
-        const Expanded(
-          flex: 2,
-          child: Text(
-            "alex.j@restomgr.com",
-            style: TextStyle(color: Colors.white70),
+        // Role
+        DataCell(
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+            decoration: BoxDecoration(
+              color: badgeBgColor,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: badgeBorderColor),
+            ),
+            child: Text(
+              staff.role.name.toUpperCase(),
+              style: const TextStyle(
+                color: badgeTextColor,
+                fontSize: 11,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
           ),
         ),
-        Switch(value: true, onChanged: (_) {}),
-        Row(
-          children: const [
-            Icon(Icons.access_time, size: 16, color: Colors.white54),
-            SizedBox(width: 6),
-            Text("2h ago", style: TextStyle(color: Colors.white54)),
-          ],
+        // Email
+        DataCell(
+          Text(staff.email, style: const TextStyle(color: headerTextColor)),
         ),
-        Row(
-          children: const [
-            Icon(Icons.edit, color: Colors.white54),
-            SizedBox(width: 12),
-            Icon(Icons.delete_outline, color: Colors.white54),
-          ],
+        // Last Active
+        DataCell(
+          Row(
+            children: [
+              const Icon(Icons.access_time, size: 14, color: headerTextColor),
+              const SizedBox(width: 6),
+              Text(
+                StaffUtils.formatDate(staff.lastActive),
+                style: const TextStyle(color: headerTextColor),
+              ),
+            ],
+          ),
         ),
-      ],
-    );
-  }
-
-  Widget _roleChip(String role) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration: BoxDecoration(
-        color: Colors.blue.withOpacity(0.15),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Text(role, style: const TextStyle(color: Colors.blue)),
-    );
-  }
-
-  Widget _buildFooter() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        const Text(
-          "Showing 1 to 1 of 1 results",
-          style: TextStyle(color: Colors.white54),
-        ),
-        Row(
-          children: [
-            _pageButton("Previous"),
-            _pageButton("1", active: true),
-            _pageButton("2"),
-            _pageButton("Next"),
-          ],
+        // Actions
+        DataCell(
+          Row(
+            children: [
+              ActionButton(icon: Icons.edit_outlined, onTap: () {}),
+              const SizedBox(width: 8),
+              ActionButton(icon: Icons.delete_outline, onTap: () {}),
+            ],
+          ),
         ),
       ],
-    );
-  }
-
-  Widget _pageButton(String text, {bool active = false}) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 4),
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      decoration: BoxDecoration(
-        color: active ? Colors.blue : Colors.transparent,
-        borderRadius: BorderRadius.circular(6),
-        border: Border.all(color: Colors.white12),
-      ),
-      child: Text(
-        text,
-        style: TextStyle(color: active ? Colors.white : Colors.white70),
-      ),
-    );
-  }
-}
-
-class _HeaderText extends StatelessWidget {
-  final String text;
-  final int flex;
-  const _HeaderText(this.text, {this.flex = 1});
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      flex: flex,
-      child: Text(
-        text,
-        style: const TextStyle(
-          color: Colors.white54,
-          fontWeight: FontWeight.w500,
-        ),
-      ),
     );
   }
 }

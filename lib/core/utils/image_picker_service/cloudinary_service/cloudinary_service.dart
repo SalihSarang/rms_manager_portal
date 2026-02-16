@@ -22,7 +22,7 @@ class CloudinaryServiceImpl implements CloudinaryService {
     Function(double progress)? onProgress,
   }) async {
     final formData = FormData.fromMap({
-      'file': await MultipartFile.fromBytes(
+      'file': MultipartFile.fromBytes(
         await file.readAsBytes(),
         filename: file.name,
       ),

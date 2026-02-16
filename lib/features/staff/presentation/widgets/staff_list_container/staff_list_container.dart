@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:manager_portal/features/staff/presentation/widgets/staff_listing_table/staff_listing_table.dart';
+
 import 'package:rms_design_system/app_colors/neutral_colors.dart';
 
 class StaffListContainer extends StatelessWidget {
@@ -8,11 +10,18 @@ class StaffListContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 1150,
-      height: 400,
+      height: 600,
       decoration: BoxDecoration(
         color: NeutralColors.surface,
         borderRadius: BorderRadius.circular(10),
+      ),
+      foregroundDecoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
         border: Border.all(color: NeutralColors.border),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: StaffListTable(staffList: []),
       ),
     );
   }
