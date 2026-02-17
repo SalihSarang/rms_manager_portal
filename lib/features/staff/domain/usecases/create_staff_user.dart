@@ -5,7 +5,7 @@ class CreateStaffUser {
 
   CreateStaffUser(this.repository);
 
-  Future<void> call({required String email, required String password}) {
+  Future<String> call({required String email, required String password}) {
     return repository.createNewUserWithEmailAndPassword(
       email: email,
       password: password,

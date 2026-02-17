@@ -9,7 +9,7 @@ abstract class StaffDatasource {
   Future<List<StaffModel?>> getAllStaffs();
   Future<StaffModel> getStaffDetails(String staffId);
   Future<void> addNewStaff(StaffModel staff);
-  Future<void> createNewUserWithEmailAndPassword({
+  Future<String> createNewUserWithEmailAndPassword({
     required String email,
     required String password,
   });
@@ -30,11 +30,15 @@ class StaffDatasourceImpl implements StaffDatasource {
   }
 
   @override
-  Future<void> createNewUserWithEmailAndPassword({
+  Future<String> createNewUserWithEmailAndPassword({
     required String email,
     required String password,
   }) async {
-    await auth.createUserWithEmailAndPassword(email: email, password: password);
+    final credential = await auth.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+    return credential.user!.uid;
   }
 
   @override

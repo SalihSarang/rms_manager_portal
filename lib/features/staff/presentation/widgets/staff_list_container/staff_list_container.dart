@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:manager_portal/features/staff/presentation/bloc/staff_listing/staff_listing_bloc.dart';
 import 'package:manager_portal/features/staff/presentation/widgets/staff_listing_table/staff_listing_table.dart';
 
 import 'package:rms_design_system/app_colors/neutral_colors.dart';
@@ -21,7 +23,18 @@ class StaffListContainer extends StatelessWidget {
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10),
-        child: StaffListTable(staffList: []),
+        child: BlocBuilder<StaffListingBloc, StaffListingState>(
+          builder: (context, state) {
+            if (state is StaffListingLoading) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (state is StaffListingLoaded) {
+              return StaffListTable(staffList: state.staffs);
+            } else if (state is StaffListingError) {
+              return Center(child: Text(state.message));
+            }
+            return const SizedBox.shrink();
+          },
+        ),
       ),
     );
   }

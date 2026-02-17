@@ -2,14 +2,24 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:manager_portal/core/utils/image_picker_service/feature_specific_usecase/staff_profile_img_picker.dart';
+import 'package:manager_portal/features/staff/domain/usecases/add_new_staff.dart';
+import 'package:manager_portal/features/staff/domain/usecases/create_staff_user.dart';
+import 'package:rms_shared_package/enums/enums.dart';
+import 'package:rms_shared_package/models/staff_model/staff_model.dart';
 
 part 'add_staff_event.dart';
 part 'add_staff_state.dart';
 
 class AddStaffBloc extends Bloc<AddStaffEvent, AddStaffState> {
   final StaffProfileImgPickerUsecase avatarPicker;
+  final AddNewStaff addNewStaff;
+  final CreateStaffUser createStaffUser;
 
-  AddStaffBloc({required this.avatarPicker}) : super(AddStaffInitial()) {
+  AddStaffBloc({
+    required this.avatarPicker,
+    required this.addNewStaff,
+    required this.createStaffUser,
+  }) : super(AddStaffInitial()) {
     on<OpenAddStaffSidebar>((event, emit) => emit(AddStaffSidebarOpenState()));
     on<CloseAddStaffSidebar>(
       (event, emit) => emit(AddStaffSidebarClosedState()),
@@ -111,10 +121,40 @@ class AddStaffBloc extends Bloc<AddStaffEvent, AddStaffState> {
       return;
     }
 
-    // Procced with submission using avatarUrl
-    print('Submitting form with avatar: $avatarUrl');
-    // Call repository to save staff...
+    try {
+      // 1. Create Auth User
+      print('Creating auth user for ${currentState.email}...');
+      final uid = await createStaffUser(
+        email: currentState.email,
+        password: currentState.password,
+      );
+      print('Auth user created with UID: $uid');
 
-    emit(StaffCreated());
+      // 2. Create Staff Model
+      final newStaff = StaffModel(
+        id: uid,
+        name: currentState.fullName,
+        email: currentState.email,
+        phoneNumber: currentState.phoneNumber,
+        role: UserRole.values.firstWhere(
+          (e) => e.name.toLowerCase() == currentState.role!.toLowerCase(),
+          orElse: () => UserRole.waiter,
+        ),
+        avatar: avatarUrl ?? '', // Handle nullable avatar
+        isActive: true,
+        lastActive: DateTime.now(),
+        // createdAt: DateTime.now(), // Removing if not in model, or adding if missing
+      );
+
+      // 3. Save to Firestore
+      print('Saving staff to Firestore...');
+      await addNewStaff(newStaff);
+      print('Staff saved successfully');
+
+      emit(StaffCreated());
+    } catch (e) {
+      print('Submission failed: $e');
+      emit(StaffCreateFailed(e.toString()));
+    }
   }
 }

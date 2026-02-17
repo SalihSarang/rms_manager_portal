@@ -4,7 +4,7 @@ abstract class StaffRepository {
   Future<List<StaffModel?>> getAllStaffs();
   Future<StaffModel> getStaffDetails(String staffId);
   Future<void> addNewStaff(StaffModel staff);
-  Future<void> createNewUserWithEmailAndPassword({
+  Future<String> createNewUserWithEmailAndPassword({
     required String email,
     required String password,
   });

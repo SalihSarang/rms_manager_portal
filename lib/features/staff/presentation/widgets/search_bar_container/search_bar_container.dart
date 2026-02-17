@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:manager_portal/features/staff/presentation/widgets/search_bar_container/components/dearchbar.dart';
 import 'package:manager_portal/features/staff/presentation/widgets/search_bar_container/components/staff_filter_chips.dart';
 import 'package:rms_design_system/app_colors/neutral_colors.dart';
-import 'package:rms_design_system/app_colors/primary_colors.dart';
 
 class SearchBarContainer extends StatelessWidget {
   const SearchBarContainer({super.key});

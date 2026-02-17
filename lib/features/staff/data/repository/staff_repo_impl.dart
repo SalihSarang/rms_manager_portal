@@ -11,7 +11,7 @@ class StaffRepositoryImpl implements StaffRepository {
   }
 
   @override
-  Future<void> createNewUserWithEmailAndPassword({
+  Future<String> createNewUserWithEmailAndPassword({
     required String email,
     required String password,
   }) {
