@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rms_design_system/app_colors/neutral_colors.dart';
 
 class ActionButton extends StatelessWidget {
   final IconData icon;
@@ -13,7 +14,7 @@ class ActionButton extends StatelessWidget {
       borderRadius: BorderRadius.circular(4),
       child: Padding(
         padding: const EdgeInsets.all(4.0),
-        child: Icon(icon, size: 18, color: const Color(0xFF9FA2AB)),
+        child: Icon(icon, size: 18, color: NeutralColors.icon),
       ),
     );
   }

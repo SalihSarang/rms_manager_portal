@@ -16,24 +16,48 @@ class StaffListingScreen extends StatelessWidget {
           showAddStaffSidebar(context);
         },
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 90, right: 90),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Column(
-                children: [
-                  const SearchBarContainer(),
-                  const SizedBox(height: 20),
-                  const StaffListContainer(),
-                ],
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          if (constraints.maxWidth > 1200) {
+            return SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 90),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      flex: 3,
+                      child: Column(
+                        children: [
+                          const SearchBarContainer(),
+                          const SizedBox(height: 20),
+                          const StaffListContainer(),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 20),
+                    const Expanded(flex: 1, child: ActivityContainer()),
+                  ],
+                ),
               ),
-              const SizedBox(width: 20),
-              ActivityContainer(),
-            ],
-          ),
-        ),
+            );
+          } else {
+            return SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  children: [
+                    const SearchBarContainer(),
+                    const SizedBox(height: 20),
+                    const StaffListContainer(),
+                    const SizedBox(height: 20),
+                    const ActivityContainer(),
+                  ],
+                ),
+              ),
+            );
+          }
+        },
       ),
     );
   }

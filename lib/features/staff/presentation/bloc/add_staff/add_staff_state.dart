@@ -18,7 +18,7 @@ class StaffEditingState extends AddStaffState {
   final String email;
   final String phoneNumber;
   final String password;
-  final String role;
+  final String? role;
   final String? avatar;
   final XFile? pickedFile;
 
@@ -27,7 +27,7 @@ class StaffEditingState extends AddStaffState {
     this.email = "",
     this.phoneNumber = "",
     this.password = "",
-    this.role = "Waiter",
+    this.role,
     this.avatar,
     this.pickedFile,
   });

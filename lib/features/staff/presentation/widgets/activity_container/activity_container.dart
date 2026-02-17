@@ -11,7 +11,7 @@ class ActivityContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 320,
+      // width: 320, // Removed fixed width
       height: 500,
       decoration: BoxDecoration(
         color: NeutralColors.surface,

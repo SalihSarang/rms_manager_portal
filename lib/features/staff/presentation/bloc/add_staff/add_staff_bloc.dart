@@ -106,6 +106,11 @@ class AddStaffBloc extends Bloc<AddStaffEvent, AddStaffState> {
       }
     }
 
+    if (currentState.role == null) {
+      emit(const StaffCreateFailed('Please select a role'));
+      return;
+    }
+
     // Procced with submission using avatarUrl
     print('Submitting form with avatar: $avatarUrl');
     // Call repository to save staff...

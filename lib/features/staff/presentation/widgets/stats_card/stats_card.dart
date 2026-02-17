@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:rms_design_system/app_colors/neutral_colors.dart';
+import 'package:rms_design_system/app_colors/text_colors.dart';
 
 class StatsCard extends StatelessWidget {
   final String title;
@@ -11,9 +13,9 @@ class StatsCard extends StatelessWidget {
     gradient: const LinearGradient(
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
-      colors: [Color(0xFF0F141A), Color(0xFF0A0E13)],
+      colors: [NeutralColors.cardGradientStart, NeutralColors.cardGradientEnd],
     ),
-    border: Border.all(color: Colors.white12),
+    border: Border.all(color: NeutralColors.border),
   );
 
   const StatsCard({
@@ -58,7 +60,7 @@ class StatsCard extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: theme.textTheme.bodyMedium?.copyWith(
-                      color: Colors.white70,
+                      color: TextColors.secondary,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -66,7 +68,7 @@ class StatsCard extends StatelessWidget {
                 Text(
                   value,
                   style: theme.textTheme.titleMedium?.copyWith(
-                    color: Colors.white,
+                    color: TextColors.inverse,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

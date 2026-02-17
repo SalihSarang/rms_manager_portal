@@ -88,12 +88,12 @@ class _StaffListTableState extends State<StaffListTable> {
           Row(
             children: [
               CircleAvatar(
-                backgroundColor: const Color(0xFF272B34),
+                backgroundColor: NeutralColors.card,
                 radius: 16,
                 child: Text(
                   StaffUtils.getInitials(staff.name),
                   style: const TextStyle(
-                    color: Colors.white,
+                    color: TextColors.inverse,
                     fontSize: 11,
                     fontWeight: FontWeight.bold,
                   ),
@@ -104,7 +104,7 @@ class _StaffListTableState extends State<StaffListTable> {
                 child: Text(
                   staff.name,
                   style: const TextStyle(
-                    color: Colors.white,
+                    color: TextColors.inverse,
                     fontWeight: FontWeight.w500,
                   ),
                   overflow: TextOverflow.ellipsis,

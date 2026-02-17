@@ -64,46 +64,65 @@ class AddStaffDialogFields extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8),
-            DropdownButtonFormField<String>(
-              initialValue: 'Waiter',
-              style: const TextStyle(color: TextColors.inverse),
-              dropdownColor: NeutralColors.surface,
-              items: const ['Waiter', 'Chef', 'Manager']
-                  .map(
-                    (role) => DropdownMenuItem(value: role, child: Text(role)),
-                  )
-                  .toList(),
-              onChanged: (value) {
-                if (value != null) {
-                  context.read<AddStaffBloc>().add(StaffRoleChanged(value));
+            BlocBuilder<AddStaffBloc, AddStaffState>(
+              builder: (context, state) {
+                String? currentRole;
+                if (state is StaffEditingState) {
+                  currentRole = state.role;
                 }
-              },
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: NeutralColors.surface,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide.none,
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: const BorderSide(color: NeutralColors.border),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: const BorderSide(
-                    color: PrimaryColors.defaultColor,
+                return DropdownButtonFormField<String>(
+                  initialValue: currentRole,
+                  hint: const Text(
+                    'Select Role',
+                    style: TextStyle(color: TextColors.secondary),
                   ),
-                ),
-                contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 14,
-                ),
-              ),
-              icon: const Icon(
-                Icons.keyboard_arrow_down,
-                color: TextColors.secondary,
-              ),
+                  style: const TextStyle(color: TextColors.inverse),
+                  dropdownColor: NeutralColors.surface,
+                  items: const ['Waiter', 'Chef', 'Manager']
+                      .map(
+                        (role) =>
+                            DropdownMenuItem(value: role, child: Text(role)),
+                      )
+                      .toList(),
+                  onChanged: (value) {
+                    if (value != null) {
+                      context.read<AddStaffBloc>().add(StaffRoleChanged(value));
+                    }
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please select a role';
+                    }
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: NeutralColors.surface,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide.none,
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(color: NeutralColors.border),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(
+                        color: PrimaryColors.defaultColor,
+                      ),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 14,
+                    ),
+                  ),
+                  icon: const Icon(
+                    Icons.keyboard_arrow_down,
+                    color: TextColors.secondary,
+                  ),
+                );
+              },
             ),
           ],
         ),

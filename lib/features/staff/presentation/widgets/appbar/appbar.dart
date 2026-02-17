@@ -53,7 +53,7 @@ class StaffManagementAppbar extends StatelessWidget
             height: buttonHeight,
             width: buttonWidth,
             child: isIconOnly
-                ? SeconderyAddButton(onAddPressed: () {})
+                ? SeconderyAddButton(onAddPressed: onAddPressed)
                 : PrimaryAddButton(
                     icon: Icons.add,
                     label: 'Add New Staff',

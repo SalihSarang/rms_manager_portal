@@ -9,7 +9,7 @@ class StaffListContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 1150,
+      // width: 1150, // Removed fixed width
       height: 600,
       decoration: BoxDecoration(
         color: NeutralColors.surface,
