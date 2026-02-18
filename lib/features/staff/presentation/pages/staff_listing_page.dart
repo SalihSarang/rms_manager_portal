@@ -14,25 +14,29 @@ class StaffListingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => getIt<StaffListingBloc>()..add(LoadStaffs()),
-      child: Scaffold(
-        appBar: StaffManagementAppbar(
-          onAddPressed: () async {
-            final result = await showAddStaffSidebar(context);
-            if (result == true && context.mounted) {
-              context.read<StaffListingBloc>().add(LoadStaffs());
-            }
-          },
-        ),
-        body: ResponsiveLayout(
-          mobile: Padding(
-            padding: const EdgeInsets.all(20),
-            child: const StaffSmallScreenLayout(),
-          ),
-          desktop: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 90),
-            child: const StaffLargeScreenLayout(),
-          ),
-        ),
+      child: Builder(
+        builder: (context) {
+          return Scaffold(
+            appBar: StaffManagementAppbar(
+              onAddPressed: () async {
+                final result = await showAddStaffSidebar(context);
+                if (result == true && context.mounted) {
+                  context.read<StaffListingBloc>().add(LoadStaffs());
+                }
+              },
+            ),
+            body: ResponsiveLayout(
+              mobile: Padding(
+                padding: const EdgeInsets.all(20),
+                child: const StaffSmallScreenLayout(),
+              ),
+              desktop: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 90),
+                child: const StaffLargeScreenLayout(),
+              ),
+            ),
+          );
+        },
       ),
     );
   }

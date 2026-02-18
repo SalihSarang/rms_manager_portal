@@ -26,52 +26,47 @@ class AddStaffBloc extends Bloc<AddStaffEvent, AddStaffState> {
     required this.createStaffUser,
     required this.updateStaff,
     required this.cloudinaryService,
-  }) : super(AddStaffInitial()) {
-    on<OpenAddStaffSidebar>((event, emit) => emit(AddStaffSidebarOpenState()));
-    on<CloseAddStaffSidebar>(
-      (event, emit) => emit(AddStaffSidebarClosedState()),
-    );
+  }) : super(const AddStaffState()) {
+    on<OpenAddStaffSidebar>((event, emit) {
+      emit(
+        state.copyWith(
+          status: AddStaffStatus.open,
+          mode: AddStaffMode.add,
+          fullName: '',
+          email: '',
+          phoneNumber: '',
+          password: '',
+          role: null,
+          avatar: '',
+          pickedFile: null,
+          errorMessage: null,
+          originalStaff: null,
+        ),
+      );
+    });
+
+    on<CloseAddStaffSidebar>((event, emit) {
+      emit(state.copyWith(status: AddStaffStatus.initial));
+    });
 
     on<FullNameChanged>((event, emit) {
-      if (state is StaffEditingState) {
-        emit((state as StaffEditingState).copyWith(fullName: event.fullName));
-      } else {
-        emit(StaffEditingState(fullName: event.fullName));
-      }
+      emit(state.copyWith(fullName: event.fullName));
     });
 
     on<EmailChanged>((event, emit) {
-      if (state is StaffEditingState) {
-        emit((state as StaffEditingState).copyWith(email: event.email));
-      } else {
-        emit(StaffEditingState(email: event.email));
-      }
+      emit(state.copyWith(email: event.email));
     });
 
     on<PhoneNumberChanged>((event, emit) {
-      if (state is StaffEditingState) {
-        emit(
-          (state as StaffEditingState).copyWith(phoneNumber: event.phoneNumber),
-        );
-      } else {
-        emit(StaffEditingState(phoneNumber: event.phoneNumber));
-      }
+      emit(state.copyWith(phoneNumber: event.phoneNumber));
     });
 
     on<PasswordChanged>((event, emit) {
-      if (state is StaffEditingState) {
-        emit((state as StaffEditingState).copyWith(password: event.password));
-      } else {
-        emit(StaffEditingState(password: event.password));
-      }
+      emit(state.copyWith(password: event.password));
     });
 
     on<StaffRoleChanged>((event, emit) {
-      if (state is StaffEditingState) {
-        emit((state as StaffEditingState).copyWith(role: event.role));
-      } else {
-        emit(StaffEditingState(role: event.role));
-      }
+      emit(state.copyWith(role: event.role));
     });
 
     on<AvatarChanged>(_onAvatarPicked);
@@ -84,19 +79,20 @@ class AddStaffBloc extends Bloc<AddStaffEvent, AddStaffState> {
     Emitter<AddStaffState> emit,
   ) {
     emit(
-      StaffEditingState(
+      state.copyWith(
+        status: AddStaffStatus.open,
+        mode: AddStaffMode.edit,
         fullName: event.staff.name,
         email: event.staff.email,
         phoneNumber: event.staff.phoneNumber,
-        role: event.staff.role.name.toUpperCase(),
+        role: event.staff.role,
         avatar: event.staff.avatar,
-        isEditing: true,
-        staffId: event.staff.id,
         originalStaff: event.staff,
-        // password is left empty as we don't know it, and typically don't show it in edit
+        password: '',
+        pickedFile: null,
+        errorMessage: null,
       ),
     );
-    add(OpenAddStaffSidebar());
   }
 
   Future<void> _onAvatarPicked(
@@ -106,16 +102,7 @@ class AddStaffBloc extends Bloc<AddStaffEvent, AddStaffState> {
     final file = await avatarPicker.pick();
     if (file != null) {
       log('Picked avatar local path: ${file.path}');
-      if (state is StaffEditingState) {
-        emit(
-          (state as StaffEditingState).copyWith(
-            avatar: file.path,
-            pickedFile: file,
-          ),
-        );
-      } else {
-        emit(StaffEditingState(avatar: file.path, pickedFile: file));
-      }
+      emit(state.copyWith(avatar: file.path, pickedFile: file));
     }
   }
 
@@ -123,102 +110,90 @@ class AddStaffBloc extends Bloc<AddStaffEvent, AddStaffState> {
     SubmitStaffAddForm event,
     Emitter<AddStaffState> emit,
   ) async {
-    if (state is! StaffEditingState) return;
-    final currentState = state as StaffEditingState;
-
-    emit(FormSubmitting());
-
-    String? avatarUrl = currentState.avatar;
-    final pickedFile = currentState.pickedFile;
-
-    // Check if we have a picked file that needs uploading
-    if (pickedFile != null) {
-      try {
-        log('Uploading image...');
-        avatarUrl = await avatarPicker.upload(pickedFile);
-        log('Upload success: $avatarUrl');
-
-        // If editing and we have a new image, we might want to delete the old one
-        // But we need the public ID from the old URL.
-        // We can do this later or blindly. For now, just uploading new one.
-        if (currentState.isEditing &&
-            currentState.originalStaff?.avatar.isNotEmpty == true) {
-          // Optional: triggering delete of old image could be done here if we want to be clean
-        }
-      } catch (e) {
-        log('Upload failed: $e');
-        emit(StaffCreateFailed('Image upload failed: $e'));
-        return;
-      }
-    }
-
-    if (currentState.role == null) {
-      emit(const StaffCreateFailed('Please select a role'));
-      return;
-    }
+    emit(state.copyWith(status: AddStaffStatus.loading));
 
     try {
-      if (currentState.isEditing) {
-        // Edit Mode Logic
-        log('Updating staff ${currentState.email}...');
-
-        // We generally don't update Auth User email/password here easily without re-auth.
-        // So we update Firestore data.
-
-        final updatedStaff = currentState.originalStaff!.copyWith(
-          name: currentState.fullName,
-          email: currentState.email,
-          phoneNumber: currentState.phoneNumber,
-          role: UserRole.values.firstWhere(
-            (e) => e.name.toLowerCase() == currentState.role!.toLowerCase(),
-            orElse: () => UserRole.waiter,
+      if (state.role == null) {
+        emit(
+          state.copyWith(
+            status: AddStaffStatus.failure,
+            errorMessage: 'Please select a role',
           ),
-          avatar: avatarUrl ?? '',
         );
+        return;
+      }
 
-        await updateStaff(updatedStaff);
-        log('Staff updated successfully');
-        emit(const StaffCreated(wasEditing: true)); // Reusing success state
+      String? avatarUrl = await _uploadImageIfNeeded(
+        state.avatar,
+        state.pickedFile,
+      );
+
+      if (state.mode == AddStaffMode.edit) {
+        await _handleUpdateStaff(avatarUrl);
+        emit(state.copyWith(status: AddStaffStatus.success));
       } else {
-        // Add Mode Logic
-        log('Creating auth user for ${currentState.email}...');
-        final uid = await createStaffUser(
-          email: currentState.email,
-          password: currentState.password,
-        );
-        log('Auth user created with UID: $uid');
-
-        final newStaff = StaffModel(
-          id: uid,
-          name: currentState.fullName,
-          email: currentState.email,
-          phoneNumber: currentState.phoneNumber,
-          role: UserRole.values.firstWhere(
-            (e) {
-              log('Checking role: ${e.name} against ${currentState.role}');
-              return e.name.toLowerCase() == currentState.role!.toLowerCase();
-            },
-            orElse: () {
-              log(
-                'Role match failed for ${currentState.role}, defaulting to waiter',
-              );
-              return UserRole.waiter;
-            },
-          ),
-          avatar: avatarUrl ?? '',
-          isActive: true,
-          lastActive: DateTime.now(),
-        );
-
-        log('Saving staff to Firestore...');
-        await addNewStaff(newStaff);
-        log('Staff saved successfully');
-
-        emit(const StaffCreated(wasEditing: false));
+        await _handleCreateStaff(avatarUrl);
+        emit(state.copyWith(status: AddStaffStatus.success));
       }
     } catch (e) {
       log('Submission failed: $e');
-      emit(StaffCreateFailed(e.toString()));
+      emit(
+        state.copyWith(
+          status: AddStaffStatus.failure,
+          errorMessage: e.toString(),
+        ),
+      );
     }
+  }
+
+  Future<String?> _uploadImageIfNeeded(
+    String currentAvatar,
+    XFile? pickedFile,
+  ) async {
+    if (pickedFile != null) {
+      log('Uploading image...');
+      final url = await avatarPicker.upload(pickedFile);
+      log('Upload success: $url');
+      return url;
+    }
+    return currentAvatar.isNotEmpty ? currentAvatar : null;
+  }
+
+  Future<void> _handleUpdateStaff(String? avatarUrl) async {
+    log('Updating staff ${state.email}...');
+    final updatedStaff = state.originalStaff!.copyWith(
+      name: state.fullName,
+      email: state.email,
+      phoneNumber: state.phoneNumber,
+      role: state.role!,
+      avatar: avatarUrl ?? '',
+    );
+
+    await updateStaff(updatedStaff);
+    log('Staff updated successfully');
+  }
+
+  Future<void> _handleCreateStaff(String? avatarUrl) async {
+    log('Creating auth user for ${state.email}...');
+    final uid = await createStaffUser(
+      email: state.email,
+      password: state.password,
+    );
+    log('Auth user created with UID: $uid');
+
+    final newStaff = StaffModel(
+      id: uid,
+      name: state.fullName,
+      email: state.email,
+      phoneNumber: state.phoneNumber,
+      role: state.role!,
+      avatar: avatarUrl ?? '',
+      isActive: true,
+      lastActive: DateTime.now(),
+    );
+
+    log('Saving staff to Firestore...');
+    await addNewStaff(newStaff);
+    log('Staff saved successfully');
   }
 }

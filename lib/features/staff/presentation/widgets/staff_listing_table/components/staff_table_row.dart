@@ -22,15 +22,19 @@ class StaffTableRow extends DataRow2 {
                 CircleAvatar(
                   backgroundColor: NeutralColors.card,
                   radius: 16,
-                  backgroundImage: NetworkImage(staff.avatar),
-                  child: Text(
-                    StaffUtils.getInitials(staff.name),
-                    style: const TextStyle(
-                      color: TextColors.inverse,
-                      fontSize: 11,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  backgroundImage: staff.avatar.isNotEmpty
+                      ? NetworkImage(staff.avatar)
+                      : null,
+                  child: staff.avatar.isEmpty
+                      ? Text(
+                          StaffUtils.getInitials(staff.name),
+                          style: const TextStyle(
+                            color: TextColors.inverse,
+                            fontSize: 11,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                      : null,
                 ),
                 const SizedBox(width: 12),
                 Flexible(

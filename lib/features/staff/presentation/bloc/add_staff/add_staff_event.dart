@@ -33,14 +33,14 @@ class PasswordChanged extends AddStaffEvent {
   final String password;
   const PasswordChanged(this.password);
   @override
-  List<Object?> get props => [password];
+  List<Object> get props => [password];
 }
 
 class StaffRoleChanged extends AddStaffEvent {
-  final String role;
+  final UserRole role;
   const StaffRoleChanged(this.role);
   @override
-  List<Object?> get props => [role];
+  List<Object> get props => [role];
 }
 
 class AvatarChanged extends AddStaffEvent {}
@@ -53,7 +53,7 @@ class InitializeEditMode extends AddStaffEvent {
   final StaffModel staff;
   const InitializeEditMode(this.staff);
   @override
-  List<Object?> get props => [staff];
+  List<Object> get props => [staff];
 }
 
 class CloseAddStaffSidebar extends AddStaffEvent {}

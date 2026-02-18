@@ -5,17 +5,63 @@ import 'package:manager_portal/features/staff/presentation/widgets/add_staff_sid
 import 'package:rms_design_system/app_colors/neutral_colors.dart';
 import 'package:rms_design_system/app_colors/primary_colors.dart';
 import 'package:rms_design_system/app_colors/text_colors.dart';
+import 'package:rms_shared_package/enums/enums.dart';
 
-class AddStaffDialogFields extends StatelessWidget {
+class AddStaffDialogFields extends StatefulWidget {
   final GlobalKey<FormState> formKey;
 
   const AddStaffDialogFields({super.key, required this.formKey});
 
   @override
+  State<AddStaffDialogFields> createState() => _AddStaffDialogFieldsState();
+}
+
+class _AddStaffDialogFieldsState extends State<AddStaffDialogFields> {
+  late TextEditingController _nameController;
+  late TextEditingController _emailController;
+  late TextEditingController _phoneController;
+  late TextEditingController _passwordController;
+
+  @override
+  void initState() {
+    super.initState();
+    _nameController = TextEditingController();
+    _emailController = TextEditingController();
+    _phoneController = TextEditingController();
+    _passwordController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _phoneController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  String _formatRole(UserRole role) {
+    return role.name[0].toUpperCase() + role.name.substring(1).toLowerCase();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AddStaffBloc, AddStaffState>(
+    return BlocConsumer<AddStaffBloc, AddStaffState>(
+      listener: (context, state) {
+        if (state.mode == AddStaffMode.edit) {
+          if (_nameController.text != state.fullName) {
+            _nameController.text = state.fullName;
+          }
+          if (_emailController.text != state.email) {
+            _emailController.text = state.email;
+          }
+          if (_phoneController.text != state.phoneNumber) {
+            _phoneController.text = state.phoneNumber;
+          }
+        }
+      },
       builder: (context, state) {
-        final isEditing = state is StaffEditingState && state.isEditing;
+        final isEditing = state.mode == AddStaffMode.edit;
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -23,7 +69,7 @@ class AddStaffDialogFields extends StatelessWidget {
             LabeledTextField(
               label: 'Full Name',
               hint: 'e.g. Sarah Jenkins',
-              initialValue: isEditing ? (state).fullName : null,
+              controller: _nameController,
               onChanged: (value) =>
                   context.read<AddStaffBloc>().add(FullNameChanged(value)),
             ),
@@ -33,7 +79,7 @@ class AddStaffDialogFields extends StatelessWidget {
               label: 'Email Address',
               hint: 'e.g. sarah.j@bistro.com',
               keyboardType: TextInputType.emailAddress,
-              initialValue: isEditing ? (state).email : null,
+              controller: _emailController,
               onChanged: (value) =>
                   context.read<AddStaffBloc>().add(EmailChanged(value)),
             ),
@@ -43,7 +89,7 @@ class AddStaffDialogFields extends StatelessWidget {
               label: 'Phone Number',
               hint: '+91 5550001234',
               keyboardType: TextInputType.phone,
-              initialValue: isEditing ? (state).phoneNumber : null,
+              controller: _phoneController,
               onChanged: (value) =>
                   context.read<AddStaffBloc>().add(PhoneNumberChanged(value)),
             ),
@@ -54,6 +100,7 @@ class AddStaffDialogFields extends StatelessWidget {
                 label: 'Password',
                 hint: 'Enter password for staff',
                 obscureText: true,
+                controller: _passwordController,
                 onChanged: (value) =>
                     context.read<AddStaffBloc>().add(PasswordChanged(value)),
               ),
@@ -73,18 +120,20 @@ class AddStaffDialogFields extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
-                DropdownButtonFormField<String>(
-                  initialValue: state is StaffEditingState ? state.role : null,
+                DropdownButtonFormField<UserRole>(
+                  value: state.role,
                   hint: const Text(
                     'Select Role',
                     style: TextStyle(color: TextColors.secondary),
                   ),
                   style: const TextStyle(color: TextColors.inverse),
                   dropdownColor: NeutralColors.surface,
-                  items: const ['Waiter', 'Chef']
+                  items: UserRole.values
                       .map(
-                        (role) =>
-                            DropdownMenuItem(value: role, child: Text(role)),
+                        (role) => DropdownMenuItem(
+                          value: role,
+                          child: Text(_formatRole(role)),
+                        ),
                       )
                       .toList(),
                   onChanged: (value) {
@@ -93,7 +142,7 @@ class AddStaffDialogFields extends StatelessWidget {
                     }
                   },
                   validator: (value) {
-                    if (value == null || value.isEmpty) {
+                    if (value == null) {
                       return 'Please select a role';
                     }
                     return null;

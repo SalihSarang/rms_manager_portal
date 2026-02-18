@@ -24,27 +24,27 @@ class _AddStaffSidebarState extends State<AddStaffSidebar> {
         width: 400,
         child: Column(
           children: [
-            // Header
             BlocBuilder<AddStaffBloc, AddStaffState>(
               builder: (context, state) {
-                final isEditing = state is StaffEditingState && state.isEditing;
+                final isEditing = state.mode == .edit;
                 return DialogHeader(
                   title: isEditing ? 'Edit Staff' : 'Add New User',
                   subtitle: isEditing
                       ? 'Update staff details'
                       : 'Create a new staff account',
+                  onClose: () {
+                    context.read<AddStaffBloc>().add(CloseAddStaffSidebar());
+                    Navigator.of(context).pop();
+                  },
                 );
               },
             ),
 
             const Divider(height: 1, color: NeutralColors.border),
 
-            // Body
             SidebarBody(formKey: _formKey),
 
             const Divider(height: 1, color: NeutralColors.border),
-
-            // Footer
             SidebarFooter(formKey: _formKey),
           ],
         ),

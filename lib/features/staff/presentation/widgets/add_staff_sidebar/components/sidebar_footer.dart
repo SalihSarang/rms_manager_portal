@@ -12,30 +12,38 @@ class SidebarFooter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(24.0),
+      padding: const EdgeInsets.all(24),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text(
+            onPressed: () {
+              context.read<AddStaffBloc>().add(CloseAddStaffSidebar());
+              Navigator.of(context).pop();
+            },
+            child: const Text(
               'Cancel',
-              style: TextStyle(
-                color: TextColors.secondary.withValues(alpha: 0.7),
-              ),
+              style: TextStyle(color: TextColors.secondary),
             ),
           ),
           const SizedBox(width: 16),
           BlocBuilder<AddStaffBloc, AddStaffState>(
             builder: (context, state) {
-              final isEditing = state is StaffEditingState && state.isEditing;
+              final isEditing = state.mode == AddStaffMode.edit;
+              final isSubmitting = state.status == AddStaffStatus.loading;
+
               return PrimaryAddButton(
-                height: 40,
-                onPressed: () {
-                  if (formKey.currentState!.validate()) {
-                    context.read<AddStaffBloc>().add(SubmitStaffAddForm());
-                  }
-                },
+                height:
+                    48, // Adjusted height to match common button size or standard
+                onPressed: isSubmitting
+                    ? null
+                    : () {
+                        if (formKey.currentState!.validate()) {
+                          context.read<AddStaffBloc>().add(
+                            SubmitStaffAddForm(),
+                          );
+                        }
+                      },
                 label: isEditing ? 'Update Staff' : 'Save New Staff',
               );
             },

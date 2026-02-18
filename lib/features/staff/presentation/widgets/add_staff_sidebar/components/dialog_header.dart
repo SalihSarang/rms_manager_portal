@@ -16,35 +16,43 @@ class DialogHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(24.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      padding: const EdgeInsets.only(top: 10.0, left: 10.0, right: 10.0),
+      child: Column(
         children: [
-          Column(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                title,
-                style: const TextStyle(
-                  color: TextColors.inverse,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      color: TextColors.inverse,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    subtitle,
+                    style: TextStyle(
+                      color: TextColors.inverse.withValues(alpha: 0.6),
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(height: 4),
-              Text(
-                subtitle,
-                style: TextStyle(
-                  color: TextColors.secondary.withValues(alpha: 0.7),
-                  fontSize: 12,
-                ),
+              IconButton(
+                onPressed: onClose ?? () => Navigator.of(context).pop(),
+                icon: const Icon(Icons.close, color: TextColors.secondary),
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(),
               ),
             ],
           ),
-          IconButton(
-            onPressed: onClose ?? () => Navigator.of(context).pop(),
-            icon: const Icon(Icons.close, color: TextColors.secondary),
-          ),
+          const SizedBox(height: 24),
         ],
       ),
     );

@@ -1,56 +1,52 @@
 part of 'add_staff_bloc.dart';
 
-sealed class AddStaffState extends Equatable {
-  const AddStaffState();
+enum AddStaffStatus { initial, open, loading, success, failure }
 
-  @override
-  List<Object?> get props => [];
-}
+enum AddStaffMode { add, edit }
 
-final class AddStaffInitial extends AddStaffState {}
-
-class AddStaffSidebarOpenState extends AddStaffState {}
-
-class AddStaffSidebarClosedState extends AddStaffState {}
-
-class StaffEditingState extends AddStaffState {
+class AddStaffState extends Equatable {
+  final AddStaffStatus status;
+  final AddStaffMode mode;
   final String fullName;
   final String email;
   final String phoneNumber;
   final String password;
-  final String? role;
-  final String? avatar;
+  final UserRole? role;
+  final String avatar;
   final XFile? pickedFile;
-  final bool isEditing;
-  final String? staffId;
+  final String? errorMessage;
   final StaffModel? originalStaff;
 
-  const StaffEditingState({
-    this.fullName = "",
-    this.email = "",
-    this.phoneNumber = "",
-    this.password = "",
+  const AddStaffState({
+    this.status = AddStaffStatus.initial,
+    this.mode = AddStaffMode.add,
+    this.fullName = '',
+    this.email = '',
+    this.phoneNumber = '',
+    this.password = '',
     this.role,
-    this.avatar,
+    this.avatar = '',
     this.pickedFile,
-    this.isEditing = false,
-    this.staffId,
+    this.errorMessage,
     this.originalStaff,
   });
 
-  StaffEditingState copyWith({
+  AddStaffState copyWith({
+    AddStaffStatus? status,
+    AddStaffMode? mode,
     String? fullName,
     String? email,
     String? phoneNumber,
     String? password,
-    String? role,
+    UserRole? role,
     String? avatar,
     XFile? pickedFile,
-    bool? isEditing,
-    String? staffId,
+    String? errorMessage,
     StaffModel? originalStaff,
   }) {
-    return StaffEditingState(
+    return AddStaffState(
+      status: status ?? this.status,
+      mode: mode ?? this.mode,
       fullName: fullName ?? this.fullName,
       email: email ?? this.email,
       phoneNumber: phoneNumber ?? this.phoneNumber,
@@ -58,14 +54,15 @@ class StaffEditingState extends AddStaffState {
       role: role ?? this.role,
       avatar: avatar ?? this.avatar,
       pickedFile: pickedFile ?? this.pickedFile,
-      isEditing: isEditing ?? this.isEditing,
-      staffId: staffId ?? this.staffId,
+      errorMessage: errorMessage ?? this.errorMessage,
       originalStaff: originalStaff ?? this.originalStaff,
     );
   }
 
   @override
   List<Object?> get props => [
+    status,
+    mode,
     fullName,
     email,
     phoneNumber,
@@ -73,31 +70,7 @@ class StaffEditingState extends AddStaffState {
     role,
     avatar,
     pickedFile,
-    isEditing,
-    staffId,
+    errorMessage,
     originalStaff,
   ];
-}
-
-class FormSubmitting extends AddStaffState {}
-
-class StaffFormIsInvalid extends AddStaffState {
-  final String reason;
-  const StaffFormIsInvalid(this.reason);
-  @override
-  List<Object?> get props => [reason];
-}
-
-class StaffCreated extends AddStaffState {
-  final bool wasEditing;
-  const StaffCreated({this.wasEditing = false});
-  @override
-  List<Object?> get props => [wasEditing];
-}
-
-class StaffCreateFailed extends AddStaffState {
-  final String error;
-  const StaffCreateFailed(this.error);
-  @override
-  List<Object?> get props => [error];
 }
