@@ -49,4 +49,11 @@ class SubmitStaffAddForm extends AddStaffEvent {}
 
 class OpenAddStaffSidebar extends AddStaffEvent {}
 
+class InitializeEditMode extends AddStaffEvent {
+  final StaffModel staff;
+  const InitializeEditMode(this.staff);
+  @override
+  List<Object?> get props => [staff];
+}
+
 class CloseAddStaffSidebar extends AddStaffEvent {}

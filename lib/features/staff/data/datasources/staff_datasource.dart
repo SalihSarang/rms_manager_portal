@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:manager_portal/firebase_options.dart';
 
 import 'package:rms_shared_package/models/staff_model/staff_model.dart';
 
@@ -9,6 +11,8 @@ abstract class StaffDatasource {
   Future<List<StaffModel?>> getAllStaffs();
   Future<StaffModel> getStaffDetails(String staffId);
   Future<void> addNewStaff(StaffModel staff);
+  Future<void> updateStaff(StaffModel staff);
+  Future<void> deleteStaff(String staffId);
   Future<String> createNewUserWithEmailAndPassword({
     required String email,
     required String password,
@@ -30,15 +34,45 @@ class StaffDatasourceImpl implements StaffDatasource {
   }
 
   @override
+  Future<void> updateStaff(StaffModel staff) async {
+    await firestore
+        .collection(StaffDbConstants.staff)
+        .doc(staff.id)
+        .update(staff.toMap());
+  }
+
+  @override
+  Future<void> deleteStaff(String staffId) async {
+    await firestore.collection(StaffDbConstants.staff).doc(staffId).delete();
+  }
+
+  @override
   Future<String> createNewUserWithEmailAndPassword({
     required String email,
     required String password,
   }) async {
-    final credential = await auth.createUserWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
-    return credential.user!.uid;
+    FirebaseApp? secondaryApp;
+    try {
+      // Initialize a secondary Firebase App to create user without signing out the current manager
+      secondaryApp = await Firebase.initializeApp(
+        name: 'SecondaryApp-${DateTime.now().millisecondsSinceEpoch}',
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
+
+      final secondaryAuth = FirebaseAuth.instanceFor(app: secondaryApp);
+
+      final credential = await secondaryAuth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      return credential.user!.uid;
+    } catch (e) {
+      rethrow;
+    } finally {
+      // Clean up the secondary app
+      await secondaryApp?.delete();
+    }
   }
 
   @override

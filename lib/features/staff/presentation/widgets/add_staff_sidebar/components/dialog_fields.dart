@@ -11,6 +11,7 @@ class LabeledTextField extends StatelessWidget {
   final TextInputType keyboardType;
   final bool obscureText;
   final ValueChanged<String>? onChanged;
+  final String? initialValue;
 
   const LabeledTextField({
     super.key,
@@ -21,6 +22,7 @@ class LabeledTextField extends StatelessWidget {
     this.keyboardType = TextInputType.text,
     this.obscureText = false,
     this.onChanged,
+    this.initialValue,
   });
 
   @override
@@ -38,6 +40,7 @@ class LabeledTextField extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         TextFormField(
+          initialValue: initialValue,
           controller: controller,
           validator: validator,
           keyboardType: keyboardType,

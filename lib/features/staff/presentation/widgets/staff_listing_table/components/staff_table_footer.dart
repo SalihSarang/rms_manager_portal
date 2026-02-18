@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:rms_design_system/app_colors/neutral_colors.dart';
-import 'package:rms_design_system/app_colors/primary_colors.dart';
+
 import 'package:rms_design_system/app_colors/text_colors.dart';
+import 'package:manager_portal/features/staff/presentation/widgets/staff_listing_table/components/page_number_button.dart';
 import 'package:manager_portal/features/staff/presentation/widgets/staff_listing_table/components/pagination_button.dart';
 
 class StaffTableFooter extends StatelessWidget {
@@ -46,42 +47,10 @@ class StaffTableFooter extends StatelessWidget {
               const SizedBox(width: 8),
               ...List.generate(totalPages, (index) {
                 final pageNumber = index + 1;
-                final isSelected = pageNumber == currentPage;
-                return Padding(
-                  padding: const EdgeInsets.only(right: 8),
-                  child: Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      onTap: () => onPageChanged(pageNumber),
-                      borderRadius: BorderRadius.circular(4),
-                      child: Container(
-                        width: 28,
-                        height: 28,
-                        decoration: BoxDecoration(
-                          color: isSelected
-                              ? PrimaryColors.defaultColor
-                              : Colors.transparent,
-                          borderRadius: BorderRadius.circular(4),
-                          border: Border.all(
-                            color: isSelected
-                                ? PrimaryColors.defaultColor
-                                : NeutralColors.border,
-                          ),
-                        ),
-                        alignment: Alignment.center,
-                        child: Text(
-                          '$pageNumber',
-                          style: TextStyle(
-                            color: isSelected
-                                ? Colors.white
-                                : TextColors.secondary,
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                return PageNumberButton(
+                  pageNumber: pageNumber,
+                  isSelected: pageNumber == currentPage,
+                  onTap: () => onPageChanged(pageNumber),
                 );
               }),
               PaginationButton(

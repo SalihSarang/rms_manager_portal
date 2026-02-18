@@ -3,10 +3,14 @@ import 'package:manager_portal/features/staff/presentation/widgets/add_staff_sid
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:manager_portal/core/di/injector.dart';
+import 'package:rms_shared_package/models/staff_model/staff_model.dart';
 import 'package:manager_portal/features/staff/presentation/bloc/add_staff/add_staff_bloc.dart';
 
-void showAddStaffSidebar(BuildContext context) {
-  showGeneralDialog(
+Future<dynamic> showAddStaffSidebar(
+  BuildContext context, {
+  StaffModel? staffToEdit,
+}) {
+  return showGeneralDialog(
     context: context,
     barrierDismissible: true,
     barrierLabel: 'Dismiss',
@@ -16,7 +20,15 @@ void showAddStaffSidebar(BuildContext context) {
       return Align(
         alignment: Alignment.centerRight,
         child: BlocProvider(
-          create: (context) => getIt<AddStaffBloc>(),
+          create: (context) {
+            final bloc = getIt<AddStaffBloc>();
+            if (staffToEdit != null) {
+              bloc.add(InitializeEditMode(staffToEdit));
+            } else {
+              bloc.add(OpenAddStaffSidebar());
+            }
+            return bloc;
+          },
           child: const AddStaffSidebar(),
         ),
       );

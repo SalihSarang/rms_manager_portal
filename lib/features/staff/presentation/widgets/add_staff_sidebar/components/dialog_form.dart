@@ -13,72 +13,75 @@ class AddStaffDialogFields extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        LabeledTextField(
-          label: 'Full Name',
-          hint: 'e.g. Sarah Jenkins',
-          onChanged: (value) =>
-              context.read<AddStaffBloc>().add(FullNameChanged(value)),
-        ),
-        const SizedBox(height: 20),
+    return BlocBuilder<AddStaffBloc, AddStaffState>(
+      builder: (context, state) {
+        final isEditing = state is StaffEditingState && state.isEditing;
 
-        LabeledTextField(
-          label: 'Email Address',
-          hint: 'e.g. sarah.j@bistro.com',
-          keyboardType: TextInputType.emailAddress,
-          onChanged: (value) =>
-              context.read<AddStaffBloc>().add(EmailChanged(value)),
-        ),
-        const SizedBox(height: 20),
-
-        LabeledTextField(
-          label: 'Phone Number',
-          hint: '+1 (555) 000-1234',
-          keyboardType: TextInputType.phone,
-          onChanged: (value) =>
-              context.read<AddStaffBloc>().add(PhoneNumberChanged(value)),
-        ),
-        const SizedBox(height: 20),
-
-        LabeledTextField(
-          label: 'Password',
-          hint: 'Enter password for staff',
-          obscureText: true,
-          onChanged: (value) =>
-              context.read<AddStaffBloc>().add(PasswordChanged(value)),
-        ),
-        const SizedBox(height: 20),
-
-        // Role dropdown
-        Column(
+        return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Role & Permissions',
-              style: TextStyle(
-                color: TextColors.secondary,
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
-              ),
+            LabeledTextField(
+              label: 'Full Name',
+              hint: 'e.g. Sarah Jenkins',
+              initialValue: isEditing ? (state).fullName : null,
+              onChanged: (value) =>
+                  context.read<AddStaffBloc>().add(FullNameChanged(value)),
             ),
-            const SizedBox(height: 8),
-            BlocBuilder<AddStaffBloc, AddStaffState>(
-              builder: (context, state) {
-                String? currentRole;
-                if (state is StaffEditingState) {
-                  currentRole = state.role;
-                }
-                return DropdownButtonFormField<String>(
-                  initialValue: currentRole,
+            const SizedBox(height: 20),
+
+            LabeledTextField(
+              label: 'Email Address',
+              hint: 'e.g. sarah.j@bistro.com',
+              keyboardType: TextInputType.emailAddress,
+              initialValue: isEditing ? (state).email : null,
+              onChanged: (value) =>
+                  context.read<AddStaffBloc>().add(EmailChanged(value)),
+            ),
+            const SizedBox(height: 20),
+
+            LabeledTextField(
+              label: 'Phone Number',
+              hint: '+91 5550001234',
+              keyboardType: TextInputType.phone,
+              initialValue: isEditing ? (state).phoneNumber : null,
+              onChanged: (value) =>
+                  context.read<AddStaffBloc>().add(PhoneNumberChanged(value)),
+            ),
+            const SizedBox(height: 20),
+
+            if (!isEditing) ...[
+              LabeledTextField(
+                label: 'Password',
+                hint: 'Enter password for staff',
+                obscureText: true,
+                onChanged: (value) =>
+                    context.read<AddStaffBloc>().add(PasswordChanged(value)),
+              ),
+              const SizedBox(height: 20),
+            ],
+
+            // Role dropdown
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Role & Permissions',
+                  style: TextStyle(
+                    color: TextColors.secondary,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                DropdownButtonFormField<String>(
+                  initialValue: state is StaffEditingState ? state.role : null,
                   hint: const Text(
                     'Select Role',
                     style: TextStyle(color: TextColors.secondary),
                   ),
                   style: const TextStyle(color: TextColors.inverse),
                   dropdownColor: NeutralColors.surface,
-                  items: const ['Waiter', 'Chef', 'Manager']
+                  items: const ['Waiter', 'Chef']
                       .map(
                         (role) =>
                             DropdownMenuItem(value: role, child: Text(role)),
@@ -121,21 +124,12 @@ class AddStaffDialogFields extends StatelessWidget {
                     Icons.keyboard_arrow_down,
                     color: TextColors.secondary,
                   ),
-                );
-              },
+                ),
+              ],
             ),
           ],
-        ),
-
-        const SizedBox(height: 8),
-        Text(
-          'Access to POS, table management, and order entry.',
-          style: TextStyle(
-            color: TextColors.secondary.withValues(alpha: 0.5),
-            fontSize: 11,
-          ),
-        ),
-      ],
+        );
+      },
     );
   }
 }

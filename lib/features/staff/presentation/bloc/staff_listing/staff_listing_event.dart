@@ -15,3 +15,10 @@ class SelectStaff extends StaffListingEvent {
   @override
   List<Object?> get props => [staff];
 }
+
+class DeleteStaff extends StaffListingEvent {
+  final StaffModel staff;
+  const DeleteStaff(this.staff);
+  @override
+  List<Object?> get props => [staff];
+}

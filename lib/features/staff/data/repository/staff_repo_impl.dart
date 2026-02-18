@@ -11,6 +11,16 @@ class StaffRepositoryImpl implements StaffRepository {
   }
 
   @override
+  Future<void> updateStaff(StaffModel staff) {
+    return staffDatasource.updateStaff(staff);
+  }
+
+  @override
+  Future<void> deleteStaff(String staffId) {
+    return staffDatasource.deleteStaff(staffId);
+  }
+
+  @override
   Future<String> createNewUserWithEmailAndPassword({
     required String email,
     required String password,

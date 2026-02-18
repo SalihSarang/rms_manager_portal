@@ -6,8 +6,10 @@ import 'package:manager_portal/features/staff/data/repository/staff_repo_impl.da
 import 'package:manager_portal/features/staff/domain/repository/staff_repository.dart';
 import 'package:manager_portal/features/staff/domain/usecases/add_new_staff.dart';
 import 'package:manager_portal/features/staff/domain/usecases/create_staff_user.dart';
+import 'package:manager_portal/features/staff/domain/usecases/delete_staff.dart';
 import 'package:manager_portal/features/staff/domain/usecases/get_all_staffs.dart';
 import 'package:manager_portal/features/staff/domain/usecases/get_staff_details.dart';
+import 'package:manager_portal/features/staff/domain/usecases/update_staff.dart';
 import 'package:manager_portal/features/staff/presentation/bloc/add_staff/add_staff_bloc.dart';
 import 'package:manager_portal/features/staff/presentation/bloc/staff_listing/staff_listing_bloc.dart';
 
@@ -30,10 +32,17 @@ void setUpStaffDI() {
   getIt.registerLazySingleton(() => GetStaffDetails(getIt()));
   getIt.registerLazySingleton(() => AddNewStaff(getIt()));
   getIt.registerLazySingleton(() => CreateStaffUser(getIt()));
+  getIt.registerLazySingleton(() => DeleteStaffUsecase(getIt()));
+  getIt.registerLazySingleton(() => UpdateStaffUsecase(getIt()));
 
   // Staff Listing Bloc
   getIt.registerFactory<StaffListingBloc>(
-    () => StaffListingBloc(getAllStaffs: getIt(), getStaffDetails: getIt()),
+    () => StaffListingBloc(
+      getAllStaffs: getIt(),
+      getStaffDetails: getIt(),
+      deleteStaff: getIt(),
+      cloudinaryService: getIt(),
+    ),
   );
 
   // Add Staff Bloc
@@ -42,6 +51,8 @@ void setUpStaffDI() {
       avatarPicker: getIt(),
       addNewStaff: getIt(),
       createStaffUser: getIt(),
+      updateStaff: getIt(),
+      cloudinaryService: getIt(),
     ),
   );
 }

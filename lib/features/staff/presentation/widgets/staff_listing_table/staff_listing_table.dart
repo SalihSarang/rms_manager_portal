@@ -2,12 +2,12 @@ import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:rms_shared_package/models/staff_model/staff_model.dart';
 import 'package:manager_portal/core/widgets/reusable_table.dart';
-import 'package:rms_design_system/app_colors/text_colors.dart';
-import 'package:rms_design_system/app_colors/neutral_colors.dart';
-import 'package:rms_design_system/app_colors/primary_colors.dart';
-import 'package:manager_portal/features/staff/presentation/widgets/staff_listing_table/components/action_button.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:manager_portal/features/staff/presentation/bloc/staff_listing/staff_listing_bloc.dart';
+import 'package:manager_portal/features/staff/presentation/utils/sidebar_utils.dart';
 import 'package:manager_portal/features/staff/presentation/widgets/staff_listing_table/components/staff_table_footer.dart';
-import 'package:manager_portal/features/staff/presentation/utils/staff_utils.dart';
+import 'package:manager_portal/features/staff/presentation/widgets/staff_listing_table/components/staff_table_row.dart';
+import 'package:manager_portal/core/utils/dialog_utils.dart';
 
 class StaffListTable extends StatefulWidget {
   final List<StaffModel> staffList;
@@ -28,7 +28,6 @@ class _StaffListTableState extends State<StaffListTable> {
     final int totalItems = sourceList.length;
     final int totalPages = (totalItems / _itemsPerPage).ceil();
 
-    // Ensure valid page
     if (totalItems > 0 && _currentPage > totalPages) {
       _currentPage = totalPages;
     }
@@ -38,7 +37,6 @@ class _StaffListTableState extends State<StaffListTable> {
         ? startIndex + _itemsPerPage
         : totalItems;
 
-    // Safety check for empty list
     final List<StaffModel> currentData = sourceList.isEmpty
         ? []
         : sourceList.sublist(startIndex, endIndex);
@@ -55,7 +53,30 @@ class _StaffListTableState extends State<StaffListTable> {
               DataColumn2(label: Text('Last Active')),
               DataColumn2(label: Text('Actions'), fixedWidth: 80),
             ],
-            rowBuilder: (staff) => _buildStaffRow(staff),
+            rowBuilder: (staff) => StaffTableRow(
+              staff: staff,
+              onEdit: () async {
+                final result = await showAddStaffSidebar(
+                  context,
+                  staffToEdit: staff,
+                );
+                if (result == true && context.mounted) {
+                  context.read<StaffListingBloc>().add(LoadStaffs());
+                }
+              },
+              onDelete: () async {
+                final confirm = await DialogUtils.showDeleteConfirmationDialog(
+                  context: context,
+                  title: 'Delete Staff',
+                  content: 'Are you sure you want to delete ${staff.name}?',
+                  confirmLabel: 'Delete',
+                );
+
+                if (confirm == true && context.mounted) {
+                  context.read<StaffListingBloc>().add(DeleteStaff(staff));
+                }
+              },
+            ),
           ),
         ),
         if (totalItems > _itemsPerPage)
@@ -71,94 +92,6 @@ class _StaffListTableState extends State<StaffListTable> {
               });
             },
           ),
-      ],
-    );
-  }
-
-  DataRow2 _buildStaffRow(StaffModel staff) {
-    const headerTextColor = TextColors.secondary;
-    const badgeBgColor = NeutralColors.surface;
-    const badgeTextColor = PrimaryColors.defaultColor;
-    const badgeBorderColor = NeutralColors.border;
-
-    return DataRow2(
-      cells: [
-        // Name
-        DataCell(
-          Row(
-            children: [
-              CircleAvatar(
-                backgroundColor: NeutralColors.card,
-                radius: 16,
-                child: Text(
-                  StaffUtils.getInitials(staff.name),
-                  style: const TextStyle(
-                    color: TextColors.inverse,
-                    fontSize: 11,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 12),
-              Flexible(
-                child: Text(
-                  staff.name,
-                  style: const TextStyle(
-                    color: TextColors.inverse,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ],
-          ),
-        ),
-        // Role
-        DataCell(
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-            decoration: BoxDecoration(
-              color: badgeBgColor,
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: badgeBorderColor),
-            ),
-            child: Text(
-              staff.role.name.toUpperCase(),
-              style: const TextStyle(
-                color: badgeTextColor,
-                fontSize: 11,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
-        ),
-        // Email
-        DataCell(
-          Text(staff.email, style: const TextStyle(color: headerTextColor)),
-        ),
-        // Last Active
-        DataCell(
-          Row(
-            children: [
-              const Icon(Icons.access_time, size: 14, color: headerTextColor),
-              const SizedBox(width: 6),
-              Text(
-                StaffUtils.formatDate(staff.lastActive),
-                style: const TextStyle(color: headerTextColor),
-              ),
-            ],
-          ),
-        ),
-        // Actions
-        DataCell(
-          Row(
-            children: [
-              ActionButton(icon: Icons.edit_outlined, onTap: () {}),
-              const SizedBox(width: 8),
-              ActionButton(icon: Icons.delete_outline, onTap: () {}),
-            ],
-          ),
-        ),
       ],
     );
   }

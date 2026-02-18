@@ -21,6 +21,9 @@ class StaffEditingState extends AddStaffState {
   final String? role;
   final String? avatar;
   final XFile? pickedFile;
+  final bool isEditing;
+  final String? staffId;
+  final StaffModel? originalStaff;
 
   const StaffEditingState({
     this.fullName = "",
@@ -30,6 +33,9 @@ class StaffEditingState extends AddStaffState {
     this.role,
     this.avatar,
     this.pickedFile,
+    this.isEditing = false,
+    this.staffId,
+    this.originalStaff,
   });
 
   StaffEditingState copyWith({
@@ -40,6 +46,9 @@ class StaffEditingState extends AddStaffState {
     String? role,
     String? avatar,
     XFile? pickedFile,
+    bool? isEditing,
+    String? staffId,
+    StaffModel? originalStaff,
   }) {
     return StaffEditingState(
       fullName: fullName ?? this.fullName,
@@ -49,6 +58,9 @@ class StaffEditingState extends AddStaffState {
       role: role ?? this.role,
       avatar: avatar ?? this.avatar,
       pickedFile: pickedFile ?? this.pickedFile,
+      isEditing: isEditing ?? this.isEditing,
+      staffId: staffId ?? this.staffId,
+      originalStaff: originalStaff ?? this.originalStaff,
     );
   }
 
@@ -61,6 +73,9 @@ class StaffEditingState extends AddStaffState {
     role,
     avatar,
     pickedFile,
+    isEditing,
+    staffId,
+    originalStaff,
   ];
 }
 
@@ -73,7 +88,12 @@ class StaffFormIsInvalid extends AddStaffState {
   List<Object?> get props => [reason];
 }
 
-class StaffCreated extends AddStaffState {}
+class StaffCreated extends AddStaffState {
+  final bool wasEditing;
+  const StaffCreated({this.wasEditing = false});
+  @override
+  List<Object?> get props => [wasEditing];
+}
 
 class StaffCreateFailed extends AddStaffState {
   final String error;
