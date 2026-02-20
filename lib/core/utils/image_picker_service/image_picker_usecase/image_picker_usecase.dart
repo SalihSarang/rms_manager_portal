@@ -9,11 +9,18 @@ class ImagePickerUsecase {
 
   ImagePickerUsecase({required this.imagePicker, required this.cloudinary});
 
-  Future<String?> call({required String folder}) async {
+  Future<String?> call({
+    required String folder,
+    required String uploadPreset,
+  }) async {
     final XFile? file = await imagePicker.pickImage();
 
     if (file == null) return null;
-    final url = await cloudinary.uploadImage(file: file, folder: folder);
+    final url = await cloudinary.uploadImage(
+      file: file,
+      folder: folder,
+      uploadPreset: uploadPreset,
+    );
     return url;
   }
 
@@ -24,7 +31,12 @@ class ImagePickerUsecase {
   Future<String> uploadImageOnly({
     required XFile file,
     required String folder,
+    required String uploadPreset,
   }) async {
-    return await cloudinary.uploadImage(file: file, folder: folder);
+    return await cloudinary.uploadImage(
+      file: file,
+      folder: folder,
+      uploadPreset: uploadPreset,
+    );
   }
 }

@@ -7,7 +7,7 @@ class StaffProfileImgPickerUsecase {
   StaffProfileImgPickerUsecase({required this.base});
 
   Future<String?> call() {
-    return base(folder: 'staff_profile');
+    return base(folder: 'staff_profile', uploadPreset: 'manager_staff_uploads');
   }
 
   Future<XFile?> pick() {
@@ -15,6 +15,10 @@ class StaffProfileImgPickerUsecase {
   }
 
   Future<String> upload(XFile file) {
-    return base.uploadImageOnly(file: file, folder: 'staff_profile');
+    return base.uploadImageOnly(
+      file: file,
+      folder: 'staff_profile',
+      uploadPreset: 'manager_staff_uploads',
+    );
   }
 }

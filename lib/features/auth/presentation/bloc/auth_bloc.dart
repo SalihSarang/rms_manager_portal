@@ -1,5 +1,7 @@
 import 'dart:developer';
 
+import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:manager_portal/features/auth/domain/usecases/check_auth_status.dart';
 import 'package:manager_portal/features/auth/domain/usecases/sign_in_manager.dart';
@@ -23,8 +25,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<LoginPasswordChanged>(_onPasswordChanged);
     on<LoginPasswordVisibilityChanged>(_onPasswordVisibleChanged);
     on<CheckingAuthStatus>(_onCheckingAuthStatus);
+    on<AuthStatusChanged>(_onAuthStatusChanged);
 
-    Future.microtask(() => add(CheckingAuthStatus()));
+    // Listen to Auth State Changes for Hot Reload / Persistence
+    FirebaseAuth.instance.authStateChanges().listen((user) {
+      add(AuthStatusChanged(user));
+    });
+
+    // Initial check
+    add(CheckingAuthStatus());
   }
 
   String _email = '';
@@ -114,6 +123,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(
         StatusCheckingFailure('Auth Status Checking Failed: ${e.toString()}'),
       );
+    }
+  }
+
+  void _onAuthStatusChanged(
+    AuthStatusChanged event,
+    Emitter<AuthState> emit,
+  ) async {
+    if (event.user == null) {
+      emit(Unauthenticated());
+    } else {
+      add(CheckingAuthStatus());
     }
   }
 }

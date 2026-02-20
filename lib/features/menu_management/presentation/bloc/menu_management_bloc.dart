@@ -1,0 +1,78 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:manager_portal/features/menu_management/domain/usecases/add_category_usecase.dart';
+import 'package:manager_portal/features/menu_management/domain/usecases/get_categories_usecase.dart';
+import 'package:manager_portal/features/menu_management/presentation/bloc/menu_management_event.dart';
+import 'package:manager_portal/features/menu_management/presentation/bloc/menu_management_state.dart';
+import 'package:rms_shared_package/models/menu_models/category_model/category_model.dart';
+
+class MenuManagementBloc
+    extends Bloc<MenuManagementEvent, MenuManagementState> {
+  final GetCategoriesUseCase getCategoriesUseCase;
+  final AddCategoryUseCase addCategoryUseCase;
+
+  MenuManagementBloc(this.getCategoriesUseCase, this.addCategoryUseCase)
+    : super(MenuInitial()) {
+    on<LoadCategories>((event, emit) async {
+      emit(MenuLoading());
+      try {
+        final categories = await getCategoriesUseCase();
+        emit(
+          CategoriesLoaded(
+            categories: categories,
+            selectedCategoryId: categories.isNotEmpty
+                ? categories.first.id
+                : '',
+          ),
+        );
+      } catch (e) {
+        emit(MenuError(e.toString()));
+      }
+    });
+
+    on<SelectCategory>((event, emit) {
+      if (state is CategoriesLoaded) {
+        final currentState = state as CategoriesLoaded;
+        emit(currentState.copyWith(selectedCategoryId: event.categoryId));
+      }
+    });
+
+    on<AddCategory>((event, emit) async {
+      if (state is CategoriesLoaded) {
+        final currentState = state as CategoriesLoaded;
+        emit(currentState.copyWith(isSubmitting: true, submissionError: null));
+
+        try {
+          // Generate a simple unique ID and determine sort order
+          final String newId = DateTime.now().millisecondsSinceEpoch.toString();
+          final int newSortOrder = currentState.categories.length + 1;
+
+          final newCategory = CategoryModel(
+            id: newId,
+            name: event.name,
+            sortOrder: newSortOrder,
+            isActive: event.isActive,
+          );
+
+          await addCategoryUseCase(newCategory);
+
+          // Refresh categories instead of just appending to ensure sync with remote
+          final updatedCategories = await getCategoriesUseCase();
+
+          emit(
+            currentState.copyWith(
+              categories: updatedCategories,
+              isSubmitting: false,
+            ),
+          );
+        } catch (e) {
+          emit(
+            currentState.copyWith(
+              isSubmitting: false,
+              submissionError: e.toString(),
+            ),
+          );
+        }
+      }
+    });
+  }
+}

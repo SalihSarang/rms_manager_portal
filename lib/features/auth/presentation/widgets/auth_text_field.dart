@@ -10,6 +10,7 @@ class AuthTextField extends StatelessWidget {
   final ValueChanged<String> onChanged;
   final Widget? suffixIcon;
   final Widget? labelSuffix;
+  final String? Function(String?)? validator;
 
   const AuthTextField({
     super.key,
@@ -19,6 +20,7 @@ class AuthTextField extends StatelessWidget {
     this.obscureText = false,
     this.suffixIcon,
     this.labelSuffix,
+    this.validator,
   });
 
   @override
@@ -41,9 +43,10 @@ class AuthTextField extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 8),
-        TextField(
+        TextFormField(
           onChanged: onChanged,
           obscureText: obscureText,
+          validator: validator,
           style: const TextStyle(color: TextColors.inverse),
           decoration: InputDecoration(
             hintText: hintText,
