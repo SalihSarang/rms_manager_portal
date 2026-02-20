@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:manager_portal/features/staff/presentation/pages/staff_listing_page.dart';
+import 'package:manager_portal/features/menu_management/presentation/pages/menu_management_page.dart';
+import 'package:manager_portal/features/staff_management/presentation/pages/staff_listing_page.dart';
 import 'package:sidebarx/sidebarx.dart';
 import 'package:manager_portal/features/sidebar/presentation/widgets/manager_sidebar_x.dart';
 
@@ -65,7 +66,7 @@ class _SidebarState extends State<Sidebar> {
               children: const [
                 Center(child: Text('Overview Page')),
                 StaffListingScreen(),
-                Center(child: Text('Products Page')),
+                MenuManagementPage(),
                 Center(child: Text('Reports Page')),
                 Center(child: Text('Settings Page')),
                 Center(child: Text('Logout Page')),
