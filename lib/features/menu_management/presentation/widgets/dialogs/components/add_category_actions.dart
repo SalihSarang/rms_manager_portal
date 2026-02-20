@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:rms_design_system/app_colors/neutral_colors.dart';
-import 'package:rms_design_system/app_colors/primary_colors.dart';
-import 'package:rms_design_system/app_colors/text_colors.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:manager_portal/core/widgets/buttons/primary_elevated_button.dart';
+import 'package:manager_portal/core/widgets/buttons/primary_outlined_button.dart';
+import 'package:manager_portal/features/menu_management/presentation/bloc/menu_management_bloc.dart';
+import 'package:manager_portal/features/menu_management/presentation/bloc/menu_management_event.dart';
+import 'package:manager_portal/features/menu_management/presentation/bloc/menu_management_state.dart';
 
 class AddCategoryActions extends StatelessWidget {
   final GlobalKey<FormState> formKey;
@@ -23,54 +26,37 @@ class AddCategoryActions extends StatelessWidget {
         // Cancel Button
         SizedBox(
           height: 48,
-          child: OutlinedButton(
+          child: PrimaryOutlinedButton(
             onPressed: () => Navigator.of(context).pop(),
-            style: OutlinedButton.styleFrom(
-              side: const BorderSide(color: NeutralColors.border),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-            ),
-            child: const Text(
-              'Cancel',
-              style: TextStyle(
-                color: TextColors.inverse,
-                fontWeight: FontWeight.w500,
-                fontSize: 16,
-              ),
-            ),
+            label: 'Cancel',
           ),
         ),
         const SizedBox(width: 16),
 
-        SizedBox(
-          height: 48,
-          child: ElevatedButton(
-            onPressed: () {
-              if (formKey.currentState!.validate()) {
-                // Temporarily removed BLoC action to save the category
-                Navigator.of(context).pop();
-              }
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: PrimaryColors.defaultColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
+        BlocBuilder<MenuManagementBloc, MenuManagementState>(
+          builder: (context, state) {
+            final isSubmitting =
+                state is CategoriesLoaded && state.isSubmitting;
+
+            return SizedBox(
+              height: 48,
+              child: PrimaryElevatedButton(
+                onPressed: isSubmitting
+                    ? () {} // Disable when loading
+                    : () {
+                        if (formKey.currentState!.validate()) {
+                          context.read<MenuManagementBloc>().add(
+                            AddCategory(
+                              name: categoryController.text.trim(),
+                              isActive: showInMenu,
+                            ),
+                          );
+                        }
+                      },
+                label: isSubmitting ? 'Saving...' : 'Save Category',
               ),
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              elevation: 4,
-              shadowColor: PrimaryColors.defaultColor.withValues(alpha: 0.5),
-            ),
-            child: const Text(
-              'Save Category',
-              style: TextStyle(
-                color: TextColors.inverse,
-                fontWeight: FontWeight.w600,
-                fontSize: 16,
-              ),
-            ),
-          ),
+            );
+          },
         ),
       ],
     );

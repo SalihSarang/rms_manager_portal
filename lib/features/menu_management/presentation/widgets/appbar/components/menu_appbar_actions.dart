@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:manager_portal/core/widgets/buttons/primary_outlined_button.dart';
 import 'package:manager_portal/core/widgets/primary_add_button.dart';
-import 'package:rms_design_system/app_colors/neutral_colors.dart';
 import 'package:rms_design_system/app_colors/text_colors.dart';
 
 class MenuAppbarActions extends StatelessWidget {
@@ -28,29 +28,10 @@ class MenuAppbarActions extends StatelessWidget {
         SizedBox(
           height: buttonHeight,
           width: isIconOnly ? buttonHeight : buttonWidth,
-          child: OutlinedButton(
+          child: PrimaryOutlinedButton(
             onPressed: onAddCategoryPressed,
-            style: OutlinedButton.styleFrom(
-              padding: EdgeInsets.zero,
-              side: const BorderSide(color: NeutralColors.border),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-              backgroundColor: NeutralColors.surface,
-            ),
-            child: isIconOnly
-                ? const Icon(Icons.add, color: TextColors.inverse, size: 20)
-                : Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(Icons.add, color: TextColors.inverse, size: 20),
-                      SizedBox(width: 6),
-                      Text(
-                        'Category',
-                        style: TextStyle(color: TextColors.inverse),
-                      ),
-                    ],
-                  ),
+            label: isIconOnly ? null : 'Category',
+            icon: const Icon(Icons.add, color: TextColors.inverse, size: 20),
           ),
         ),
 
