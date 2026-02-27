@@ -5,6 +5,7 @@ import 'package:rms_shared_package/models/menu_models/category_model/category_mo
 abstract class MenuRemoteDatasource {
   Future<List<CategoryModel>> getCategories();
   Future<void> addCategory(CategoryModel category);
+  Future<void> updateCategory(CategoryModel category);
 }
 
 class MenuRemoteDatasourceImpl implements MenuRemoteDatasource {
@@ -31,5 +32,13 @@ class MenuRemoteDatasourceImpl implements MenuRemoteDatasource {
         .collection(MenuDbConstants.categories)
         .doc(category.id)
         .set(category.toMap());
+  }
+
+  @override
+  Future<void> updateCategory(CategoryModel category) async {
+    await firestore
+        .collection(MenuDbConstants.categories)
+        .doc(category.id)
+        .update(category.toMap());
   }
 }

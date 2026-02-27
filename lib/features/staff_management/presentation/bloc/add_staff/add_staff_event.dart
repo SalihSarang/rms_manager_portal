@@ -45,6 +45,8 @@ class StaffRoleChanged extends AddStaffEvent {
 
 class AvatarChanged extends AddStaffEvent {}
 
+class IdProofChanged extends AddStaffEvent {}
+
 class SubmitStaffAddForm extends AddStaffEvent {}
 
 class OpenAddStaffSidebar extends AddStaffEvent {}

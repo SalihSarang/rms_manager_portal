@@ -8,9 +8,12 @@ import 'package:manager_portal/features/menu_management/presentation/widgets/dia
 import 'package:manager_portal/features/menu_management/presentation/widgets/dialogs/components/category_visibility_switch.dart';
 import 'package:rms_design_system/app_colors/neutral_colors.dart';
 import 'package:rms_design_system/app_colors/semantic_colors.dart';
+import 'package:rms_shared_package/models/menu_models/category_model/category_model.dart';
 
 class AddCategoryDialog extends StatefulWidget {
-  const AddCategoryDialog({super.key});
+  final CategoryModel? categoryToEdit;
+
+  const AddCategoryDialog({super.key, this.categoryToEdit});
 
   @override
   State<AddCategoryDialog> createState() => _AddCategoryDialogState();
@@ -20,6 +23,15 @@ class _AddCategoryDialogState extends State<AddCategoryDialog> {
   final TextEditingController _categoryController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _showInMenu = true;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.categoryToEdit != null) {
+      _categoryController.text = widget.categoryToEdit!.name;
+      _showInMenu = widget.categoryToEdit!.isActive;
+    }
+  }
 
   @override
   void dispose() {
@@ -69,7 +81,7 @@ class _AddCategoryDialogState extends State<AddCategoryDialog> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const AddCategoryHeader(),
+                AddCategoryHeader(isEditing: widget.categoryToEdit != null),
                 const SizedBox(height: 32),
                 CategoryNameField(controller: _categoryController),
                 const SizedBox(height: 32),
@@ -86,6 +98,8 @@ class _AddCategoryDialogState extends State<AddCategoryDialog> {
                   formKey: _formKey,
                   categoryController: _categoryController,
                   showInMenu: _showInMenu,
+                  isEditing: widget.categoryToEdit != null,
+                  categoryToEdit: widget.categoryToEdit,
                 ),
               ],
             ),

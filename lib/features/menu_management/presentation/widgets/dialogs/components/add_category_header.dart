@@ -3,16 +3,18 @@ import 'package:rms_design_system/app_colors/neutral_colors.dart';
 import 'package:rms_design_system/app_colors/text_colors.dart';
 
 class AddCategoryHeader extends StatelessWidget {
-  const AddCategoryHeader({super.key});
+  final bool isEditing;
+
+  const AddCategoryHeader({super.key, this.isEditing = false});
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const Text(
-          'Add Category',
-          style: TextStyle(
+        Text(
+          isEditing ? 'Edit Category' : 'Add Category',
+          style: const TextStyle(
             color: TextColors.inverse,
             fontSize: 20,
             fontWeight: FontWeight.w600,

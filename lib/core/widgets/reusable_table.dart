@@ -20,12 +20,10 @@ class ReusableTable<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DataTable2(
-      columnSpacing: 12,
-      horizontalMargin: 12,
+      columnSpacing: 10,
+      horizontalMargin: 10,
       minWidth: 600,
-      headingRowColor: WidgetStateProperty.all(
-        NeutralColors.background,
-      ), // Dark header color
+      headingRowColor: WidgetStateProperty.all(NeutralColors.background),
       dataRowColor: WidgetStateProperty.all(Colors.transparent),
       headingTextStyle: const TextStyle(
         color: TextColors.secondary,

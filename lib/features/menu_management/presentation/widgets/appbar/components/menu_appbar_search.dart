@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:manager_portal/features/staff_management/presentation/widgets/search_bar_container/components/dearchbar.dart';
+import 'package:manager_portal/features/staff_management/presentation/widgets/staff_listing/search_bar_container/components/dearchbar.dart';
 import 'package:rms_design_system/app_colors/neutral_colors.dart';
 import 'package:rms_design_system/app_colors/text_colors.dart';
 

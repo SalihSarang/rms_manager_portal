@@ -65,16 +65,5 @@ class CloudinaryServiceImpl implements CloudinaryService {
   }
 
   @override
-  Future<void> deleteImage(String publicId) async {
-    // Note: Deleting images requires a signature generated with the API Secret.
-    // This implementation is a placeholder until the crypto package and logic are added.
-    // For now, we will just log that deletion is requested.
-    print('Deleting image with publicId: $publicId (Simulated)');
-
-    // valid implementation would look like:
-    // 1. timestamp = DateTime.now().millisecondsSinceEpoch / 1000
-    // 2. params = 'public_id=$publicId&timestamp=$timestamp$_apiSecret'
-    // 3. signature = sha1(params)
-    // 4. post to destroy endpoint
-  }
+  Future<void> deleteImage(String publicId) async {}
 }

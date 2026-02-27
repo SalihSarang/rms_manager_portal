@@ -22,3 +22,11 @@ class DeleteStaff extends StaffListingEvent {
   @override
   List<Object?> get props => [staff];
 }
+
+class ToggleStaffStatus extends StaffListingEvent {
+  final StaffModel staff;
+  const ToggleStaffStatus({required this.staff});
+
+  @override
+  List<Object?> get props => [staff];
+}

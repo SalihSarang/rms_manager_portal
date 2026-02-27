@@ -1,6 +1,7 @@
 import 'package:manager_portal/core/di/injector.dart';
 import 'package:manager_portal/core/utils/image_picker_service/cloudinary_service/cloudinary_service.dart';
 import 'package:manager_portal/core/utils/image_picker_service/feature_specific_usecase/food_img_picker.dart';
+import 'package:manager_portal/core/utils/image_picker_service/feature_specific_usecase/staff_id_proof_picker.dart';
 import 'package:manager_portal/core/utils/image_picker_service/feature_specific_usecase/staff_profile_img_picker.dart';
 import 'package:manager_portal/core/utils/image_picker_service/image_picker/image_picker.dart';
 import 'package:manager_portal/core/utils/image_picker_service/image_picker_usecase/image_picker_usecase.dart';
@@ -22,6 +23,8 @@ void setUpImagePicker() {
 
   // Staff profile picker usecase
   getIt.registerFactory(() => StaffProfileImgPickerUsecase(base: getIt()));
+  // Staff ID proof picker usecase
+  getIt.registerFactory(() => StaffIdProofPickerUsecase(base: getIt()));
   //Food menue image picker usecase
   getIt.registerFactory(() => FoodImgPickerUsecase(base: getIt()));
 }
