@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rms_design_system/app_colors/primary_colors.dart';
+import 'package:rms_design_system/app_colors/text_colors.dart';
 
 class SeconderyAddButton extends StatelessWidget {
   final VoidCallback onAddPressed;
@@ -15,7 +16,7 @@ class SeconderyAddButton extends StatelessWidget {
       child: IconButton(
         onPressed: onAddPressed,
         tooltip: 'Add New employ',
-        icon: const Icon(Icons.add, color: Colors.white),
+        icon: const Icon(Icons.add, color: TextColors.inverse),
       ),
     );
   }

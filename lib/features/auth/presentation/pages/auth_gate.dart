@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:manager_portal/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:manager_portal/features/auth/presentation/bloc/auth_state.dart';
 import 'package:manager_portal/features/auth/presentation/pages/login_screen.dart';
+import 'package:manager_portal/features/sidebar/presentation/page/sidebar.dart';
 
 class AuthGate extends StatelessWidget {
   const AuthGate({super.key});
@@ -13,10 +14,10 @@ class AuthGate extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
-        // if (state is Authenticated) {
-        //   log('User Name ${state.manager.name}');
-        //   return const Sidebar();
-        // }
+        if (state is Authenticated) {
+          log('User Name ${state.manager.name}');
+          return const Sidebar();
+        }
 
         if (state is StatusCheckingFailure) {
           return Scaffold(body: Center(child: Text(state.error)));

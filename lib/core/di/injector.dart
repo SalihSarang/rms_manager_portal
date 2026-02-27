@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get_it/get_it.dart';
 import 'package:manager_portal/core/di/image_picker_di.dart';
 import 'package:manager_portal/core/di/manager_auth_di.dart';
+import 'package:manager_portal/core/di/menu_management_di.dart';
 import 'package:manager_portal/core/di/staff_di.dart';
 
 final getIt = GetIt.instance;
@@ -19,5 +20,8 @@ void setupDI() {
   setUpImagePicker();
 
   // Staff Manage DI
-  // setUpStaffDI();
+  setUpStaffDI();
+
+  // Menu Management DI
+  setUpMenuManagementDI();
 }

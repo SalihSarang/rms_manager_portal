@@ -6,6 +6,6 @@ class FoodImgPickerUsecase {
   FoodImgPickerUsecase({required this.base});
 
   Future<String?> call() {
-    return base(folder: 'food_images');
+    return base(folder: 'food_images', uploadPreset: 'manager_food_uploads');
   }
 }
