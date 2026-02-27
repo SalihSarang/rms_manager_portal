@@ -23,7 +23,6 @@ class MenuManagementPage extends StatelessWidget {
             backgroundColor: NeutralColors.background,
             appBar: MenuAppbar(
               onAddCategoryPressed: () {
-                // Pass the existing bloc to the dialog
                 final bloc = context.read<MenuManagementBloc>();
                 showDialog(
                   context: context,
@@ -46,7 +45,7 @@ class MenuManagementPage extends StatelessWidget {
                       borderRadius: 12,
                       child: const Center(
                         child: Text(
-                          'Items list layout will go here.',
+                          'Items list',
                           style: TextStyle(color: TextColors.secondary),
                         ),
                       ),

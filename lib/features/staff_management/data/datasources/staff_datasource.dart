@@ -53,7 +53,6 @@ class StaffDatasourceImpl implements StaffDatasource {
   }) async {
     FirebaseApp? secondaryApp;
     try {
-      // Initialize a secondary Firebase App to create user without signing out the current manager
       secondaryApp = await Firebase.initializeApp(
         name: 'SecondaryApp-${DateTime.now().millisecondsSinceEpoch}',
         options: DefaultFirebaseOptions.currentPlatform,
@@ -70,7 +69,6 @@ class StaffDatasourceImpl implements StaffDatasource {
     } catch (e) {
       rethrow;
     } finally {
-      // Clean up the secondary app
       await secondaryApp?.delete();
     }
   }

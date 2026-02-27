@@ -25,9 +25,7 @@ class CategorySidebarItem extends StatelessWidget {
         isSelected: isSelected,
         hasBorder: false,
         backgroundColor: Colors.transparent,
-        onTap: () {
-          // Temporarily removed BLoC action: context.read<MenuManagementBloc>().add(SelectCategory(category.id));
-        },
+        onTap: () {},
         child: Row(
           children: [
             Icon(

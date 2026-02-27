@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:rms_shared_package/models/menu_models/category_model/category_model.dart';
 
 abstract class MenuManagementEvent extends Equatable {
   const MenuManagementEvent();
@@ -26,4 +27,13 @@ class AddCategory extends MenuManagementEvent {
 
   @override
   List<Object?> get props => [name, isActive];
+}
+
+class EditCategory extends MenuManagementEvent {
+  final CategoryModel category;
+
+  const EditCategory({required this.category});
+
+  @override
+  List<Object?> get props => [category];
 }

@@ -1,10 +1,8 @@
 class StaffUtils {
   static String getInitials(String name) {
-    // 1. Trim and check for empty
     final trimmedName = name.trim();
     if (trimmedName.isEmpty) return "NA";
 
-    // 2. Split and filter empty parts (handles multiple spaces)
     List<String> names = trimmedName
         .split(" ")
         .where((s) => s.isNotEmpty)
@@ -12,7 +10,6 @@ class StaffUtils {
 
     String initials = "";
 
-    // 3. Get initials safely
     if (names.isNotEmpty) {
       initials += names[0][0];
       if (names.length > 1) {

@@ -11,6 +11,7 @@ import 'package:manager_portal/features/staff_management/domain/usecases/get_all
 import 'package:manager_portal/features/staff_management/domain/usecases/get_staff_details.dart';
 import 'package:manager_portal/features/staff_management/domain/usecases/update_staff.dart';
 import 'package:manager_portal/features/staff_management/presentation/bloc/add_staff/add_staff_bloc.dart';
+import 'package:manager_portal/features/staff_management/presentation/bloc/staff_details/staff_details_bloc.dart';
 import 'package:manager_portal/features/staff_management/presentation/bloc/staff_listing/staff_listing_bloc.dart';
 
 void setUpStaffDI() {
@@ -41,6 +42,7 @@ void setUpStaffDI() {
       getAllStaffs: getIt(),
       getStaffDetails: getIt(),
       deleteStaff: getIt(),
+      updateStaff: getIt(),
       cloudinaryService: getIt(),
     ),
   );
@@ -49,10 +51,16 @@ void setUpStaffDI() {
   getIt.registerFactory<AddStaffBloc>(
     () => AddStaffBloc(
       avatarPicker: getIt(),
+      idProofPicker: getIt(),
       addNewStaff: getIt(),
       createStaffUser: getIt(),
       updateStaff: getIt(),
       cloudinaryService: getIt(),
     ),
+  );
+
+  // Staff Details Bloc
+  getIt.registerFactory<StaffDetailsBloc>(
+    () => StaffDetailsBloc(getStaffDetails: getIt()),
   );
 }

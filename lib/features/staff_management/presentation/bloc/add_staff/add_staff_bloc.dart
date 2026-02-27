@@ -3,6 +3,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:manager_portal/core/utils/image_picker_service/cloudinary_service/cloudinary_service.dart';
+import 'package:manager_portal/core/utils/image_picker_service/feature_specific_usecase/staff_id_proof_picker.dart';
 import 'package:manager_portal/core/utils/image_picker_service/feature_specific_usecase/staff_profile_img_picker.dart';
 import 'package:manager_portal/features/staff_management/domain/usecases/add_new_staff.dart';
 import 'package:manager_portal/features/staff_management/domain/usecases/create_staff_user.dart';
@@ -15,6 +16,7 @@ part 'add_staff_state.dart';
 
 class AddStaffBloc extends Bloc<AddStaffEvent, AddStaffState> {
   final StaffProfileImgPickerUsecase avatarPicker;
+  final StaffIdProofPickerUsecase idProofPicker;
   final AddNewStaff addNewStaff;
   final CreateStaffUser createStaffUser;
   final UpdateStaffUsecase updateStaff;
@@ -22,6 +24,7 @@ class AddStaffBloc extends Bloc<AddStaffEvent, AddStaffState> {
 
   AddStaffBloc({
     required this.avatarPicker,
+    required this.idProofPicker,
     required this.addNewStaff,
     required this.createStaffUser,
     required this.updateStaff,
@@ -38,7 +41,9 @@ class AddStaffBloc extends Bloc<AddStaffEvent, AddStaffState> {
           password: '',
           role: null,
           avatar: '',
+          idProof: '',
           pickedFile: null,
+          pickedIdProof: null,
           errorMessage: null,
           originalStaff: null,
         ),
@@ -70,6 +75,7 @@ class AddStaffBloc extends Bloc<AddStaffEvent, AddStaffState> {
     });
 
     on<AvatarChanged>(_onAvatarPicked);
+    on<IdProofChanged>(_onIdProofPicked);
     on<InitializeEditMode>(_onInitializeEditMode);
     on<SubmitStaffAddForm>(_onSubmit);
   }
@@ -87,9 +93,11 @@ class AddStaffBloc extends Bloc<AddStaffEvent, AddStaffState> {
         phoneNumber: event.staff.phoneNumber,
         role: event.staff.role,
         avatar: event.staff.avatar,
+        idProof: event.staff.idProof,
         originalStaff: event.staff,
         password: '',
         pickedFile: null,
+        pickedIdProof: null,
         errorMessage: null,
       ),
     );
@@ -103,6 +111,17 @@ class AddStaffBloc extends Bloc<AddStaffEvent, AddStaffState> {
     if (file != null) {
       log('Picked avatar local path: ${file.path}');
       emit(state.copyWith(avatar: file.path, pickedFile: file));
+    }
+  }
+
+  Future<void> _onIdProofPicked(
+    IdProofChanged event,
+    Emitter<AddStaffState> emit,
+  ) async {
+    final file = await idProofPicker.pick();
+    if (file != null) {
+      log('Picked ID proof local path: ${file.path}');
+      emit(state.copyWith(idProof: file.path, pickedIdProof: file));
     }
   }
 
@@ -123,16 +142,21 @@ class AddStaffBloc extends Bloc<AddStaffEvent, AddStaffState> {
         return;
       }
 
-      String? avatarUrl = await _uploadImageIfNeeded(
-        state.avatar,
-        state.pickedFile,
-      );
-
       if (state.mode == AddStaffMode.edit) {
-        await _handleUpdateStaff(avatarUrl);
+        String? avatarUrl = await _uploadImageIfNeeded(
+          state.avatar,
+          state.pickedFile,
+          isAvatar: true,
+        );
+        String? idProofUrl = await _uploadImageIfNeeded(
+          state.idProof,
+          state.pickedIdProof,
+          isAvatar: false,
+        );
+        await _handleUpdateStaff(avatarUrl, idProofUrl);
         emit(state.copyWith(status: AddStaffStatus.success));
       } else {
-        await _handleCreateStaff(avatarUrl);
+        await _handleCreateStaff();
         emit(state.copyWith(status: AddStaffStatus.success));
       }
     } catch (e) {
@@ -147,19 +171,22 @@ class AddStaffBloc extends Bloc<AddStaffEvent, AddStaffState> {
   }
 
   Future<String?> _uploadImageIfNeeded(
-    String currentAvatar,
-    XFile? pickedFile,
-  ) async {
+    String currentUrl,
+    XFile? pickedFile, {
+    required bool isAvatar,
+  }) async {
     if (pickedFile != null) {
-      log('Uploading image...');
-      final url = await avatarPicker.upload(pickedFile);
+      log('Uploading ${isAvatar ? 'avatar' : 'ID proof'} image...');
+      final url = isAvatar
+          ? await avatarPicker.upload(pickedFile)
+          : await idProofPicker.upload(pickedFile);
       log('Upload success: $url');
       return url;
     }
-    return currentAvatar.isNotEmpty ? currentAvatar : null;
+    return currentUrl.isNotEmpty ? currentUrl : null;
   }
 
-  Future<void> _handleUpdateStaff(String? avatarUrl) async {
+  Future<void> _handleUpdateStaff(String? avatarUrl, String? idProofUrl) async {
     log('Updating staff ${state.email}...');
     final updatedStaff = state.originalStaff!.copyWith(
       name: state.fullName,
@@ -167,19 +194,32 @@ class AddStaffBloc extends Bloc<AddStaffEvent, AddStaffState> {
       phoneNumber: state.phoneNumber,
       role: state.role!,
       avatar: avatarUrl ?? '',
+      idProof: idProofUrl ?? '',
     );
 
     await updateStaff(updatedStaff);
     log('Staff updated successfully');
   }
 
-  Future<void> _handleCreateStaff(String? avatarUrl) async {
+  Future<void> _handleCreateStaff() async {
     log('Creating auth user for ${state.email}...');
     final uid = await createStaffUser(
       email: state.email,
       password: state.password,
     );
     log('Auth user created with UID: $uid');
+
+    String? avatarUrl = await _uploadImageIfNeeded(
+      state.avatar,
+      state.pickedFile,
+      isAvatar: true,
+    );
+
+    String? idProofUrl = await _uploadImageIfNeeded(
+      state.idProof,
+      state.pickedIdProof,
+      isAvatar: false,
+    );
 
     final newStaff = StaffModel(
       id: uid,
@@ -188,6 +228,7 @@ class AddStaffBloc extends Bloc<AddStaffEvent, AddStaffState> {
       phoneNumber: state.phoneNumber,
       role: state.role!,
       avatar: avatarUrl ?? '',
+      idProof: idProofUrl ?? '',
       isActive: true,
       lastActive: DateTime.now(),
     );

@@ -5,6 +5,7 @@ import 'package:rms_design_system/app_colors/text_colors.dart';
 class PrimaryAddButton extends StatelessWidget {
   final String label;
   final VoidCallback? onPressed;
+  final bool isLoading;
 
   // Optional controls
   final Color? backgroundColor;
@@ -20,6 +21,7 @@ class PrimaryAddButton extends StatelessWidget {
     super.key,
     required this.label,
     required this.onPressed,
+    this.isLoading = false,
     this.backgroundColor,
     this.textColor,
     this.borderRadius = 8,
@@ -44,26 +46,35 @@ class PrimaryAddButton extends StatelessWidget {
           ),
           padding: padding,
         ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (icon != null) ...[
-              Icon(
-                icon,
-                size: iconSize,
-                color: textColor ?? TextColors.inverse,
+        child: isLoading
+            ? const SizedBox(
+                width: 24,
+                height: 24,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: Colors.white,
+                ),
+              )
+            : Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (icon != null) ...[
+                    Icon(
+                      icon,
+                      size: iconSize,
+                      color: textColor ?? TextColors.inverse,
+                    ),
+                    const SizedBox(width: 6),
+                  ],
+                  Text(
+                    label,
+                    style: TextStyle(
+                      color: textColor ?? TextColors.inverse,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(width: 6),
-            ],
-            Text(
-              label,
-              style: TextStyle(
-                color: textColor ?? TextColors.inverse,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }

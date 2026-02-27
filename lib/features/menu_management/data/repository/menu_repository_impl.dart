@@ -16,4 +16,9 @@ class MenuRepositoryImpl implements MenuRepository {
   Future<void> addCategory(CategoryModel category) async {
     await remoteDatasource.addCategory(category);
   }
+
+  @override
+  Future<void> updateCategory(CategoryModel category) async {
+    await remoteDatasource.updateCategory(category);
+  }
 }

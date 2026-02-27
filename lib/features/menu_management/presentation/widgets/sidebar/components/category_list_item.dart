@@ -6,6 +6,7 @@ import 'package:rms_shared_package/models/menu_models/category_model/category_mo
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:manager_portal/features/menu_management/presentation/bloc/menu_management_bloc.dart';
 import 'package:manager_portal/features/menu_management/presentation/bloc/menu_management_event.dart';
+import 'package:manager_portal/features/menu_management/presentation/widgets/dialogs/add_category_dialog.dart';
 
 class CategoryListItem extends StatelessWidget {
   final CategoryModel category;
@@ -77,7 +78,16 @@ class CategoryListItem extends StatelessWidget {
                   style: TextStyle(color: TextColors.secondary, fontSize: 13),
                 ),
                 trailing: IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    final bloc = context.read<MenuManagementBloc>();
+                    showDialog(
+                      context: context,
+                      builder: (context) => BlocProvider.value(
+                        value: bloc,
+                        child: AddCategoryDialog(categoryToEdit: category),
+                      ),
+                    );
+                  },
                   icon: const Icon(
                     Icons.edit_outlined,
                     color: TextColors.secondary,

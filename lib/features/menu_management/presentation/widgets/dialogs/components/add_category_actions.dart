@@ -1,3 +1,4 @@
+import 'package:rms_shared_package/models/menu_models/category_model/category_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:manager_portal/core/widgets/buttons/primary_elevated_button.dart';
@@ -10,12 +11,16 @@ class AddCategoryActions extends StatelessWidget {
   final GlobalKey<FormState> formKey;
   final TextEditingController categoryController;
   final bool showInMenu;
+  final bool isEditing;
+  final CategoryModel? categoryToEdit;
 
   const AddCategoryActions({
     super.key,
     required this.formKey,
     required this.categoryController,
     required this.showInMenu,
+    this.isEditing = false,
+    this.categoryToEdit,
   });
 
   @override
@@ -45,15 +50,28 @@ class AddCategoryActions extends StatelessWidget {
                     ? () {} // Disable when loading
                     : () {
                         if (formKey.currentState!.validate()) {
-                          context.read<MenuManagementBloc>().add(
-                            AddCategory(
-                              name: categoryController.text.trim(),
-                              isActive: showInMenu,
-                            ),
-                          );
+                          if (isEditing && categoryToEdit != null) {
+                            context.read<MenuManagementBloc>().add(
+                              EditCategory(
+                                category: categoryToEdit!.copyWith(
+                                  name: categoryController.text.trim(),
+                                  isActive: showInMenu,
+                                ),
+                              ),
+                            );
+                          } else {
+                            context.read<MenuManagementBloc>().add(
+                              AddCategory(
+                                name: categoryController.text.trim(),
+                                isActive: showInMenu,
+                              ),
+                            );
+                          }
                         }
                       },
-                label: isSubmitting ? 'Saving...' : 'Save Category',
+                label: isSubmitting
+                    ? 'Saving...'
+                    : (isEditing ? 'Save Changes' : 'Save Category'),
               ),
             );
           },

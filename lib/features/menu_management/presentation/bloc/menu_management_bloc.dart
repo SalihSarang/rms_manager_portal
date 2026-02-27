@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/add_category_usecase.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/get_categories_usecase.dart';
+import 'package:manager_portal/features/menu_management/domain/usecases/update_category_usecase.dart';
 import 'package:manager_portal/features/menu_management/presentation/bloc/menu_management_event.dart';
 import 'package:manager_portal/features/menu_management/presentation/bloc/menu_management_state.dart';
 import 'package:rms_shared_package/models/menu_models/category_model/category_model.dart';
@@ -9,9 +10,13 @@ class MenuManagementBloc
     extends Bloc<MenuManagementEvent, MenuManagementState> {
   final GetCategoriesUseCase getCategoriesUseCase;
   final AddCategoryUseCase addCategoryUseCase;
+  final UpdateCategoryUseCase updateCategoryUseCase;
 
-  MenuManagementBloc(this.getCategoriesUseCase, this.addCategoryUseCase)
-    : super(MenuInitial()) {
+  MenuManagementBloc(
+    this.getCategoriesUseCase,
+    this.addCategoryUseCase,
+    this.updateCategoryUseCase,
+  ) : super(MenuInitial()) {
     on<LoadCategories>((event, emit) async {
       emit(MenuLoading());
       try {
@@ -56,6 +61,33 @@ class MenuManagementBloc
           await addCategoryUseCase(newCategory);
 
           // Refresh categories instead of just appending to ensure sync with remote
+          final updatedCategories = await getCategoriesUseCase();
+
+          emit(
+            currentState.copyWith(
+              categories: updatedCategories,
+              isSubmitting: false,
+            ),
+          );
+        } catch (e) {
+          emit(
+            currentState.copyWith(
+              isSubmitting: false,
+              submissionError: e.toString(),
+            ),
+          );
+        }
+      }
+    });
+
+    on<EditCategory>((event, emit) async {
+      if (state is CategoriesLoaded) {
+        final currentState = state as CategoriesLoaded;
+        emit(currentState.copyWith(isSubmitting: true, submissionError: null));
+
+        try {
+          await updateCategoryUseCase(event.category);
+
           final updatedCategories = await getCategoriesUseCase();
 
           emit(

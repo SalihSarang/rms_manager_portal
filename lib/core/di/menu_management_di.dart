@@ -4,6 +4,7 @@ import 'package:manager_portal/features/menu_management/data/repository/menu_rep
 import 'package:manager_portal/features/menu_management/domain/repository/menu_repository.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/add_category_usecase.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/get_categories_usecase.dart';
+import 'package:manager_portal/features/menu_management/domain/usecases/update_category_usecase.dart';
 import 'package:manager_portal/features/menu_management/presentation/bloc/menu_management_bloc.dart';
 
 void setUpMenuManagementDI() {
@@ -24,7 +25,10 @@ void setUpMenuManagementDI() {
   getIt.registerLazySingleton<AddCategoryUseCase>(
     () => AddCategoryUseCase(getIt()),
   );
+  getIt.registerLazySingleton<UpdateCategoryUseCase>(
+    () => UpdateCategoryUseCase(getIt()),
+  );
 
   // Bloc
-  getIt.registerFactory(() => MenuManagementBloc(getIt(), getIt()));
+  getIt.registerFactory(() => MenuManagementBloc(getIt(), getIt(), getIt()));
 }
