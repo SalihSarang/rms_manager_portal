@@ -2,17 +2,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/add_category_usecase.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/get_categories_usecase.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/update_category_usecase.dart';
-import 'package:manager_portal/features/menu_management/presentation/bloc/menu_management_event.dart';
-import 'package:manager_portal/features/menu_management/presentation/bloc/menu_management_state.dart';
+import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_event.dart';
+import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_state.dart';
 import 'package:rms_shared_package/models/menu_models/category_model/category_model.dart';
 
-class MenuManagementBloc
-    extends Bloc<MenuManagementEvent, MenuManagementState> {
+class AddCategoryBloc extends Bloc<AddCategoryEvent, AddCategoryState> {
   final GetCategoriesUseCase getCategoriesUseCase;
   final AddCategoryUseCase addCategoryUseCase;
   final UpdateCategoryUseCase updateCategoryUseCase;
 
-  MenuManagementBloc(
+  AddCategoryBloc(
     this.getCategoriesUseCase,
     this.addCategoryUseCase,
     this.updateCategoryUseCase,

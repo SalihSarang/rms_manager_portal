@@ -1,4 +1,4 @@
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:manager_portal/features/staff_management/domain/usecases/delete_staff.dart';
 import 'package:manager_portal/features/staff_management/domain/usecases/get_all_staffs.dart';

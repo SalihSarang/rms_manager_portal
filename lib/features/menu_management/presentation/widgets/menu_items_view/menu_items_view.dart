@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:manager_portal/core/widgets/containers/surface_container.dart';
-import 'package:manager_portal/features/menu_management/presentation/bloc/menu_management_bloc.dart';
-import 'package:manager_portal/features/menu_management/presentation/bloc/menu_management_state.dart';
+import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_bloc.dart';
+import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_state.dart';
 import 'package:manager_portal/features/menu_management/presentation/widgets/menu_items_table/menu_items_table.dart';
 import 'package:manager_portal/features/menu_management/presentation/widgets/menu_items_view/components/menu_items_header.dart';
 import 'package:rms_design_system/app_colors/text_colors.dart';
@@ -14,7 +14,7 @@ class MenuItemsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MenuManagementBloc, MenuManagementState>(
+    return BlocBuilder<AddCategoryBloc, AddCategoryState>(
       builder: (context, state) {
         if (state is MenuLoading) {
           return const Center(
