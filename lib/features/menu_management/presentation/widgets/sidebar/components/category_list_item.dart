@@ -25,13 +25,13 @@ class CategoryListItem extends StatelessWidget {
       decoration: BoxDecoration(
         color: isSelected
             ? PrimaryColors.defaultColor.withValues(alpha: 0.2)
-            : Colors.transparent,
+            : NeutralColors.transparent,
         borderRadius: BorderRadius.circular(8),
         border: isSelected
             ? Border.all(
                 color: PrimaryColors.defaultColor.withValues(alpha: 0.2),
               )
-            : Border.all(color: Colors.transparent),
+            : Border.all(color: NeutralColors.transparent),
       ),
       child: IntrinsicHeight(
         child: Row(
@@ -41,7 +41,7 @@ class CategoryListItem extends StatelessWidget {
               decoration: BoxDecoration(
                 color: isSelected
                     ? PrimaryColors.defaultColor
-                    : Colors.transparent,
+                    : NeutralColors.transparent,
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(8),
                   bottomLeft: Radius.circular(8),
@@ -95,7 +95,7 @@ class CategoryListItem extends StatelessWidget {
                   ),
                 ),
                 selected: isSelected,
-                splashColor: Colors.transparent,
+                splashColor: NeutralColors.transparent,
                 hoverColor: TextColors.inverse.withValues(alpha: 0.02),
                 onTap: () {
                   context.read<MenuManagementBloc>().add(
