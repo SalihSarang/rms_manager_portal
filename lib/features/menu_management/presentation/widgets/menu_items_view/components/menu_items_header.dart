@@ -76,7 +76,7 @@ class _HeaderActionButton extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: Colors.transparent,
+            color: NeutralColors.transparent,
             border: Border.all(color: NeutralColors.border),
             borderRadius: BorderRadius.circular(8),
           ),

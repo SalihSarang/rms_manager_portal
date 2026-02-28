@@ -20,7 +20,7 @@ class PageNumberButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(right: 8),
       child: Material(
-        color: Colors.transparent,
+        color: NeutralColors.transparent,
         child: InkWell(
           onTap: onTap,
           borderRadius: BorderRadius.circular(4),
@@ -30,7 +30,7 @@ class PageNumberButton extends StatelessWidget {
             decoration: BoxDecoration(
               color: isSelected
                   ? PrimaryColors.defaultColor
-                  : Colors.transparent,
+                  : NeutralColors.transparent,
               borderRadius: BorderRadius.circular(4),
               border: Border.all(
                 color: isSelected
@@ -42,7 +42,7 @@ class PageNumberButton extends StatelessWidget {
             child: Text(
               '$pageNumber',
               style: TextStyle(
-                color: isSelected ? Colors.white : TextColors.secondary,
+                color: isSelected ? NeutralColors.white : TextColors.secondary,
                 fontSize: 12,
                 fontWeight: FontWeight.bold,
               ),
