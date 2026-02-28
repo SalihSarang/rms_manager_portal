@@ -1,18 +1,18 @@
 import 'package:equatable/equatable.dart';
 import 'package:rms_shared_package/models/menu_models/category_model/category_model.dart';
 
-abstract class MenuManagementState extends Equatable {
-  const MenuManagementState();
+abstract class AddCategoryState extends Equatable {
+  const AddCategoryState();
 
   @override
   List<Object?> get props => [];
 }
 
-class MenuInitial extends MenuManagementState {}
+class MenuInitial extends AddCategoryState {}
 
-class MenuLoading extends MenuManagementState {}
+class MenuLoading extends AddCategoryState {}
 
-class CategoriesLoaded extends MenuManagementState {
+class CategoriesLoaded extends AddCategoryState {
   final List<CategoryModel> categories;
   final String selectedCategoryId;
   final bool isSubmitting;
@@ -48,7 +48,7 @@ class CategoriesLoaded extends MenuManagementState {
   }
 }
 
-class MenuError extends MenuManagementState {
+class MenuError extends AddCategoryState {
   final String message;
 
   const MenuError(this.message);

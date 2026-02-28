@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:manager_portal/core/widgets/buttons/primary_elevated_button.dart';
 import 'package:manager_portal/core/widgets/buttons/primary_outlined_button.dart';
-import 'package:manager_portal/features/menu_management/presentation/bloc/menu_management_bloc.dart';
-import 'package:manager_portal/features/menu_management/presentation/bloc/menu_management_event.dart';
-import 'package:manager_portal/features/menu_management/presentation/bloc/menu_management_state.dart';
+import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_bloc.dart';
+import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_event.dart';
+import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_state.dart';
 
 class AddCategoryActions extends StatelessWidget {
   final GlobalKey<FormState> formKey;
@@ -38,7 +38,7 @@ class AddCategoryActions extends StatelessWidget {
         ),
         const SizedBox(width: 16),
 
-        BlocBuilder<MenuManagementBloc, MenuManagementState>(
+        BlocBuilder<AddCategoryBloc, AddCategoryState>(
           builder: (context, state) {
             final isSubmitting =
                 state is CategoriesLoaded && state.isSubmitting;
@@ -51,7 +51,7 @@ class AddCategoryActions extends StatelessWidget {
                     : () {
                         if (formKey.currentState!.validate()) {
                           if (isEditing && categoryToEdit != null) {
-                            context.read<MenuManagementBloc>().add(
+                            context.read<AddCategoryBloc>().add(
                               EditCategory(
                                 category: categoryToEdit!.copyWith(
                                   name: categoryController.text.trim(),
@@ -60,7 +60,7 @@ class AddCategoryActions extends StatelessWidget {
                               ),
                             );
                           } else {
-                            context.read<MenuManagementBloc>().add(
+                            context.read<AddCategoryBloc>().add(
                               AddCategory(
                                 name: categoryController.text.trim(),
                                 isActive: showInMenu,

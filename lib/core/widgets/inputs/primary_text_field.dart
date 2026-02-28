@@ -7,12 +7,14 @@ class PrimaryTextField extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
   final FormFieldValidator<String>? validator;
+  final ValueChanged<String>? onChanged;
 
   const PrimaryTextField({
     super.key,
     required this.controller,
     required this.hintText,
     this.validator,
+    this.onChanged,
   });
 
   @override
@@ -46,6 +48,7 @@ class PrimaryTextField extends StatelessWidget {
         ),
       ),
       validator: validator,
+      onChanged: onChanged,
     );
   }
 }

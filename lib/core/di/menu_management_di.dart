@@ -5,7 +5,7 @@ import 'package:manager_portal/features/menu_management/domain/repository/menu_r
 import 'package:manager_portal/features/menu_management/domain/usecases/add_category_usecase.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/get_categories_usecase.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/update_category_usecase.dart';
-import 'package:manager_portal/features/menu_management/presentation/bloc/menu_management_bloc.dart';
+import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_bloc.dart';
 
 void setUpMenuManagementDI() {
   // Datasources
@@ -30,5 +30,5 @@ void setUpMenuManagementDI() {
   );
 
   // Bloc
-  getIt.registerFactory(() => MenuManagementBloc(getIt(), getIt(), getIt()));
+  getIt.registerFactory(() => AddCategoryBloc(getIt(), getIt(), getIt()));
 }

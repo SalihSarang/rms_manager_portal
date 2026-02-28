@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:manager_portal/features/menu_management/presentation/bloc/menu_management_bloc.dart';
-import 'package:manager_portal/features/menu_management/presentation/bloc/menu_management_state.dart';
+import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_bloc.dart';
+import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_state.dart';
 import 'package:manager_portal/features/menu_management/presentation/widgets/sidebar/components/category_list_item.dart';
 import 'package:manager_portal/features/menu_management/presentation/widgets/sidebar/components/category_sidebar_header.dart';
 import 'package:rms_design_system/app_colors/neutral_colors.dart';
@@ -24,7 +24,7 @@ class CategoriesSidebar extends StatelessWidget {
         children: [
           const CategorySidebarHeader(),
           Expanded(
-            child: BlocBuilder<MenuManagementBloc, MenuManagementState>(
+            child: BlocBuilder<AddCategoryBloc, AddCategoryState>(
               builder: (context, state) {
                 if (state is MenuLoading) {
                   return const Center(

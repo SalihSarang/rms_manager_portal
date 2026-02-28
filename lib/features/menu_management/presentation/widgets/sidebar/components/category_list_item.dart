@@ -4,8 +4,8 @@ import 'package:rms_design_system/app_colors/text_colors.dart';
 import 'package:rms_design_system/app_colors/primary_colors.dart';
 import 'package:rms_shared_package/models/menu_models/category_model/category_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:manager_portal/features/menu_management/presentation/bloc/menu_management_bloc.dart';
-import 'package:manager_portal/features/menu_management/presentation/bloc/menu_management_event.dart';
+import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_bloc.dart';
+import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_event.dart';
 import 'package:manager_portal/features/menu_management/presentation/widgets/dialogs/add_category_dialog.dart';
 
 class CategoryListItem extends StatelessWidget {
@@ -79,7 +79,7 @@ class CategoryListItem extends StatelessWidget {
                 ),
                 trailing: IconButton(
                   onPressed: () {
-                    final bloc = context.read<MenuManagementBloc>();
+                    final bloc = context.read<AddCategoryBloc>();
                     showDialog(
                       context: context,
                       builder: (context) => BlocProvider.value(
@@ -98,7 +98,7 @@ class CategoryListItem extends StatelessWidget {
                 splashColor: NeutralColors.transparent,
                 hoverColor: TextColors.inverse.withValues(alpha: 0.02),
                 onTap: () {
-                  context.read<MenuManagementBloc>().add(
+                  context.read<AddCategoryBloc>().add(
                     SelectCategory(category.id),
                   );
                 },
