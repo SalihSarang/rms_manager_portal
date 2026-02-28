@@ -20,7 +20,8 @@ class StaffUtils {
     return initials.toUpperCase();
   }
 
-  static String formatDate(DateTime date) {
+  static String formatDate(DateTime? date) {
+    if (date == null) return 'Never';
     final now = DateTime.now();
     final difference = now.difference(date);
     if (difference.inHours < 24) {

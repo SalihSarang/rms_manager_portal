@@ -61,7 +61,7 @@ void showStaffImageLightbox(BuildContext context, String url, String title) {
                         ),
                       );
                     },
-                    errorBuilder: (_, __, ___) {
+                    errorBuilder: (_, _, _) {
                       return const SizedBox(
                         height: 180,
                         child: Center(
