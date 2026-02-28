@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:manager_portal/features/menu_management/presentation/bloc/menu_management_bloc.dart';
-import 'package:manager_portal/features/menu_management/presentation/bloc/menu_management_state.dart';
+import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_bloc.dart';
+import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_state.dart';
 import 'package:manager_portal/features/menu_management/presentation/widgets/dialogs/components/add_category_actions.dart';
 import 'package:manager_portal/features/menu_management/presentation/widgets/dialogs/components/add_category_header.dart';
 import 'package:manager_portal/features/menu_management/presentation/widgets/dialogs/components/category_name_field.dart';
@@ -47,7 +47,7 @@ class _AddCategoryDialogState extends State<AddCategoryDialog> {
         borderRadius: BorderRadius.circular(12),
         side: const BorderSide(color: NeutralColors.border),
       ),
-      child: BlocListener<MenuManagementBloc, MenuManagementState>(
+      child: BlocListener<AddCategoryBloc, AddCategoryState>(
         listenWhen: (previous, current) {
           if (previous is CategoriesLoaded && current is CategoriesLoaded) {
             // Only listen when we transition from submitting to not submitting
