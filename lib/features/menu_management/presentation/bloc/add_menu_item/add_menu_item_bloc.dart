@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:manager_portal/core/utils/image_picker_service/feature_specific_usecase/food_img_picker.dart';
+import 'package:manager_portal/features/menu_management/domain/usecases/add_food_item_usecase.dart';
 import 'package:rms_shared_package/models/menu_models/portions_and_price/portions_and_price.dart';
 import 'package:rms_shared_package/models/menu_models/add_ons_model/add_ons_model.dart';
 import 'package:rms_shared_package/models/menu_models/food_model/food_model.dart';
@@ -12,9 +13,12 @@ export 'add_menu_item_event.dart';
 
 class AddMenuItemBloc extends Bloc<AddMenuItemEvent, AddMenuItemState> {
   final FoodImgPickerUsecase foodImgPickerUsecase;
+  final AddFoodItemUsecase addFoodItemUsecase;
 
-  AddMenuItemBloc({required this.foodImgPickerUsecase})
-    : super(const AddMenuItemState()) {
+  AddMenuItemBloc({
+    required this.foodImgPickerUsecase,
+    required this.addFoodItemUsecase,
+  }) : super(const AddMenuItemState()) {
     on<NameChanged>(_onNameChanged);
     on<DescriptionChanged>(_onDescriptionChanged);
     on<CategoryChanged>(_onCategoryChanged);
@@ -167,8 +171,8 @@ class AddMenuItemBloc extends Bloc<AddMenuItemEvent, AddMenuItemState> {
         isCustomNotes: state.isCustomNotes,
       );
 
-      // TODO: Call usecase to save the food item to backend
-      await Future.delayed(const Duration(seconds: 1)); // simulated delay
+      // Call usecase to save the food item to backend
+      await addFoodItemUsecase.execute(foodItem);
 
       emit(state.copyWith(isSubmitting: false, isSuccess: true));
     } catch (e) {

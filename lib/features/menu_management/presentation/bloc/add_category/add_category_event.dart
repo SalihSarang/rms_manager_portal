@@ -37,3 +37,12 @@ class EditCategory extends AddCategoryEvent {
   @override
   List<Object?> get props => [category];
 }
+
+class LoadFoodItems extends AddCategoryEvent {
+  final String categoryId;
+
+  const LoadFoodItems(this.categoryId);
+
+  @override
+  List<Object?> get props => [categoryId];
+}

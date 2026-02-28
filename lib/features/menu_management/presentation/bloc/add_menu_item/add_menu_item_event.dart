@@ -116,6 +116,10 @@ class IsCustomNotesChanged extends AddMenuItemEvent {
   List<Object?> get props => [isCustomNotes];
 }
 
-class SubmitFoodItem extends AddMenuItemEvent {}
+class SubmitFoodItem extends AddMenuItemEvent {
+  const SubmitFoodItem();
+}
 
-class PickFoodImage extends AddMenuItemEvent {}
+class PickFoodImage extends AddMenuItemEvent {
+  const PickFoodImage();
+}

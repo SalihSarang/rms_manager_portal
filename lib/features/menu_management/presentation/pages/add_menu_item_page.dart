@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:manager_portal/core/di/injector.dart';
 import 'package:manager_portal/core/utils/image_picker_service/feature_specific_usecase/food_img_picker.dart';
+import 'package:manager_portal/features/menu_management/domain/usecases/add_food_item_usecase.dart';
 import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_bloc.dart';
 import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_event.dart';
 import 'package:manager_portal/features/menu_management/presentation/bloc/add_menu_item/add_menu_item_bloc.dart';
@@ -23,74 +24,100 @@ class AddMenuItemPage extends StatelessWidget {
         BlocProvider(
           create: (context) => AddMenuItemBloc(
             foodImgPickerUsecase: getIt<FoodImgPickerUsecase>(),
+            addFoodItemUsecase: getIt<AddFoodItemUsecase>(),
           ),
         ),
         BlocProvider(
           create: (context) => getIt<AddCategoryBloc>()..add(LoadCategories()),
         ),
       ],
-      child: Scaffold(
-        backgroundColor: NeutralColors.background,
-        appBar: AppBar(
+      child: BlocListener<AddMenuItemBloc, AddMenuItemState>(
+        listenWhen: (previous, current) =>
+            previous.isSuccess != current.isSuccess ||
+            previous.errorMessage != current.errorMessage,
+        listener: (context, state) {
+          if (state.isSuccess) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Food item added successfully!'),
+                backgroundColor: Colors.green,
+              ),
+            );
+            Navigator.of(context).pop();
+          } else if (state.errorMessage != null) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.errorMessage!),
+                backgroundColor: Colors.red,
+              ),
+            );
+          }
+        },
+        child: Scaffold(
           backgroundColor: NeutralColors.background,
-          elevation: 0,
-          leading: IconButton(
-            icon: const Icon(
-              Icons.arrow_back_ios,
-              color: Colors.white,
-              size: 20,
+          appBar: AppBar(
+            backgroundColor: NeutralColors.background,
+            elevation: 0,
+            leading: IconButton(
+              icon: const Icon(
+                Icons.arrow_back_ios,
+                color: Colors.white,
+                size: 20,
+              ),
+              onPressed: () => Navigator.of(context).pop(),
             ),
-            onPressed: () => Navigator.of(context).pop(),
+            bottom: PreferredSize(
+              preferredSize: const Size.fromHeight(1.0),
+              child: Container(color: NeutralColors.border, height: 1.0),
+            ),
           ),
-          bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(1.0),
-            child: Container(color: NeutralColors.border, height: 1.0),
-          ),
-        ),
-        body: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(32),
-                child: Center(
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 900),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          "Add New Food Item",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 24,
-                            fontWeight: FontWeight.w600,
+          body: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(32),
+                  child: Center(
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 900),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "Add New Food Item",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 24,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          "Configure basic details, portions, and customization settings for your menu.",
-                          style: TextStyle(
-                            color: TextColors.secondary.withValues(alpha: 0.7),
-                            fontSize: 14,
+                          const SizedBox(height: 8),
+                          Text(
+                            "Configure basic details, portions, and customization settings for your menu.",
+                            style: TextStyle(
+                              color: TextColors.secondary.withValues(
+                                alpha: 0.7,
+                              ),
+                              fontSize: 14,
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 32),
-                        const BasicInfoSection(),
-                        const SizedBox(height: 16),
-                        const PortionsAndPricingSection(),
-                        const SizedBox(height: 16),
-                        const AddOnsAndPricingSection(),
-                        const SizedBox(height: 16),
-                        const CustomizationAndSettingsSection(),
-                        const SizedBox(height: 32),
-                      ],
+                          const SizedBox(height: 32),
+                          const BasicInfoSection(),
+                          const SizedBox(height: 16),
+                          const PortionsAndPricingSection(),
+                          const SizedBox(height: 16),
+                          const AddOnsAndPricingSection(),
+                          const SizedBox(height: 16),
+                          const CustomizationAndSettingsSection(),
+                          const SizedBox(height: 32),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-            const AddItemBottomActionBar(),
-          ],
+              const AddItemBottomActionBar(),
+            ],
+          ),
         ),
       ),
     );

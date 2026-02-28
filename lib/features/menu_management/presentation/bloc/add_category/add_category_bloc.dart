@@ -1,31 +1,43 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/add_category_usecase.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/get_categories_usecase.dart';
+import 'package:manager_portal/features/menu_management/domain/usecases/get_food_items_by_category_usecase.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/update_category_usecase.dart';
 import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_event.dart';
 import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_state.dart';
 import 'package:rms_shared_package/models/menu_models/category_model/category_model.dart';
+import 'package:rms_shared_package/models/menu_models/food_model/food_model.dart';
 
 class AddCategoryBloc extends Bloc<AddCategoryEvent, AddCategoryState> {
   final GetCategoriesUseCase getCategoriesUseCase;
   final AddCategoryUseCase addCategoryUseCase;
   final UpdateCategoryUseCase updateCategoryUseCase;
+  final GetFoodItemsByCategoryUseCase getFoodItemsByCategoryUseCase;
 
   AddCategoryBloc(
     this.getCategoriesUseCase,
     this.addCategoryUseCase,
     this.updateCategoryUseCase,
+    this.getFoodItemsByCategoryUseCase,
   ) : super(MenuInitial()) {
     on<LoadCategories>((event, emit) async {
       emit(MenuLoading());
       try {
         final categories = await getCategoriesUseCase();
+        final String selectedId = categories.isNotEmpty
+            ? categories.first.id
+            : '';
+
+        List<FoodModel> foodItems = [];
+        if (selectedId.isNotEmpty) {
+          foodItems = await getFoodItemsByCategoryUseCase(selectedId);
+        }
+
         emit(
           CategoriesLoaded(
             categories: categories,
-            selectedCategoryId: categories.isNotEmpty
-                ? categories.first.id
-                : '',
+            selectedCategoryId: selectedId,
+            foodItems: foodItems,
           ),
         );
       } catch (e) {
@@ -37,6 +49,22 @@ class AddCategoryBloc extends Bloc<AddCategoryEvent, AddCategoryState> {
       if (state is CategoriesLoaded) {
         final currentState = state as CategoriesLoaded;
         emit(currentState.copyWith(selectedCategoryId: event.categoryId));
+        add(LoadFoodItems(event.categoryId));
+      }
+    });
+
+    on<LoadFoodItems>((event, emit) async {
+      if (state is CategoriesLoaded) {
+        final currentState = state as CategoriesLoaded;
+        try {
+          final foodItems = await getFoodItemsByCategoryUseCase(
+            event.categoryId,
+          );
+          emit(currentState.copyWith(foodItems: foodItems));
+        } catch (e) {
+          // You might want to handle this error separately or just emit the error
+          emit(MenuError(e.toString()));
+        }
       }
     });
 
