@@ -3,7 +3,6 @@ import 'package:rms_design_system/app_colors/neutral_colors.dart';
 import 'package:rms_design_system/app_colors/semantic_colors.dart';
 import 'package:rms_design_system/app_colors/text_colors.dart';
 import 'package:rms_shared_package/models/staff_model/staff_model.dart';
-import 'package:manager_portal/features/staff_management/presentation/pages/staff_details_screen.dart';
 
 class ActionDropdown extends StatelessWidget {
   final StaffModel staff;
@@ -27,14 +26,7 @@ class ActionDropdown extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       offset: const Offset(0, 40),
       onSelected: (value) {
-        if (value == 'viewDetails') {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => StaffDetailsScreen(staffId: staff.id),
-            ),
-          );
-        } else if (value == 'edit') {
+        if (value == 'edit') {
           onEdit?.call();
         } else if (value == 'toggleStatus') {
           onToggleStatus?.call();
@@ -43,27 +35,6 @@ class ActionDropdown extends StatelessWidget {
         }
       },
       itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-        PopupMenuItem<String>(
-          value: 'viewDetails',
-          child: Row(
-            children: const [
-              Icon(
-                Icons.visibility_outlined,
-                size: 18,
-                color: NeutralColors.icon,
-              ),
-              SizedBox(width: 12),
-              Text(
-                'View Details',
-                style: TextStyle(
-                  color: TextColors.inverse,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
-          ),
-        ),
         PopupMenuItem<String>(
           value: 'edit',
           child: Row(

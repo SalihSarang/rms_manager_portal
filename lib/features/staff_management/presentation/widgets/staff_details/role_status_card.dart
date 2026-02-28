@@ -44,7 +44,9 @@ class StaffDetailsRoleStatusCard extends StatelessWidget {
           StaffDetailsVerifyRow(
             icon: Icons.access_time_outlined,
             label: 'Last Active',
-            value: _fmtDate(staff.lastActive),
+            value: staff.lastActive != null
+                ? _fmtDate(staff.lastActive!)
+                : 'Never',
             isEmpty: false,
           ),
         ],

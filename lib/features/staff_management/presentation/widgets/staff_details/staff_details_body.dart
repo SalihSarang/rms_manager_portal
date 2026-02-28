@@ -22,10 +22,8 @@ class StaffDetailsBody extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Card 1 – Identity
               StaffDetailsIdentityCard(staff: staff),
               const SizedBox(height: 16),
-              // Cards 2a/2b – Contact + Role & Access
               if (isWide)
                 IntrinsicHeight(
                   child: Row(

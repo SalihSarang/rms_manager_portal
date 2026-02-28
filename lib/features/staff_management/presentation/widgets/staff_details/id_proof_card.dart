@@ -33,29 +33,33 @@ class StaffDetailsIdProofCard extends StatelessWidget {
             GestureDetector(
               onTap: () =>
                   showStaffImageLightbox(context, staff.idProof, 'ID Proof'),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Image.network(
-                  staff.idProof,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                  loadingBuilder: (ctx, child, progress) {
-                    if (progress == null) return child;
-                    return Container(
-                      height: 180,
-                      color: NeutralColors.card,
-                      child: const Center(
-                        child: CircularProgressIndicator(
-                          color: PrimaryColors.defaultColor,
+              child: SizedBox(
+                height: 300,
+                width: double.infinity,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.network(
+                    staff.idProof,
+                    width: double.infinity,
+                    height: 200,
+                    fit: BoxFit.cover,
+                    loadingBuilder: (ctx, child, progress) {
+                      if (progress == null) return child;
+                      return Container(
+                        color: NeutralColors.card,
+                        child: const Center(
+                          child: CircularProgressIndicator(
+                            color: PrimaryColors.defaultColor,
+                          ),
                         ),
-                      ),
-                    );
-                  },
-                  errorBuilder: (_, __, ___) {
-                    return const StaffDetailsEmptyImagePlaceholder(
-                      message: 'Failed to load ID proof',
-                    );
-                  },
+                      );
+                    },
+                    errorBuilder: (_, _, _) {
+                      return const StaffDetailsEmptyImagePlaceholder(
+                        message: 'Failed to load ID proof',
+                      );
+                    },
+                  ),
                 ),
               ),
             ),
