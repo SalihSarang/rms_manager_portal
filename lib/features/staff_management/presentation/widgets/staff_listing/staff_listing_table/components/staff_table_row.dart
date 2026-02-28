@@ -13,6 +13,7 @@ class StaffTableRow extends DataRow2 {
   final VoidCallback? onEdit;
   final VoidCallback? onDelete;
   final VoidCallback? onToggleStatus;
+  final VoidCallback? onTap;
   final int index;
 
   StaffTableRow({
@@ -21,7 +22,9 @@ class StaffTableRow extends DataRow2 {
     this.onEdit,
     this.onDelete,
     this.onToggleStatus,
+    this.onTap,
   }) : super(
+         onTap: onTap,
          cells: [
            // S.No
            DataCell(
