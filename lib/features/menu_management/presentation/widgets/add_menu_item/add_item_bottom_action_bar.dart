@@ -48,7 +48,7 @@ class AddItemBottomActionBar extends StatelessWidget {
                     ),
                     child: const Text(
                       'Cancel',
-                      style: TextStyle(color: Colors.white, fontSize: 13),
+                      style: TextStyle(color: NeutralColors.white, fontSize: 13),
                     ),
                   ),
                   const SizedBox(width: 12),
@@ -75,15 +75,15 @@ class AddItemBottomActionBar extends StatelessWidget {
                             child: CircularProgressIndicator(
                               strokeWidth: 2,
                               valueColor: AlwaysStoppedAnimation<Color>(
-                                Colors.white,
+                                NeutralColors.white,
                               ),
                             ),
                           )
-                        : const Icon(Icons.save, size: 16, color: Colors.white),
+                        : const Icon(Icons.save, size: 16, color: NeutralColors.white),
                     label: Text(
                       state.isSubmitting ? 'Saving...' : 'Save Food Item',
                       style: const TextStyle(
-                        color: Colors.white,
+                        color: NeutralColors.white,
                         fontWeight: FontWeight.w600,
                         fontSize: 13,
                       ),

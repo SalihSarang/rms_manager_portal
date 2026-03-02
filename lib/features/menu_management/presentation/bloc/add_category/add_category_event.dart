@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:rms_shared_package/models/menu_models/category_model/category_model.dart';
+import 'package:rms_shared_package/models/menu_models/food_model/food_model.dart';
 
 abstract class AddCategoryEvent extends Equatable {
   const AddCategoryEvent();
@@ -45,4 +46,13 @@ class LoadFoodItems extends AddCategoryEvent {
 
   @override
   List<Object?> get props => [categoryId];
+}
+
+class ToggleFoodItemStatus extends AddCategoryEvent {
+  final FoodModel food;
+
+  const ToggleFoodItemStatus({required this.food});
+
+  @override
+  List<Object?> get props => [food];
 }

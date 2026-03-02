@@ -6,5 +6,6 @@ abstract class MenuRepository {
   Future<void> addCategory(CategoryModel category);
   Future<void> updateCategory(CategoryModel category);
   Future<void> addFoodItem(FoodModel food);
+  Future<void> updateFoodItem(FoodModel food);
   Future<List<FoodModel>> getFoodItemsByCategory(String categoryId);
 }

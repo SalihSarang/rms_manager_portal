@@ -21,9 +21,8 @@ class StaffTableRow extends DataRow2 {
     this.onEdit,
     this.onDelete,
     this.onToggleStatus,
-    VoidCallback? onTap,
+    super.onTap,
   }) : super(
-         onTap: onTap,
          cells: [
            // S.No
            DataCell(

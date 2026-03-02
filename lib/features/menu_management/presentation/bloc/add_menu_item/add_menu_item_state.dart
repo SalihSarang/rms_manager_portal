@@ -18,6 +18,7 @@ class AddMenuItemState extends Equatable {
   final bool isSubmitting;
   final String? errorMessage;
   final bool isSuccess;
+  final String? editingFoodId; // Store the ID for updates
 
   const AddMenuItemState({
     this.name = '',
@@ -33,6 +34,7 @@ class AddMenuItemState extends Equatable {
     this.isSubmitting = false,
     this.errorMessage,
     this.isSuccess = false,
+    this.editingFoodId,
   });
 
   AddMenuItemState copyWith({
@@ -49,6 +51,7 @@ class AddMenuItemState extends Equatable {
     bool? isSubmitting,
     String? errorMessage,
     bool? isSuccess,
+    String? editingFoodId,
   }) {
     return AddMenuItemState(
       name: name ?? this.name,
@@ -64,6 +67,7 @@ class AddMenuItemState extends Equatable {
       isSubmitting: isSubmitting ?? this.isSubmitting,
       errorMessage: errorMessage ?? this.errorMessage,
       isSuccess: isSuccess ?? this.isSuccess,
+      editingFoodId: editingFoodId ?? this.editingFoodId,
     );
   }
 
@@ -82,5 +86,6 @@ class AddMenuItemState extends Equatable {
     isSubmitting,
     errorMessage,
     isSuccess,
+    editingFoodId,
   ];
 }

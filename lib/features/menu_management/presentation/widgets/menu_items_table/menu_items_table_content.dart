@@ -3,8 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:manager_portal/core/widgets/reusable_table.dart';
 import 'package:manager_portal/features/menu_management/presentation/cubit/menu_items_pagination_cubit.dart';
+import 'package:manager_portal/features/menu_management/presentation/pages/add_menu_item_page.dart';
 import 'package:manager_portal/features/menu_management/presentation/widgets/menu_items_table/components/menu_items_table_footer.dart';
 import 'package:manager_portal/features/menu_management/presentation/widgets/menu_items_table/components/menu_items_table_row.dart';
+import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_bloc.dart';
+import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_event.dart';
+import 'package:rms_design_system/app_colors/neutral_colors.dart';
+import 'package:rms_design_system/app_colors/semantic_colors.dart';
 import 'package:rms_shared_package/models/menu_models/food_model/food_model.dart';
 
 class MenuItemsTableContent extends StatelessWidget {
@@ -63,13 +68,59 @@ class MenuItemsTableContent extends StatelessWidget {
                     // Navigate to details or open modal
                   },
                   onEdit: () {
-                    // Open edit modal
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            AddMenuItemPage(foodItemToEdit: item),
+                      ),
+                    );
                   },
                   onToggleStatus: () {
-                    // Toggle availability
-                  },
-                  onDelete: () {
-                    // Delete item
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext dialogContext) {
+                        return AlertDialog(
+                          backgroundColor: NeutralColors.surface,
+                          title: Text(
+                            item.isAvailable
+                                ? 'Mark Sold Out?'
+                                : 'Mark Available?',
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                          content: Text(
+                            'Are you sure you want to mark ${item.name} as ${item.isAvailable ? 'sold out' : 'available'}?',
+                            style: const TextStyle(color: Colors.white70),
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () =>
+                                  Navigator.of(dialogContext).pop(),
+                              child: const Text(
+                                'Cancel',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(dialogContext).pop();
+                                context.read<AddCategoryBloc>().add(
+                                  ToggleFoodItemStatus(food: item),
+                                );
+                              },
+                              child: Text(
+                                'Confirm',
+                                style: TextStyle(
+                                  color: item.isAvailable
+                                      ? SemanticColors.error
+                                      : SemanticColors.success,
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    );
                   },
                 ),
               ),

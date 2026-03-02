@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:manager_portal/core/di/injector.dart';
 import 'package:manager_portal/core/utils/image_picker_service/feature_specific_usecase/food_img_picker.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/add_food_item_usecase.dart';
+import 'package:manager_portal/features/menu_management/domain/usecases/update_food_item_usecase.dart';
 import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_bloc.dart';
 import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_event.dart';
 import 'package:manager_portal/features/menu_management/presentation/bloc/add_menu_item/add_menu_item_bloc.dart';
@@ -13,19 +14,31 @@ import 'package:manager_portal/features/menu_management/presentation/widgets/add
 import 'package:manager_portal/features/menu_management/presentation/widgets/add_menu_item/portions_pricing_section.dart';
 import 'package:rms_design_system/app_colors/neutral_colors.dart';
 import 'package:rms_design_system/app_colors/text_colors.dart';
+import 'package:rms_shared_package/models/menu_models/food_model/food_model.dart';
 
 class AddMenuItemPage extends StatelessWidget {
-  const AddMenuItemPage({super.key});
+  final FoodModel? foodItemToEdit;
+
+  const AddMenuItemPage({super.key, this.foodItemToEdit});
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => AddMenuItemBloc(
-            foodImgPickerUsecase: getIt<FoodImgPickerUsecase>(),
-            addFoodItemUsecase: getIt<AddFoodItemUsecase>(),
-          ),
+          create: (context) {
+            final bloc = AddMenuItemBloc(
+              foodImgPickerUsecase: getIt<FoodImgPickerUsecase>(),
+              addFoodItemUsecase: getIt<AddFoodItemUsecase>(),
+              updateFoodItemUsecase: getIt<UpdateFoodItemUsecase>(),
+            );
+
+            if (foodItemToEdit != null) {
+              bloc.add(InitializeForEdit(foodItemToEdit!));
+            }
+
+            return bloc;
+          },
         ),
         BlocProvider(
           create: (context) => getIt<AddCategoryBloc>()..add(LoadCategories()),
@@ -82,9 +95,11 @@ class AddMenuItemPage extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            "Add New Food Item",
-                            style: TextStyle(
+                          Text(
+                            foodItemToEdit != null
+                                ? "Edit Food Item"
+                                : "Add New Food Item",
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 24,
                               fontWeight: FontWeight.w600,

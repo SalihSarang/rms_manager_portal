@@ -7,6 +7,7 @@ import 'package:manager_portal/features/menu_management/domain/usecases/add_food
 import 'package:manager_portal/features/menu_management/domain/usecases/get_categories_usecase.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/update_category_usecase.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/get_food_items_by_category_usecase.dart';
+import 'package:manager_portal/features/menu_management/domain/usecases/update_food_item_usecase.dart';
 import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_bloc.dart';
 
 void setUpMenuManagementDI() {
@@ -33,12 +34,15 @@ void setUpMenuManagementDI() {
   getIt.registerLazySingleton<AddFoodItemUsecase>(
     () => AddFoodItemUsecase(getIt()),
   );
+  getIt.registerLazySingleton<UpdateFoodItemUsecase>(
+    () => UpdateFoodItemUsecase(getIt()),
+  );
   getIt.registerLazySingleton<GetFoodItemsByCategoryUseCase>(
     () => GetFoodItemsByCategoryUseCase(getIt()),
   );
 
   // Bloc
   getIt.registerFactory(
-    () => AddCategoryBloc(getIt(), getIt(), getIt(), getIt()),
+    () => AddCategoryBloc(getIt(), getIt(), getIt(), getIt(), getIt()),
   );
 }

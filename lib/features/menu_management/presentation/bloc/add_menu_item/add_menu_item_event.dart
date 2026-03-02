@@ -3,11 +3,21 @@ import 'package:rms_shared_package/models/menu_models/add_ons_model/add_ons_mode
 import 'package:rms_shared_package/models/menu_models/category_model/category_model.dart';
 import 'package:rms_shared_package/models/menu_models/portions_and_price/portions_and_price.dart';
 
+import 'package:rms_shared_package/models/menu_models/food_model/food_model.dart';
+
 abstract class AddMenuItemEvent extends Equatable {
   const AddMenuItemEvent();
 
   @override
   List<Object?> get props => [];
+}
+
+class InitializeForEdit extends AddMenuItemEvent {
+  final FoodModel foodItem;
+  const InitializeForEdit(this.foodItem);
+
+  @override
+  List<Object?> get props => [foodItem];
 }
 
 class NameChanged extends AddMenuItemEvent {

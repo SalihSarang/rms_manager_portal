@@ -3,6 +3,7 @@ import 'package:manager_portal/features/menu_management/domain/usecases/add_cate
 import 'package:manager_portal/features/menu_management/domain/usecases/get_categories_usecase.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/get_food_items_by_category_usecase.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/update_category_usecase.dart';
+import 'package:manager_portal/features/menu_management/domain/usecases/update_food_item_usecase.dart';
 import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_event.dart';
 import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_state.dart';
 import 'package:rms_shared_package/models/menu_models/category_model/category_model.dart';
@@ -13,12 +14,14 @@ class AddCategoryBloc extends Bloc<AddCategoryEvent, AddCategoryState> {
   final AddCategoryUseCase addCategoryUseCase;
   final UpdateCategoryUseCase updateCategoryUseCase;
   final GetFoodItemsByCategoryUseCase getFoodItemsByCategoryUseCase;
+  final UpdateFoodItemUsecase updateFoodItemUsecase;
 
   AddCategoryBloc(
     this.getCategoriesUseCase,
     this.addCategoryUseCase,
     this.updateCategoryUseCase,
     this.getFoodItemsByCategoryUseCase,
+    this.updateFoodItemUsecase,
   ) : super(MenuInitial()) {
     on<LoadCategories>((event, emit) async {
       emit(MenuLoading());
@@ -130,6 +133,38 @@ class AddCategoryBloc extends Bloc<AddCategoryEvent, AddCategoryState> {
               submissionError: e.toString(),
             ),
           );
+        }
+      }
+    });
+    on<ToggleFoodItemStatus>((event, emit) async {
+      if (state is CategoriesLoaded) {
+        final currentState = state as CategoriesLoaded;
+
+        try {
+          final updatedFood = FoodModel(
+            id: event.food.id,
+            name: event.food.name,
+            description: event.food.description,
+            imageUrl: event.food.imageUrl,
+            category: event.food.category,
+            isAvailable: !event.food.isAvailable, // Toggle the availability
+            isFeatured: event.food.isFeatured,
+            portions: event.food.portions,
+            addOns: event.food.addOns,
+            isVeg: event.food.isVeg,
+            isCustomNotes: event.food.isCustomNotes,
+          );
+
+          await updateFoodItemUsecase.execute(updatedFood);
+
+          // Update the list of foods locally to avoid a full fetch
+          final updatedFoodItems = currentState.foodItems.map((item) {
+            return item.id == event.food.id ? updatedFood : item;
+          }).toList();
+
+          emit(currentState.copyWith(foodItems: updatedFoodItems));
+        } catch (e) {
+          emit(currentState.copyWith(submissionError: e.toString()));
         }
       }
     });

@@ -8,6 +8,7 @@ abstract class MenuRemoteDatasource {
   Future<void> addCategory(CategoryModel category);
   Future<void> updateCategory(CategoryModel category);
   Future<void> addFoodItem(FoodModel food);
+  Future<void> updateFoodItem(FoodModel food);
   Future<List<FoodModel>> getFoodItemsByCategory(String categoryId);
 }
 
@@ -51,12 +52,22 @@ class MenuRemoteDatasourceImpl implements MenuRemoteDatasource {
   }
 
   @override
+  Future<void> updateFoodItem(FoodModel food) async {
+    await firestore
+        .collection(MenuDbConstants.foods)
+        .doc(food.id)
+        .update(food.toJson());
+  }
+
+  @override
   Future<List<FoodModel>> getFoodItemsByCategory(String categoryId) async {
     final snapshot = await firestore
         .collection(MenuDbConstants.foods)
         .where('categoryId', isEqualTo: categoryId)
         .get();
 
-    return snapshot.docs.map((doc) => FoodModel.fromJson(doc.data())).toList();
+    return snapshot.docs
+        .map((doc) => FoodModel.fromJson(doc.data(), docId: doc.id))
+        .toList();
   }
 }
