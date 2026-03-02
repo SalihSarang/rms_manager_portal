@@ -24,7 +24,7 @@ class CustomizationAndSettingsSection extends StatelessWidget {
           const Text(
             'Customization & Settings',
             style: TextStyle(
-              color: Colors.white,
+              color: NeutralColors.white,
               fontSize: 18,
               fontWeight: FontWeight.w600,
             ),
@@ -166,7 +166,7 @@ class CustomizationAndSettingsSection extends StatelessWidget {
             Text(
               label,
               style: TextStyle(
-                color: isSelected ? Colors.white : TextColors.secondary,
+                color: isSelected ? NeutralColors.white : TextColors.secondary,
                 fontSize: 12,
               ),
             ),
@@ -184,7 +184,7 @@ class CustomizationAndSettingsSection extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(label, style: const TextStyle(color: Colors.white, fontSize: 13)),
+        Text(label, style: const TextStyle(color: NeutralColors.white, fontSize: 13)),
         CupertinoSwitch(
           value: value,
           onChanged: onChanged,

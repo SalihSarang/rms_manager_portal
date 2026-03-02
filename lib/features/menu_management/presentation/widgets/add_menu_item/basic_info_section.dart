@@ -10,6 +10,8 @@ import 'package:manager_portal/features/menu_management/presentation/bloc/add_me
 import 'package:rms_design_system/app_colors/neutral_colors.dart';
 import 'package:rms_design_system/app_colors/primary_colors.dart';
 import 'package:rms_design_system/app_colors/text_colors.dart';
+import 'package:rms_design_system/app_colors/semantic_colors.dart';
+
 
 class BasicInfoSection extends StatefulWidget {
   const BasicInfoSection({super.key});
@@ -59,7 +61,7 @@ class _BasicInfoSectionState extends State<BasicInfoSection> {
           const Text(
             'Basic Information',
             style: TextStyle(
-              color: Colors.white,
+              color: NeutralColors.white,
               fontSize: 18,
               fontWeight: FontWeight.w600,
             ),
@@ -74,11 +76,11 @@ class _BasicInfoSectionState extends State<BasicInfoSection> {
                     RichText(
                       text: const TextSpan(
                         text: 'Food Name ',
-                        style: TextStyle(color: Colors.white, fontSize: 14),
+                        style: TextStyle(color: NeutralColors.white, fontSize: 14),
                         children: [
                           TextSpan(
                             text: '*',
-                            style: TextStyle(color: Colors.red),
+                            style: TextStyle(color: SemanticColors.error),
                           ),
                         ],
                       ),
@@ -98,7 +100,7 @@ class _BasicInfoSectionState extends State<BasicInfoSection> {
                   children: [
                     const Text(
                       'Category',
-                      style: TextStyle(color: Colors.white, fontSize: 14),
+                      style: TextStyle(color: NeutralColors.white, fontSize: 14),
                     ),
                     const SizedBox(height: 8),
                     BlocBuilder<AddCategoryBloc, AddCategoryState>(
@@ -112,9 +114,7 @@ class _BasicInfoSectionState extends State<BasicInfoSection> {
                               previous.category != current.category,
                           builder: (context, state) {
                             return DropdownButtonFormField<String>(
-                              value: state.category != null
-                                  ? state.category!.id
-                                  : null,
+                              initialValue: state.category?.id,
                               dropdownColor: NeutralColors.surface,
                               style: const TextStyle(color: TextColors.inverse),
                               decoration: InputDecoration(
@@ -178,7 +178,7 @@ class _BasicInfoSectionState extends State<BasicInfoSection> {
           const SizedBox(height: 24),
           const Text(
             'Description',
-            style: TextStyle(color: Colors.white, fontSize: 14),
+            style: TextStyle(color: NeutralColors.white, fontSize: 14),
           ),
           const SizedBox(height: 8),
           TextFormField(
@@ -211,7 +211,7 @@ class _BasicInfoSectionState extends State<BasicInfoSection> {
           const SizedBox(height: 24),
           const Text(
             'Food Image',
-            style: TextStyle(color: Colors.white, fontSize: 14),
+            style: TextStyle(color: NeutralColors.white, fontSize: 14),
           ),
           const SizedBox(height: 8),
           BlocBuilder<AddMenuItemBloc, AddMenuItemState>(
@@ -238,7 +238,7 @@ class _BasicInfoSectionState extends State<BasicInfoSection> {
                                       as ImageProvider,
                             fit: BoxFit.cover,
                             colorFilter: ColorFilter.mode(
-                              Colors.black.withValues(alpha: 0.3),
+                              NeutralColors.shadow.withValues(alpha: 0.3),
                               BlendMode.darken,
                             ),
                           )
@@ -251,7 +251,7 @@ class _BasicInfoSectionState extends State<BasicInfoSection> {
                         state.pickedImage != null
                             ? Icons.edit_outlined
                             : Icons.cloud_upload_outlined,
-                        color: Colors.white,
+                        color: NeutralColors.white,
                         size: 32,
                       ),
                       const SizedBox(height: 12),
@@ -260,7 +260,7 @@ class _BasicInfoSectionState extends State<BasicInfoSection> {
                             ? 'Selected: ${state.pickedImage!.name}'
                             : 'Click to upload or drag and drop',
                         style: const TextStyle(
-                          color: Colors.white,
+                          color: NeutralColors.white,
                           fontSize: 14,
                         ),
                       ),

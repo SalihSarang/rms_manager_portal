@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:manager_portal/core/di/injector.dart';
 import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_bloc.dart';
 import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_event.dart';
+import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_state.dart';
 import 'package:manager_portal/features/menu_management/presentation/widgets/appbar/menu_appbar.dart';
 import 'package:manager_portal/features/menu_management/presentation/widgets/dialogs/add_category_dialog.dart';
 import 'package:manager_portal/features/menu_management/presentation/widgets/sidebar/categories_sidebar.dart';
@@ -32,10 +33,16 @@ class MenuManagementPage extends StatelessWidget {
                   ),
                 );
               },
-              onAddItemPressed: () {
-                Navigator.of(context).push(
+              onAddItemPressed: () async {
+                final bloc = context.read<AddCategoryBloc>();
+                await Navigator.of(context).push(
                   MaterialPageRoute(builder: (_) => const AddMenuItemPage()),
                 );
+                // Refresh items for the selected category when returning
+                if (bloc.state is CategoriesLoaded) {
+                  final state = bloc.state as CategoriesLoaded;
+                  bloc.add(LoadFoodItems(state.selectedCategoryId));
+                }
               },
             ),
             body: Row(

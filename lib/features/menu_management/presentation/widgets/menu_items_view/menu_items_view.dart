@@ -6,7 +6,6 @@ import 'package:manager_portal/features/menu_management/presentation/bloc/add_ca
 import 'package:manager_portal/features/menu_management/presentation/widgets/menu_items_table/menu_items_table.dart';
 import 'package:manager_portal/features/menu_management/presentation/widgets/menu_items_view/components/menu_items_header.dart';
 import 'package:rms_design_system/app_colors/text_colors.dart';
-import 'package:rms_shared_package/models/menu_models/food_model/food_model.dart';
 import 'package:rms_design_system/app_colors/semantic_colors.dart';
 
 class MenuItemsView extends StatelessWidget {
@@ -36,8 +35,7 @@ class MenuItemsView extends StatelessWidget {
             orElse: () => state.categories.first,
           );
 
-          // TODO: Fetch items based on category selection
-          final items = <FoodModel>[];
+          final items = state.foodItems;
 
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,

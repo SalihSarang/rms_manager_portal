@@ -81,7 +81,7 @@ class _PortionsAndPricingSectionState extends State<PortionsAndPricingSection> {
               const Text(
                 'Portions & Pricing',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: NeutralColors.white,
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
                 ),

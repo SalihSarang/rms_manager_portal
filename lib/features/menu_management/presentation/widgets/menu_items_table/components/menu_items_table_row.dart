@@ -8,7 +8,6 @@ import 'package:rms_design_system/app_colors/semantic_colors.dart';
 class MenuItemsTableRow extends DataRow2 {
   final FoodModel item;
   final VoidCallback? onEdit;
-  final VoidCallback? onDelete;
   final VoidCallback? onToggleStatus;
   final int index;
 
@@ -16,7 +15,6 @@ class MenuItemsTableRow extends DataRow2 {
     required this.item,
     required this.index,
     this.onEdit,
-    this.onDelete,
     this.onToggleStatus,
     super.onTap,
   }) : super(
@@ -95,7 +93,7 @@ class MenuItemsTableRow extends DataRow2 {
                decoration: BoxDecoration(
                  color: item.isAvailable
                      ? SemanticColors.success.withAlpha(25)
-                     : SemanticColors.warning.withAlpha(25),
+                     : SemanticColors.error.withAlpha(25),
                  borderRadius: BorderRadius.circular(4),
                ),
                child: Row(
@@ -107,7 +105,7 @@ class MenuItemsTableRow extends DataRow2 {
                      decoration: BoxDecoration(
                        color: item.isAvailable
                            ? SemanticColors.success
-                           : SemanticColors.warning,
+                           : SemanticColors.error,
                        shape: BoxShape.circle,
                      ),
                    ),
@@ -117,7 +115,7 @@ class MenuItemsTableRow extends DataRow2 {
                      style: TextStyle(
                        color: item.isAvailable
                            ? SemanticColors.success
-                           : SemanticColors.warning,
+                           : SemanticColors.error,
                        fontSize: 11,
                        fontWeight: FontWeight.w600,
                      ),
@@ -129,7 +127,7 @@ class MenuItemsTableRow extends DataRow2 {
            // Actions
            DataCell(
              Row(
-               mainAxisAlignment: MainAxisAlignment.end,
+               mainAxisAlignment: MainAxisAlignment.start,
                children: [
                  _ActionIconButton(
                    icon: Icons.edit_outlined,
@@ -138,17 +136,16 @@ class MenuItemsTableRow extends DataRow2 {
                  ),
                  const SizedBox(width: 4),
                  _ActionIconButton(
-                   icon: Icons.block,
+                   icon: item.isAvailable
+                       ? Icons.block
+                       : Icons.check_circle_outline,
+                   color: item.isAvailable
+                       ? SemanticColors.error
+                       : SemanticColors.success,
                    onTap: onToggleStatus,
                    tooltip: item.isAvailable
                        ? 'Mark Sold Out'
                        : 'Mark Available',
-                 ),
-                 const SizedBox(width: 4),
-                 _ActionIconButton(
-                   icon: Icons.delete_outline,
-                   onTap: onDelete,
-                   tooltip: 'Delete',
                  ),
                ],
              ),
@@ -181,11 +178,13 @@ class _ActionIconButton extends StatelessWidget {
   final IconData icon;
   final VoidCallback? onTap;
   final String tooltip;
+  final Color? color;
 
   const _ActionIconButton({
     required this.icon,
     required this.tooltip,
     this.onTap,
+    this.color,
   });
 
   @override
@@ -197,7 +196,7 @@ class _ActionIconButton extends StatelessWidget {
         onTap: onTap,
         child: Padding(
           padding: const EdgeInsets.all(6),
-          child: Icon(icon, size: 18, color: TextColors.secondary),
+          child: Icon(icon, size: 18, color: color ?? TextColors.secondary),
         ),
       ),
     );

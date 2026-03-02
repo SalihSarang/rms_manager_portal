@@ -5,6 +5,6 @@ class StaffDetailsGlassDivider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Divider(color: Colors.white.withOpacity(0.08), height: 24);
+    return Divider(color: Colors.white.withValues(alpha: 0.08), height: 24);
   }
 }

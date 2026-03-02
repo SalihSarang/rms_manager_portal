@@ -77,7 +77,7 @@ class _AddOnsAndPricingSectionState extends State<AddOnsAndPricingSection> {
               const Text(
                 'Add-ons & Pricing',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: NeutralColors.white,
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
                 ),
