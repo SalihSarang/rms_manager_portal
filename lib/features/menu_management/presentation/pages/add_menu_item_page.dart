@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:manager_portal/core/di/injector.dart';
-import 'package:manager_portal/core/utils/image_picker_service/feature_specific_usecase/food_img_picker.dart';
-import 'package:manager_portal/features/menu_management/domain/usecases/add_food_item_usecase.dart';
-import 'package:manager_portal/features/menu_management/domain/usecases/update_food_item_usecase.dart';
 import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_bloc.dart';
 import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_event.dart';
 import 'package:manager_portal/features/menu_management/presentation/bloc/add_menu_item/add_menu_item_bloc.dart';
@@ -13,6 +10,7 @@ import 'package:manager_portal/features/menu_management/presentation/widgets/add
 import 'package:manager_portal/features/menu_management/presentation/widgets/add_menu_item/customization_settings_section.dart';
 import 'package:manager_portal/features/menu_management/presentation/widgets/add_menu_item/portions_pricing_section.dart';
 import 'package:rms_design_system/app_colors/neutral_colors.dart';
+import 'package:rms_design_system/app_colors/semantic_colors.dart';
 import 'package:rms_design_system/app_colors/text_colors.dart';
 import 'package:rms_shared_package/models/menu_models/food_model/food_model.dart';
 
@@ -27,11 +25,7 @@ class AddMenuItemPage extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) {
-            final bloc = AddMenuItemBloc(
-              foodImgPickerUsecase: getIt<FoodImgPickerUsecase>(),
-              addFoodItemUsecase: getIt<AddFoodItemUsecase>(),
-              updateFoodItemUsecase: getIt<UpdateFoodItemUsecase>(),
-            );
+            final bloc = getIt<AddMenuItemBloc>();
 
             if (foodItemToEdit != null) {
               bloc.add(InitializeForEdit(foodItemToEdit!));
@@ -53,7 +47,7 @@ class AddMenuItemPage extends StatelessWidget {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 content: Text('Food item added successfully!'),
-                backgroundColor: Colors.green,
+                backgroundColor: SemanticColors.success,
               ),
             );
             Navigator.of(context).pop();
@@ -61,7 +55,7 @@ class AddMenuItemPage extends StatelessWidget {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.errorMessage!),
-                backgroundColor: Colors.red,
+                backgroundColor: SemanticColors.error,
               ),
             );
           }
@@ -74,7 +68,7 @@ class AddMenuItemPage extends StatelessWidget {
             leading: IconButton(
               icon: const Icon(
                 Icons.arrow_back_ios,
-                color: Colors.white,
+                color: TextColors.inverse,
                 size: 20,
               ),
               onPressed: () => Navigator.of(context).pop(),
@@ -100,7 +94,7 @@ class AddMenuItemPage extends StatelessWidget {
                                 ? "Edit Food Item"
                                 : "Add New Food Item",
                             style: const TextStyle(
-                              color: Colors.white,
+                              color: TextColors.inverse,
                               fontSize: 24,
                               fontWeight: FontWeight.w600,
                             ),

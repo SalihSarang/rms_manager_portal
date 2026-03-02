@@ -9,6 +9,7 @@ import 'package:manager_portal/features/menu_management/domain/usecases/update_c
 import 'package:manager_portal/features/menu_management/domain/usecases/get_food_items_by_category_usecase.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/update_food_item_usecase.dart';
 import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_bloc.dart';
+import 'package:manager_portal/features/menu_management/presentation/bloc/add_menu_item/add_menu_item_bloc.dart';
 
 void setUpMenuManagementDI() {
   // Datasources
@@ -44,5 +45,12 @@ void setUpMenuManagementDI() {
   // Bloc
   getIt.registerFactory(
     () => AddCategoryBloc(getIt(), getIt(), getIt(), getIt(), getIt()),
+  );
+  getIt.registerFactory(
+    () => AddMenuItemBloc(
+      foodImgPickerUsecase: getIt(),
+      addFoodItemUsecase: getIt(),
+      updateFoodItemUsecase: getIt(),
+    ),
   );
 }
