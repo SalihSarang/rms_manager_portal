@@ -38,7 +38,6 @@ class MenuManagementPage extends StatelessWidget {
                 await Navigator.of(context).push(
                   MaterialPageRoute(builder: (_) => const AddMenuItemPage()),
                 );
-                // Refresh items for the selected category when returning
                 if (bloc.state is CategoriesLoaded) {
                   final state = bloc.state as CategoriesLoaded;
                   bloc.add(LoadFoodItems(state.selectedCategoryId));

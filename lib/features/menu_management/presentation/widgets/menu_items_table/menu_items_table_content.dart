@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:manager_portal/core/widgets/reusable_table.dart';
 import 'package:manager_portal/features/menu_management/presentation/cubit/menu_items_pagination_cubit.dart';
 import 'package:manager_portal/features/menu_management/presentation/pages/add_menu_item_page.dart';
+import 'package:manager_portal/features/menu_management/presentation/pages/menu_details_test_screen.dart';
 import 'package:manager_portal/features/menu_management/presentation/widgets/menu_items_table/components/menu_items_table_footer.dart';
 import 'package:manager_portal/features/menu_management/presentation/widgets/menu_items_table/components/menu_items_table_row.dart';
 import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_bloc.dart';
@@ -65,7 +66,13 @@ class MenuItemsTableContent extends StatelessWidget {
                   index: startIndex + currentData.indexOf(item) + 1,
                   item: item,
                   onTap: () {
-                    // Navigate to details or open modal
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            MenuDetailsTestScreen(foodItem: item),
+                      ),
+                    );
                   },
                   onEdit: () {
                     Navigator.push(

@@ -6,8 +6,8 @@ import 'package:rms_design_system/app_colors/neutral_colors.dart';
 import 'package:rms_design_system/app_colors/primary_colors.dart';
 import 'package:rms_design_system/app_colors/text_colors.dart';
 
-class CustomizationAndSettingsSection extends StatelessWidget {
-  const CustomizationAndSettingsSection({super.key});
+class DietaryPreferencesSection extends StatelessWidget {
+  const DietaryPreferencesSection({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class CustomizationAndSettingsSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            'Customization & Settings',
+            'Dietary & Preferences',
             style: TextStyle(
               color: NeutralColors.white,
               fontSize: 18,
@@ -184,7 +184,10 @@ class CustomizationAndSettingsSection extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(label, style: const TextStyle(color: NeutralColors.white, fontSize: 13)),
+        Text(
+          label,
+          style: const TextStyle(color: NeutralColors.white, fontSize: 13),
+        ),
         CupertinoSwitch(
           value: value,
           onChanged: onChanged,
