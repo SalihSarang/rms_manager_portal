@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -43,6 +45,11 @@ class CloudinaryServiceImpl implements CloudinaryService {
     required String uploadPreset,
     Function(double progress)? onProgress,
   }) async {
+    log(
+      '[CloudinaryService] uploadImage → file: ${file.name}, folder: $folder, preset: $uploadPreset',
+      name: 'CloudinaryService',
+    );
+
     final formData = FormData.fromMap({
       'file': MultipartFile.fromBytes(
         await file.readAsBytes(),
@@ -55,15 +62,37 @@ class CloudinaryServiceImpl implements CloudinaryService {
     final response = await _dio.post(
       'https://api.cloudinary.com/v1_1/$_cloudName/image/upload',
       data: formData,
+      onSendProgress: (sent, total) {
+        if (onProgress != null && total > 0) {
+          final progress = sent / total;
+          onProgress(progress);
+        }
+      },
+    );
+
+    log(
+      '[CloudinaryService] uploadImage ← status: ${response.statusCode}, data: ${response.data}',
+      name: 'CloudinaryService',
     );
 
     if (response.statusCode != 200 && response.statusCode != 201) {
       throw Exception("Cloudinary upload failed: ${response.data}");
     }
 
-    return response.data['secure_url'] as String;
+    final secureUrl = response.data['secure_url'] as String;
+    log(
+      '[CloudinaryService] uploadImage ← secure_url: $secureUrl',
+      name: 'CloudinaryService',
+    );
+    return secureUrl;
   }
 
   @override
-  Future<void> deleteImage(String publicId) async {}
+  Future<void> deleteImage(String publicId) async {
+    log(
+      '[CloudinaryService] deleteImage → publicId: $publicId',
+      name: 'CloudinaryService',
+    );
+    // TODO: implement delete via Cloudinary Admin API
+  }
 }

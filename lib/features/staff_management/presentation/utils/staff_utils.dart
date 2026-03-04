@@ -24,10 +24,43 @@ class StaffUtils {
     if (date == null) return 'Never';
     final now = DateTime.now();
     final difference = now.difference(date);
+
+    // Handle future dates due to clock drift
+    if (difference.isNegative || difference.inSeconds < 60) {
+      return "Just now";
+    }
+
+    if (difference.inMinutes < 60) {
+      return "${difference.inMinutes}m ago";
+    }
+
     if (difference.inHours < 24) {
       return "${difference.inHours}h ago";
-    } else {
+    }
+
+    if (difference.inDays < 7) {
       return "${difference.inDays}d ago";
     }
+
+    // For older than a week, show the actual date
+    return "${date.day.toString().padLeft(2, '0')} ${_getMonthName(date.month)} ${date.year}";
+  }
+
+  static String _getMonthName(int month) {
+    const months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
+    return months[month - 1];
   }
 }
