@@ -55,6 +55,7 @@ class ManagerSidebarX extends StatelessWidget {
           label: 'employ Management',
         ),
         SidebarXItem(icon: Icons.inventory_2_outlined, label: 'Products'),
+        SidebarXItem(icon: Icons.table_restaurant_outlined, label: 'Tables'),
         SidebarXItem(icon: Icons.analytics_outlined, label: 'Reports'),
       ],
     );

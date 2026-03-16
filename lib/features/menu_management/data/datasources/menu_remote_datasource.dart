@@ -12,6 +12,7 @@ abstract class MenuRemoteDatasource {
   Future<void> addFoodItem(FoodModel food);
   Future<void> updateFoodItem(FoodModel food);
   Future<List<FoodModel>> getFoodItemsByCategory(String categoryId);
+  Future<List<FoodModel>> getAllFoodItems();
 }
 
 class MenuRemoteDatasourceImpl implements MenuRemoteDatasource {
@@ -122,6 +123,17 @@ class MenuRemoteDatasourceImpl implements MenuRemoteDatasource {
       '[MenuDatasource] getFoodItemsByCategory ← received ${foods.length} items: ${foods.map((f) => f.toJson()).toList()}',
       name: 'MenuRemoteDatasource',
     );
+    return foods;
+  }
+
+  @override
+  Future<List<FoodModel>> getAllFoodItems() async {
+    log('[MenuDatasource] getAllFoodItems → calling Firestore', name: 'MenuRemoteDatasource');
+    final snapshot = await firestore.collection(MenuDbConstants.foods).get();
+    final foods = snapshot.docs
+        .map((doc) => FoodModel.fromJson(doc.data(), docId: doc.id))
+        .toList();
+    log('[MenuDatasource] getAllFoodItems ← received ${foods.length} items', name: 'MenuRemoteDatasource');
     return foods;
   }
 }

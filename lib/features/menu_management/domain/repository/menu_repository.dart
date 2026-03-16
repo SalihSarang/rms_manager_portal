@@ -8,4 +8,5 @@ abstract class MenuRepository {
   Future<void> addFoodItem(FoodModel food);
   Future<void> updateFoodItem(FoodModel food);
   Future<List<FoodModel>> getFoodItemsByCategory(String categoryId);
+  Future<List<FoodModel>> getAllFoodItems();
 }

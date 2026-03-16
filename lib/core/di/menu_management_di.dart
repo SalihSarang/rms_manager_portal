@@ -4,9 +4,10 @@ import 'package:manager_portal/features/menu_management/data/repository/menu_rep
 import 'package:manager_portal/features/menu_management/domain/repository/menu_repository.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/add_category_usecase.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/add_food_item_usecase.dart';
+import 'package:manager_portal/features/menu_management/domain/usecases/get_all_food_items_usecase.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/get_categories_usecase.dart';
-import 'package:manager_portal/features/menu_management/domain/usecases/update_category_usecase.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/get_food_items_by_category_usecase.dart';
+import 'package:manager_portal/features/menu_management/domain/usecases/update_category_usecase.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/update_food_item_usecase.dart';
 import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_bloc.dart';
 import 'package:manager_portal/features/menu_management/presentation/bloc/add_menu_item/add_menu_item_bloc.dart';
@@ -41,10 +42,20 @@ void setUpMenuManagementDI() {
   getIt.registerLazySingleton<GetFoodItemsByCategoryUseCase>(
     () => GetFoodItemsByCategoryUseCase(getIt()),
   );
+  getIt.registerLazySingleton<GetAllFoodItemsUseCase>(
+    () => GetAllFoodItemsUseCase(getIt()),
+  );
 
   // Bloc
   getIt.registerFactory(
-    () => AddCategoryBloc(getIt(), getIt(), getIt(), getIt(), getIt()),
+    () => AddCategoryBloc(
+      getIt(),
+      getIt(),
+      getIt(),
+      getIt(),
+      getIt(),
+      getIt(),
+    ),
   );
   getIt.registerFactory(
     () => AddMenuItemBloc(

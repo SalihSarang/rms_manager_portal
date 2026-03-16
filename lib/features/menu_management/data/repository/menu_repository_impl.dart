@@ -37,4 +37,9 @@ class MenuRepositoryImpl implements MenuRepository {
   Future<List<FoodModel>> getFoodItemsByCategory(String categoryId) async {
     return await remoteDatasource.getFoodItemsByCategory(categoryId);
   }
+
+  @override
+  Future<List<FoodModel>> getAllFoodItems() async {
+    return await remoteDatasource.getAllFoodItems();
+  }
 }

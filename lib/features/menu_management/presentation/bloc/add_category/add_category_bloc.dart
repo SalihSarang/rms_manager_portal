@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/add_category_usecase.dart';
+import 'package:manager_portal/features/menu_management/domain/usecases/get_all_food_items_usecase.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/get_categories_usecase.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/get_food_items_by_category_usecase.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/update_category_usecase.dart';
@@ -14,6 +15,7 @@ class AddCategoryBloc extends Bloc<AddCategoryEvent, AddCategoryState> {
   final AddCategoryUseCase addCategoryUseCase;
   final UpdateCategoryUseCase updateCategoryUseCase;
   final GetFoodItemsByCategoryUseCase getFoodItemsByCategoryUseCase;
+  final GetAllFoodItemsUseCase getAllFoodItemsUseCase;
   final UpdateFoodItemUsecase updateFoodItemUsecase;
 
   AddCategoryBloc(
@@ -21,28 +23,13 @@ class AddCategoryBloc extends Bloc<AddCategoryEvent, AddCategoryState> {
     this.addCategoryUseCase,
     this.updateCategoryUseCase,
     this.getFoodItemsByCategoryUseCase,
+    this.getAllFoodItemsUseCase,
     this.updateFoodItemUsecase,
   ) : super(MenuInitial()) {
     on<LoadCategories>((event, emit) async {
       emit(MenuLoading());
       try {
-        final categories = await getCategoriesUseCase();
-        final String selectedId = categories.isNotEmpty
-            ? categories.first.id
-            : '';
-
-        List<FoodModel> foodItems = [];
-        if (selectedId.isNotEmpty) {
-          foodItems = await getFoodItemsByCategoryUseCase(selectedId);
-        }
-
-        emit(
-          CategoriesLoaded(
-            categories: categories,
-            selectedCategoryId: selectedId,
-            foodItems: foodItems,
-          ),
-        );
+        await _loadCategoriesAndItems(emit);
       } catch (e) {
         emit(MenuError(e.toString()));
       }
@@ -90,15 +77,8 @@ class AddCategoryBloc extends Bloc<AddCategoryEvent, AddCategoryState> {
 
           await addCategoryUseCase(newCategory);
 
-          // Refresh categories instead of just appending to ensure sync with remote
-          final updatedCategories = await getCategoriesUseCase();
-
-          emit(
-            currentState.copyWith(
-              categories: updatedCategories,
-              isSubmitting: false,
-            ),
-          );
+          // Refresh categories and items to ensure sync and update counts
+          await _loadCategoriesAndItems(emit, selectedId: currentState.selectedCategoryId);
         } catch (e) {
           emit(
             currentState.copyWith(
@@ -118,14 +98,8 @@ class AddCategoryBloc extends Bloc<AddCategoryEvent, AddCategoryState> {
         try {
           await updateCategoryUseCase(event.category);
 
-          final updatedCategories = await getCategoriesUseCase();
-
-          emit(
-            currentState.copyWith(
-              categories: updatedCategories,
-              isSubmitting: false,
-            ),
-          );
+          // Refresh categories and items
+          await _loadCategoriesAndItems(emit, selectedId: currentState.selectedCategoryId);
         } catch (e) {
           emit(
             currentState.copyWith(
@@ -168,5 +142,33 @@ class AddCategoryBloc extends Bloc<AddCategoryEvent, AddCategoryState> {
         }
       }
     });
+  }
+
+  Future<void> _loadCategoriesAndItems(Emitter<AddCategoryState> emit, {String? selectedId}) async {
+    final categories = await getCategoriesUseCase();
+    final allFoodItems = await getAllFoodItemsUseCase.execute();
+
+    // Update itemCount for each category
+    final updatedCategories = categories.map((cat) {
+      final count = allFoodItems.where((food) => food.category.id == cat.id).length;
+      return cat.copyWith(itemCount: count);
+    }).toList();
+
+    final String finalSelectedId = selectedId ??
+        (updatedCategories.isNotEmpty ? updatedCategories.first.id : '');
+
+    List<FoodModel> foodItems = [];
+    if (finalSelectedId.isNotEmpty) {
+      foodItems = allFoodItems.where((food) => food.category.id == finalSelectedId).toList();
+    }
+
+    emit(
+      CategoriesLoaded(
+        categories: updatedCategories,
+        selectedCategoryId: finalSelectedId,
+        foodItems: foodItems,
+        isSubmitting: false,
+      ),
+    );
   }
 }
