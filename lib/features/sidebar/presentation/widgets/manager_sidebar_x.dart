@@ -8,10 +8,15 @@ import 'package:rms_design_system/app_colors/text_colors.dart';
 import 'package:rms_design_system/app_colors/semantic_colors.dart';
 import '../utils/sidebar_theme.dart';
 
+/// A customized [SidebarX] for the manager portal.
+///
+/// It displays navigation items and a logout button in the footer.
 class ManagerSidebarX extends StatelessWidget {
+  /// Creates a [ManagerSidebarX] with the required [controller].
   const ManagerSidebarX({super.key, required SidebarXController controller})
     : _controller = controller;
 
+  /// The controller that manages the sidebar's selection and expansion state.
   final SidebarXController _controller;
 
   @override

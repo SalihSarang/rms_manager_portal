@@ -2,10 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:rms_shared_package/models/table_model/table_model.dart';
 import 'package:rms_design_system/app_colors/semantic_colors.dart';
 
+/// A widget representing a single restaurant table.
+///
+/// Displays the table name, capacity, and status color.
+/// Supports an [isFeedback] mode for drag-and-drop visual effects.
 class TableWidget extends StatelessWidget {
+  /// The [TableModel] data for this table.
   final TableModel table;
+
+  /// Whether this widget is being used as a drag feedback.
   final bool isFeedback;
 
+  /// Creates a [TableWidget].
   const TableWidget({super.key, required this.table, this.isFeedback = false});
 
   @override

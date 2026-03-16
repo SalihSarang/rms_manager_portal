@@ -5,7 +5,12 @@ import 'package:manager_portal/features/table_management/presentation/pages/tabl
 import 'package:sidebarx/sidebarx.dart';
 import 'package:manager_portal/features/sidebar/presentation/widgets/manager_sidebar_x.dart';
 
+/// The primary navigation shell for the manager portal.
+///
+/// It coordinates the [SidebarX] drawer and the [PageView] used to switch
+/// between different management screens (Staff, Menu, Tables, etc.).
 class Sidebar extends StatefulWidget {
+  /// Creates the application's [Sidebar] shell.
   const Sidebar({super.key});
 
   @override

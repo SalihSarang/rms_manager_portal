@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:rms_design_system/app_colors/neutral_colors.dart';
 import 'package:rms_design_system/app_colors/text_colors.dart';
 
+/// A page for managing the restaurant's table layout.
+///
+/// This screen allows managers to visualize, add, and arrange tables.
 class TableManagementPage extends StatelessWidget {
+  /// Creates a [TableManagementPage].
   const TableManagementPage({super.key});
 
   @override

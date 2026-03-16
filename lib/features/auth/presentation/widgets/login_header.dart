@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:rms_design_system/app_colors/text_colors.dart';
 
+/// Displays the logo and welcome message at the top of the login screen.
 class LoginHeader extends StatelessWidget {
+  /// Creates a [LoginHeader].
   const LoginHeader({super.key});
 
   @override

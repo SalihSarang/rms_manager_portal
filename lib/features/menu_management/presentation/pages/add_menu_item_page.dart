@@ -14,9 +14,15 @@ import 'package:rms_design_system/app_colors/semantic_colors.dart';
 import 'package:rms_design_system/app_colors/text_colors.dart';
 import 'package:rms_shared_package/models/menu_models/food_model/food_model.dart';
 
+/// A page for creating or editing a food item.
+///
+/// If [foodItemToEdit] is provided, the page initializes in edit mode;
+/// otherwise, it opens as a blank "Add New Item" form.
 class AddMenuItemPage extends StatelessWidget {
+  /// The food item to be edited, or `null` if creating a new item.
   final FoodModel? foodItemToEdit;
 
+  /// Creates an [AddMenuItemPage].
   const AddMenuItemPage({super.key, this.foodItemToEdit});
 
   @override
@@ -45,8 +51,12 @@ class AddMenuItemPage extends StatelessWidget {
         listener: (context, state) {
           if (state.isSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Food item added successfully!'),
+              SnackBar(
+                content: Text(
+                  foodItemToEdit != null
+                      ? 'Food item updated successfully!'
+                      : 'Food item added successfully!',
+                ),
                 backgroundColor: SemanticColors.success,
               ),
             );

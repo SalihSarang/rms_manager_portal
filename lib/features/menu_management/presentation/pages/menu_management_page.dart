@@ -11,7 +11,12 @@ import 'package:manager_portal/features/menu_management/presentation/widgets/men
 import 'package:rms_design_system/app_colors/neutral_colors.dart';
 import 'package:manager_portal/features/menu_management/presentation/pages/add_menu_item_page.dart';
 
+/// Main dashboard for managing menu categories and food items.
+///
+/// This page provides a dual-pane layout with a category sidebar on the left
+/// and the selected category's food items on the right.
 class MenuManagementPage extends StatelessWidget {
+  /// Creates a [MenuManagementPage].
   const MenuManagementPage({super.key});
 
   @override

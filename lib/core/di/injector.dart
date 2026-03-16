@@ -7,6 +7,9 @@ import 'package:manager_portal/core/di/staff_di.dart';
 
 final getIt = GetIt.instance;
 
+/// Configures the global dependency injection container using [GetIt].
+///
+/// Registers all repositories, use cases, and services required by the application.
 void setupDI() {
   //Firebase
   getIt.registerLazySingleton<FirebaseFirestore>(

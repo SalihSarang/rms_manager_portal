@@ -2,6 +2,7 @@ import 'package:manager_portal/features/staff_management/data/datasources/staff_
 import 'package:manager_portal/features/staff_management/domain/repository/staff_repository.dart';
 import 'package:rms_shared_package/models/staff_model/staff_model.dart';
 
+/// Implementation of [StaffRepository] using [StaffDatasource].
 class StaffRepositoryImpl implements StaffRepository {
   final StaffDatasource staffDatasource;
   StaffRepositoryImpl({required this.staffDatasource});

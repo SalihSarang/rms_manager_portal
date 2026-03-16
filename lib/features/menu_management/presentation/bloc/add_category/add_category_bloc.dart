@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:manager_portal/core/utils/error_handler.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/add_category_usecase.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/get_all_food_items_usecase.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/get_categories_usecase.dart';
@@ -10,14 +11,30 @@ import 'package:manager_portal/features/menu_management/presentation/bloc/add_ca
 import 'package:rms_shared_package/models/menu_models/category_model/category_model.dart';
 import 'package:rms_shared_package/models/menu_models/food_model/food_model.dart';
 
+/// Business logic component for managing menu categories and their associated food items.
+///
+/// This BLoC handles loading categories, selecting a category, adding/editing categories,
+/// and toggling the availability status of food items.
 class AddCategoryBloc extends Bloc<AddCategoryEvent, AddCategoryState> {
+  /// Use case for fetching all categories.
   final GetCategoriesUseCase getCategoriesUseCase;
+
+  /// Use case for adding a new category.
   final AddCategoryUseCase addCategoryUseCase;
+
+  /// Use case for updating an existing category.
   final UpdateCategoryUseCase updateCategoryUseCase;
+
+  /// Use case for fetching food items filtered by category.
   final GetFoodItemsByCategoryUseCase getFoodItemsByCategoryUseCase;
+
+  /// Use case for fetching all food items across categories.
   final GetAllFoodItemsUseCase getAllFoodItemsUseCase;
+
+  /// Use case for updating food item details.
   final UpdateFoodItemUsecase updateFoodItemUsecase;
 
+  /// Creates an [AddCategoryBloc] with the required use cases.
   AddCategoryBloc(
     this.getCategoriesUseCase,
     this.addCategoryUseCase,
@@ -38,7 +55,7 @@ class AddCategoryBloc extends Bloc<AddCategoryEvent, AddCategoryState> {
           selectedId: event.selectedCategoryId,
         );
       } catch (e) {
-        emit(MenuError(e.toString()));
+        emit(MenuError(ErrorHandler.getFriendlyMessage(e)));
       }
     });
 
@@ -64,7 +81,7 @@ class AddCategoryBloc extends Bloc<AddCategoryEvent, AddCategoryState> {
             isFoodLoading: false,
           ));
         } catch (e) {
-          emit(MenuError(e.toString()));
+          emit(MenuError(ErrorHandler.getFriendlyMessage(e)));
         }
       }
     });
@@ -94,7 +111,7 @@ class AddCategoryBloc extends Bloc<AddCategoryEvent, AddCategoryState> {
           emit(
             currentState.copyWith(
               isSubmitting: false,
-              submissionError: e.toString(),
+              submissionError: ErrorHandler.getFriendlyMessage(e),
             ),
           );
         }
@@ -115,7 +132,7 @@ class AddCategoryBloc extends Bloc<AddCategoryEvent, AddCategoryState> {
           emit(
             currentState.copyWith(
               isSubmitting: false,
-              submissionError: e.toString(),
+              submissionError: ErrorHandler.getFriendlyMessage(e),
             ),
           );
         }
@@ -149,7 +166,7 @@ class AddCategoryBloc extends Bloc<AddCategoryEvent, AddCategoryState> {
 
           emit(currentState.copyWith(foodItems: updatedFoodItems));
         } catch (e) {
-          emit(currentState.copyWith(submissionError: e.toString()));
+          emit(currentState.copyWith(submissionError: ErrorHandler.getFriendlyMessage(e)));
         }
       }
     });

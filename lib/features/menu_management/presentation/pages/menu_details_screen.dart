@@ -9,9 +9,14 @@ import 'package:rms_design_system/app_colors/semantic_colors.dart';
 import 'package:rms_design_system/app_colors/text_colors.dart';
 import 'package:rms_shared_package/models/menu_models/food_model/food_model.dart';
 
+/// Screen that displays the full details of a specific [FoodModel].
+///
+/// It uses [MenuDetailsCubit] to manage the state of the food item's details.
 class MenuDetailsScreen extends StatelessWidget {
+  /// The food item whose details are being displayed.
   final FoodModel foodItem;
 
+  /// Creates a [MenuDetailsScreen] for the given [foodItem].
   const MenuDetailsScreen({super.key, required this.foodItem});
 
   @override

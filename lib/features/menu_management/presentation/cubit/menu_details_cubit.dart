@@ -2,6 +2,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rms_shared_package/models/menu_models/food_model/food_model.dart';
 import 'menu_details_state.dart';
 
+/// A cubit for managing the detail-view state of a food item.
+///
+/// It handles the simplistic state transition from initial to loaded
+/// for a selected [FoodModel].
 class MenuDetailsCubit extends Cubit<MenuDetailsState> {
   MenuDetailsCubit() : super(MenuDetailsInitial());
 

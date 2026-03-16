@@ -2,9 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:manager_portal/features/table_management/presentation/widgets/table_widget.dart';
 import 'package:rms_shared_package/models/table_model/table_model.dart';
 
+/// A zoomable and scrollable view for arranging restaurant tables on a grid.
+///
+/// Uses [InteractiveViewer] to allow users to navigate a large floor plan
+/// and [Draggable] to move tables around.
 class TableLayoutView extends StatelessWidget {
+  /// The list of tables to be displayed in the layout.
   final List<TableModel> tables;
 
+  /// Creates a [TableLayoutView] with the given [tables].
   const TableLayoutView({super.key, required this.tables});
 
   @override
@@ -62,6 +68,7 @@ class TableLayoutView extends StatelessWidget {
   }
 }
 
+/// A custom painter that renders a grid pattern for the table layout background.
 class GridPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {

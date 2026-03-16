@@ -10,9 +10,14 @@ import 'package:rms_design_system/app_colors/neutral_colors.dart';
 import 'package:rms_design_system/app_colors/semantic_colors.dart';
 import 'package:rms_shared_package/models/menu_models/category_model/category_model.dart';
 
+/// A dialog for creating a new menu category or editing an existing one.
+///
+/// Provides fields for the category name and its visibility in the menu.
 class AddCategoryDialog extends StatefulWidget {
+  /// The category to be edited, or `null` if creating a new category.
   final CategoryModel? categoryToEdit;
 
+  /// Creates an [AddCategoryDialog].
   const AddCategoryDialog({super.key, this.categoryToEdit});
 
   @override
