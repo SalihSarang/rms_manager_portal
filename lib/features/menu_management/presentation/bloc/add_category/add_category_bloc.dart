@@ -29,7 +29,10 @@ class AddCategoryBloc extends Bloc<AddCategoryEvent, AddCategoryState> {
     on<LoadCategories>((event, emit) async {
       emit(MenuLoading());
       try {
-        await _loadCategoriesAndItems(emit);
+        await _loadCategoriesAndItems(
+          emit,
+          selectedId: event.selectedCategoryId,
+        );
       } catch (e) {
         emit(MenuError(e.toString()));
       }
