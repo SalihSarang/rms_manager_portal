@@ -4,6 +4,7 @@ import 'package:manager_portal/core/di/image_picker_di.dart';
 import 'package:manager_portal/core/di/manager_auth_di.dart';
 import 'package:manager_portal/core/di/menu_management_di.dart';
 import 'package:manager_portal/core/di/staff_di.dart';
+import 'package:manager_portal/core/di/table_management_di.dart';
 
 final getIt = GetIt.instance;
 
@@ -27,4 +28,7 @@ void setupDI() {
 
   // Menu Management DI
   setUpMenuManagementDI();
+
+  // Table Management DI
+  setUpTableManagementDI();
 }
