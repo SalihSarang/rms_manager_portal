@@ -4,9 +4,9 @@ import 'package:rms_shared_package/models/table_model/table_model.dart';
 import 'package:rms_design_system/app_colors/semantic_colors.dart';
 import 'package:rms_design_system/app_colors/text_colors.dart';
 
-/// A widget representing a single restaurant table with a premium design.
+/// A widget representing a single restaurant table with a premium design matching the reference image.
 ///
-/// Displays the table name, capacity, and current status.
+/// Displays the table name in the center and seat count in a top-right bubble.
 /// Responds to taps by navigating to the [TableDetailScreen].
 class TableWidget extends StatelessWidget {
   /// The [TableModel] data for this table.
@@ -50,87 +50,68 @@ class TableWidget extends StatelessWidget {
                 ),
               );
             },
-      child: Container(
-        width: width,
-        height: height,
-        decoration: BoxDecoration(
-          color: const Color(0xFF2A2A3C).withValues(alpha: isFeedback ? 0.6 : 0.9),
-          shape: table.shape == TableShape.circle ? BoxShape.circle : BoxShape.rectangle,
-          borderRadius: table.shape == TableShape.circle ? null : BorderRadius.circular(12),
-          border: Border.all(
-            color: statusColor.withValues(alpha: 0.5),
-            width: 2,
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: statusColor.withValues(alpha: 0.2),
-              blurRadius: 10,
-              spreadRadius: 2,
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          // Table Body
+          Container(
+            width: width,
+            height: height,
+            decoration: BoxDecoration(
+              color: const Color(0xFF1E1E2D).withValues(alpha: isFeedback ? 0.6 : 0.95),
+              shape: table.shape == TableShape.circle ? BoxShape.circle : BoxShape.rectangle,
+              borderRadius: table.shape == TableShape.circle ? null : BorderRadius.circular(12),
+              border: Border.all(
+                color: isFeedback ? Colors.blue : statusColor.withValues(alpha: 0.5),
+                width: 2,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: (isFeedback ? Colors.blue : statusColor).withValues(alpha: 0.2),
+                  blurRadius: 10,
+                  spreadRadius: 2,
+                ),
+              ],
             ),
-          ],
-        ),
-        child: ClipRRect(
-          borderRadius: table.shape == TableShape.circle ? BorderRadius.circular(width / 2) : BorderRadius.circular(12),
-          child: Stack(
-            children: [
-              // Subtle background gradient based on status
-              Positioned.fill(
-                child: Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                        statusColor.withValues(alpha: 0.1),
-                        Colors.transparent,
-                      ],
-                    ),
-                  ),
+            child: Center(
+              child: Text(
+                table.name,
+                style: const TextStyle(
+                  color: TextColors.primary,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
                 ),
               ),
-              Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      table.name,
-                      style: const TextStyle(
-                        color: TextColors.primary,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                      decoration: BoxDecoration(
-                        color: Colors.black26,
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: Text(
-                        '${table.capacity}',
-                        style: const TextStyle(color: TextColors.secondary, fontSize: 10),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              // Status dot
-              Positioned(
-                top: 8,
-                right: table.shape == TableShape.circle ? 15 : 8,
-                child: Container(
-                  width: 8,
-                  height: 8,
-                  decoration: BoxDecoration(
-                    color: statusColor,
-                    shape: BoxShape.circle,
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
+          // Seat Count Bubble (Top Right)
+          Positioned(
+            top: -5,
+            right: -5,
+            child: Container(
+              padding: const EdgeInsets.all(6),
+              decoration: BoxDecoration(
+                color: isFeedback ? Colors.blue : const Color(0xFF2A2A3C),
+                shape: BoxShape.circle,
+                border: Border.all(color: Colors.white24, width: 1),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.3),
+                    blurRadius: 4,
+                  ),
+                ],
+              ),
+              child: Text(
+                '${table.capacity}',
+                style: const TextStyle(
+                  color: Colors.white70,
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -138,22 +119,22 @@ class TableWidget extends StatelessWidget {
   double _getWidth(TableShape shape) {
     switch (shape) {
       case TableShape.square:
-        return 80;
-      case TableShape.rectangle:
-        return 120;
-      case TableShape.circle:
         return 90;
+      case TableShape.rectangle:
+        return 140;
+      case TableShape.circle:
+        return 100;
     }
   }
 
   double _getHeight(TableShape shape) {
     switch (shape) {
       case TableShape.square:
-        return 80;
-      case TableShape.rectangle:
-        return 80;
-      case TableShape.circle:
         return 90;
+      case TableShape.rectangle:
+        return 90;
+      case TableShape.circle:
+        return 100;
     }
   }
 }
