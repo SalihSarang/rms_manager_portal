@@ -53,7 +53,13 @@ class MenuItemsView extends StatelessWidget {
                   padding: EdgeInsets.zero,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(12),
-                    child: MenuItemsTable(items: items),
+                    child: state.isFoodLoading
+                        ? const Center(
+                            child: CircularProgressIndicator(
+                              color: TextColors.inverse,
+                            ),
+                          )
+                        : MenuItemsTable(items: items),
                   ),
                 ),
               ),

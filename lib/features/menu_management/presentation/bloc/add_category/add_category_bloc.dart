@@ -27,7 +27,11 @@ class AddCategoryBloc extends Bloc<AddCategoryEvent, AddCategoryState> {
     this.updateFoodItemUsecase,
   ) : super(MenuInitial()) {
     on<LoadCategories>((event, emit) async {
-      emit(MenuLoading());
+      if (state is CategoriesLoaded) {
+        emit((state as CategoriesLoaded).copyWith(isLoading: true));
+      } else {
+        emit(MenuLoading());
+      }
       try {
         await _loadCategoriesAndItems(
           emit,
@@ -49,12 +53,16 @@ class AddCategoryBloc extends Bloc<AddCategoryEvent, AddCategoryState> {
     on<LoadFoodItems>((event, emit) async {
       if (state is CategoriesLoaded) {
         final currentState = state as CategoriesLoaded;
-        emit(MenuLoading()); // Emit loading so UI knows to refresh
+        emit(currentState.copyWith(isFoodLoading: true)); // Only flag food as loading
         try {
           final foodItems = await getFoodItemsByCategoryUseCase(
             event.categoryId,
           );
-          emit(currentState.copyWith(foodItems: foodItems, selectedCategoryId: event.categoryId));
+          emit(currentState.copyWith(
+            foodItems: foodItems,
+            selectedCategoryId: event.categoryId,
+            isFoodLoading: false,
+          ));
         } catch (e) {
           emit(MenuError(e.toString()));
         }
