@@ -3,12 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:manager_portal/core/di/injector.dart';
 import 'package:manager_portal/features/table_management/presentation/bloc/table_management_bloc.dart';
 import 'package:manager_portal/features/table_management/presentation/widgets/table_layout_view.dart';
+import 'package:manager_portal/features/table_management/presentation/widgets/tables_library.dart';
 import 'package:rms_design_system/app_colors/neutral_colors.dart';
 import 'package:rms_design_system/app_colors/text_colors.dart';
 
 /// A page for managing the restaurant's table layout.
 ///
-/// This screen allows managers to visualize, add, and arrange tables.
+/// This screen allows managers to visualize and arrange tables using a grid-based hall layout.
+/// In "Edit" mode, a library of table templates is available for drag-and-drop additions.
 class TableManagementPage extends StatefulWidget {
   /// Creates a [TableManagementPage].
   const TableManagementPage({super.key});
@@ -30,7 +32,7 @@ class _TableManagementPageState extends State<TableManagementPage> {
           backgroundColor: NeutralColors.background,
           elevation: 0,
           title: Text(
-            _isEditMode ? 'Editing Table Layout' : 'Table Management',
+            _isEditMode ? 'Builder: Floor Layout' : 'Table Management',
             style: const TextStyle(color: TextColors.primary, fontWeight: FontWeight.bold),
           ),
           actions: [
@@ -46,29 +48,13 @@ class _TableManagementPageState extends State<TableManagementPage> {
                 color: _isEditMode ? Colors.green : const Color(0xFF3B71FE),
               ),
               label: Text(
-                _isEditMode ? 'Done' : 'Edit Layout',
+                _isEditMode ? 'Save Layout' : 'Edit Layout',
                 style: TextStyle(
                   color: _isEditMode ? Colors.green : const Color(0xFF3B71FE),
                 ),
               ),
             ),
-            const SizedBox(width: 8),
-            if (_isEditMode)
-              Padding(
-                padding: const EdgeInsets.only(right: 24),
-                child: ElevatedButton.icon(
-                  onPressed: () {
-                    // TODO: Implement Add Table dialog
-                  },
-                  icon: const Icon(Icons.add),
-                  label: const Text('Add Table'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF3B71FE),
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                  ),
-                ),
-              ),
+            const SizedBox(width: 24),
           ],
         ),
         body: BlocBuilder<TableManagementBloc, TableManagementState>(
@@ -76,9 +62,16 @@ class _TableManagementPageState extends State<TableManagementPage> {
             if (state is TableManagementLoading) {
               return const Center(child: CircularProgressIndicator());
             } else if (state is TableManagementLoaded) {
-              return TableLayoutView(
-                tables: state.tables,
-                isReadOnly: !_isEditMode,
+              return Row(
+                children: [
+                  if (_isEditMode) const TablesLibrary(),
+                  Expanded(
+                    child: TableLayoutView(
+                      tables: state.tables,
+                      isReadOnly: !_isEditMode,
+                    ),
+                  ),
+                ],
               );
             } else if (state is TableManagementError) {
               return Center(
