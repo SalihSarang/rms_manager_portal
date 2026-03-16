@@ -79,7 +79,7 @@ class TableRemoteDataSourceImpl implements TableRemoteDataSource {
   @override
   Future<void> deleteTable(int tableId) async {
     log(
-      '[TableRemoteDataSource] deleteTable → id: $tableId',
+      '[TableRemoteDataSource] deleteTable -> id: $tableId',
       name: 'TableRemoteDataSource',
     );
     await firestore
@@ -87,7 +87,7 @@ class TableRemoteDataSourceImpl implements TableRemoteDataSource {
         .doc(tableId.toString())
         .delete();
     log(
-      '[TableRemoteDataSource] deleteTable ← success for id: $tableId',
+      '[TableRemoteDataSource] deleteTable <- success for id: $tableId',
       name: 'TableRemoteDataSource',
     );
   }

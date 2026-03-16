@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:manager_portal/features/table_management/presentation/pages/table_detail_screen.dart';
 import 'package:rms_shared_package/models/table_model/table_model.dart';
 import 'package:rms_design_system/app_colors/semantic_colors.dart';
+import 'package:rms_design_system/app_colors/text_colors.dart';
 
-/// A widget representing a single restaurant table.
+/// A widget representing a single restaurant table with a premium design.
 ///
-/// Displays the table name, capacity, and status color.
-/// Supports an [isFeedback] mode for drag-and-drop visual effects.
+/// Displays the table name, capacity, and current status.
+/// Responds to taps by navigating to the [TableDetailScreen].
 class TableWidget extends StatelessWidget {
   /// The [TableModel] data for this table.
   final TableModel table;
@@ -18,58 +20,116 @@ class TableWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color tableColor;
+    Color statusColor;
     switch (table.status) {
       case TableStatus.available:
-        tableColor = SemanticColors.success;
+        statusColor = SemanticColors.success;
         break;
       case TableStatus.occupied:
-        tableColor = SemanticColors.error;
+        statusColor = SemanticColors.error;
         break;
       case TableStatus.partiallyOccupied:
-        tableColor = Colors.orange;
+        statusColor = Colors.orange;
         break;
       case TableStatus.disabled:
-        tableColor = Colors.grey;
+        statusColor = Colors.grey;
         break;
     }
 
-    return Container(
-      width: _getWidth(table.shape),
-      height: _getHeight(table.shape),
-      decoration: BoxDecoration(
-        color: tableColor.withValues(alpha: isFeedback ? 0.6 : 1.0),
-        shape: table.shape == TableShape.circle
-            ? BoxShape.circle
-            : BoxShape.rectangle,
-        borderRadius: table.shape == TableShape.circle
-            ? null
-            : BorderRadius.circular(8),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
-            blurRadius: 4,
-            offset: const Offset(0, 2),
+    final double width = _getWidth(table.shape);
+    final double height = _getHeight(table.shape);
+
+    return GestureDetector(
+      onTap: isFeedback
+          ? null
+          : () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TableDetailScreen(table: table),
+                ),
+              );
+            },
+      child: Container(
+        width: width,
+        height: height,
+        decoration: BoxDecoration(
+          color: const Color(0xFF2A2A3C).withValues(alpha: isFeedback ? 0.6 : 0.9),
+          shape: table.shape == TableShape.circle ? BoxShape.circle : BoxShape.rectangle,
+          borderRadius: table.shape == TableShape.circle ? null : BorderRadius.circular(12),
+          border: Border.all(
+            color: statusColor.withValues(alpha: 0.5),
+            width: 2,
           ),
-        ],
-      ),
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              table.name,
-              style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 12,
-              ),
-            ),
-            Text(
-              '${table.capacity}',
-              style: const TextStyle(color: Colors.white70, fontSize: 10),
+          boxShadow: [
+            BoxShadow(
+              color: statusColor.withValues(alpha: 0.2),
+              blurRadius: 10,
+              spreadRadius: 2,
             ),
           ],
+        ),
+        child: ClipRRect(
+          borderRadius: table.shape == TableShape.circle ? BorderRadius.circular(width / 2) : BorderRadius.circular(12),
+          child: Stack(
+            children: [
+              // Subtle background gradient based on status
+              Positioned.fill(
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        statusColor.withValues(alpha: 0.1),
+                        Colors.transparent,
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      table.name,
+                      style: const TextStyle(
+                        color: TextColors.primary,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                      decoration: BoxDecoration(
+                        color: Colors.black26,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Text(
+                        '${table.capacity}',
+                        style: const TextStyle(color: TextColors.secondary, fontSize: 10),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              // Status dot
+              Positioned(
+                top: 8,
+                right: table.shape == TableShape.circle ? 15 : 8,
+                child: Container(
+                  width: 8,
+                  height: 8,
+                  decoration: BoxDecoration(
+                    color: statusColor,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
