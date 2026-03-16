@@ -46,13 +46,13 @@ class AddCategoryBloc extends Bloc<AddCategoryEvent, AddCategoryState> {
     on<LoadFoodItems>((event, emit) async {
       if (state is CategoriesLoaded) {
         final currentState = state as CategoriesLoaded;
+        emit(MenuLoading()); // Emit loading so UI knows to refresh
         try {
           final foodItems = await getFoodItemsByCategoryUseCase(
             event.categoryId,
           );
-          emit(currentState.copyWith(foodItems: foodItems));
+          emit(currentState.copyWith(foodItems: foodItems, selectedCategoryId: event.categoryId));
         } catch (e) {
-          // You might want to handle this error separately or just emit the error
           emit(MenuError(e.toString()));
         }
       }
