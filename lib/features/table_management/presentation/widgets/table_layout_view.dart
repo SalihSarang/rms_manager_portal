@@ -38,11 +38,13 @@ class TableLayoutView extends StatelessWidget {
                     },
                     onDragEnd: (details) {
                       // Adjust position relative to the stack
+                      /*
                       final RenderBox renderBox =
                           context.findRenderObject() as RenderBox;
                       final localOffset = renderBox.globalToLocal(
                         details.offset,
                       );
+                      */
                     },
                     childWhenDragging: Opacity(
                       opacity: 0.3,
