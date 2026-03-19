@@ -39,7 +39,12 @@ class EditorActionsGroup extends StatelessWidget {
               children: [
                 Icon(Icons.check_circle, color: NeutralColors.white, size: 18),
                 SizedBox(width: 8),
-                Text('Layout saved!'),
+                Expanded(
+                  child: Text(
+                    'Layout saved!',
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
               ],
             ),
             backgroundColor: PrimaryColors.defaultColor,
