@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:rms_design_system/rms_design_system.dart';
 import 'package:rms_shared_package/rms_shared_package.dart';
-import '../../../../cubit/table_editor_cubit.dart';
+import '../../../bloc/table_editor_bloc.dart';
+import '../../../bloc/table_editor_event.dart';
 
 class TableSeatCounter extends StatelessWidget {
   final TableModel table;
-  final TableEditorCubit cubit;
+  final TableEditorBloc bloc;
 
   const TableSeatCounter({
     super.key,
     required this.table,
-    required this.cubit,
+    required this.bloc,
   });
 
   @override
@@ -39,7 +40,7 @@ class TableSeatCounter extends StatelessWidget {
             _SeatButton(
               icon: Icons.remove_rounded,
               onPressed: table.seats > 1
-                  ? () => cubit.updateSelectedTableSeats(table.seats - 1)
+                  ? () => bloc.add(TableEditorTableSeatsUpdated(table.seats - 1))
                   : null,
             ),
             const SizedBox(width: 12),
@@ -54,7 +55,7 @@ class TableSeatCounter extends StatelessWidget {
             const SizedBox(width: 12),
             _SeatButton(
               icon: Icons.add_rounded,
-              onPressed: () => cubit.updateSelectedTableSeats(table.seats + 1),
+              onPressed: () => bloc.add(TableEditorTableSeatsUpdated(table.seats + 1)),
             ),
           ],
         ),

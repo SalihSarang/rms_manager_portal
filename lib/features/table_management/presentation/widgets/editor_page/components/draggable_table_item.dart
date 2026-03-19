@@ -3,8 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rms_shared_package/rms_shared_package.dart';
-import '../../../cubit/table_editor_cubit.dart';
-import '../../../cubit/table_editor_state.dart';
+import '../../../bloc/table_editor_bloc.dart';
+import '../../../bloc/table_editor_event.dart';
+import '../../../bloc/table_editor_state.dart';
 import '../../table_widget.dart';
 
 /// A wrapper widget that provides dragging and selection capabilities to a [TableWidget].
@@ -13,7 +14,7 @@ import '../../table_widget.dart';
 /// 1. Positioning the table on the 2D canvas using [Positioned].
 /// 2. Detecting gestures (tap to select, drag to move).
 /// 3. Providing a visual "ghost" preview during active dragging.
-/// 4. Updating the state via [TableEditorCubit] when a drag interaction ends.
+/// 4. Updating the state via [TableEditorBloc] when a drag interaction ends.
 class DraggableTableItem extends StatelessWidget {
   /// The table data associated with this item.
   final TableModel table;
@@ -39,7 +40,7 @@ class DraggableTableItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TableEditorCubit, TableEditorState>(
+    return BlocBuilder<TableEditorBloc, TableEditorState>(
       buildWhen: (prev, curr) {
         // Only rebuild if the selection status of THIS table changed,
         // or if its specific properties (like name or position) in the list changed.
@@ -62,7 +63,7 @@ class DraggableTableItem extends StatelessWidget {
           orElse: () => table,
         );
         final isSelected = state.selectedTable?.id == table.id;
-        final cubit = context.read<TableEditorCubit>();
+        final bloc = context.read<TableEditorBloc>();
 
         return Stack(
           clipBehavior: Clip.none,
@@ -84,14 +85,14 @@ class DraggableTableItem extends StatelessWidget {
                   behavior: HitTestBehavior.opaque,
                   onTap: () {
                     focusNode.requestFocus();
-                    cubit.selectTable(table);
+                    bloc.add(TableEditorTableSelected(table));
                   },
                   // Start drag: mark this table as the active dragging item
                   onScaleStart: readOnly
                       ? null
                       : (_) {
                           draggingTableNotifier.value = current;
-                          cubit.selectTable(current);
+                          bloc.add(TableEditorTableSelected(current));
                         },
                   // Update: move the "ghost" preview based on delta
                   onScaleUpdate: readOnly
@@ -119,7 +120,7 @@ class DraggableTableItem extends StatelessWidget {
                       : (_) {
                           final dragging = draggingTableNotifier.value;
                           if (dragging != null && dragging.id == table.id) {
-                            cubit.updateTable(dragging);
+                            bloc.add(TableEditorTableUpdated(dragging));
                             draggingTableNotifier.value = null;
                           }
                         },

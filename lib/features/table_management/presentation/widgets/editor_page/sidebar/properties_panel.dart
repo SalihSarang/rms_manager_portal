@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:rms_design_system/rms_design_system.dart';
 import 'package:rms_shared_package/rms_shared_package.dart';
-import '../../../cubit/table_editor_cubit.dart';
+import '../../../bloc/table_editor_bloc.dart';
 import 'components/properties_header.dart';
 import 'components/table_name_field.dart';
 import 'components/table_position_display.dart';
@@ -12,12 +12,12 @@ import 'components/table_delete_button.dart';
 
 class PropertiesPanel extends StatelessWidget {
   final TableModel selectedTable;
-  final TableEditorCubit cubit;
+  final TableEditorBloc bloc;
 
   const PropertiesPanel({
     super.key,
     required this.selectedTable,
-    required this.cubit,
+    required this.bloc,
   });
 
   @override
@@ -34,10 +34,10 @@ class PropertiesPanel extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           const PropertiesHeader(),
-          TableNameField(table: selectedTable, cubit: cubit),
+          TableNameField(table: selectedTable, bloc: bloc),
           TablePositionDisplay(table: selectedTable),
-          TableSeatCounter(table: selectedTable, cubit: cubit),
-          TableDeleteButton(tableId: selectedTable.id, cubit: cubit),
+          TableSeatCounter(table: selectedTable, bloc: bloc),
+          TableDeleteButton(tableId: selectedTable.id, bloc: bloc),
         ],
       ),
     );

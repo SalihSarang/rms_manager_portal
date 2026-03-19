@@ -1,0 +1,240 @@
+import 'dart:developer';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rms_shared_package/rms_shared_package.dart';
+import '../../domain/repositories/hall_repository.dart';
+import '../../domain/repositories/table_repository.dart';
+import 'table_editor_event.dart';
+import 'table_editor_state.dart';
+
+class TableEditorBloc extends Bloc<TableEditorEvent, TableEditorState> {
+  final IHallRepository _hallRepository;
+  final ITableRepository _tableRepository;
+
+  TableEditorBloc(
+    this._hallRepository,
+    this._tableRepository,
+  ) : super(const TableEditorState()) {
+    on<TableEditorInit>(_onInit);
+    on<TableEditorHallSelected>(_onHallSelected);
+    on<TableEditorHallAdded>(_onHallAdded);
+    on<TableEditorEditModeSet>(_onEditModeSet);
+    on<TableEditorViewModeSet>(_onViewModeSet);
+    on<TableEditorNavigationReset>(_onNavigationReset);
+    on<TableEditorTableAdded>(_onTableAdded);
+    on<TableEditorTableUpdated>(_onTableUpdated);
+    on<TableEditorTableDeleted>(_onTableDeleted);
+    on<TableEditorTableSelected>(_onTableSelected);
+    on<TableEditorTablePositionUpdated>(_onTablePositionUpdated);
+    on<TableEditorTableSeatsUpdated>(_onTableSeatsUpdated);
+    on<TableEditorTableRenamed>(_onTableRenamed);
+    on<TableEditorModeSet>(_onModeSet);
+  }
+
+  Future<void> _onInit(
+    TableEditorInit event,
+    Emitter<TableEditorState> emit,
+  ) async {
+    emit(state.copyWith(isLoading: true, error: null));
+    try {
+      final halls = await _hallRepository.getHalls();
+      final allTables = await _tableRepository.getAllTables();
+      emit(state.copyWith(
+        halls: halls,
+        allTables: allTables,
+        isLoading: false,
+      ));
+    } catch (e) {
+      log('Error loading halls/tables: $e');
+      emit(state.copyWith(isLoading: false, error: e.toString()));
+    }
+  }
+
+  Future<void> _onHallSelected(
+    TableEditorHallSelected event,
+    Emitter<TableEditorState> emit,
+  ) async {
+    final hall = event.hall;
+    if (state.selectedHall?.id == hall.id) {
+      emit(state.copyWith(isViewing: true, isEditing: false));
+      return;
+    }
+
+    emit(state.copyWith(isLoading: true, error: null));
+    try {
+      final tablesForHall = await _tableRepository.getTables(hall.id);
+      emit(
+        state
+            .copyWith(
+              selectedHall: hall,
+              tables: tablesForHall,
+              isViewing: true,
+              isEditing: false,
+              isLoading: false,
+            )
+            .copyWithSelectedTable(null),
+      );
+    } catch (e) {
+      emit(state.copyWith(isLoading: false, error: e.toString()));
+    }
+  }
+
+  Future<void> _onHallAdded(
+    TableEditorHallAdded event,
+    Emitter<TableEditorState> emit,
+  ) async {
+    if (state.halls.any((h) => h.id == event.id)) return;
+
+    final newHall = HallModel(
+      id: event.id,
+      name: event.name,
+      createdAt: DateTime.now(),
+    );
+
+    emit(state.copyWith(isLoading: true, error: null));
+    try {
+      await _hallRepository.addHall(newHall);
+      final updatedHalls = [...state.halls, newHall];
+      emit(state.copyWith(halls: updatedHalls, isLoading: false));
+    } catch (e) {
+      emit(state.copyWith(isLoading: false, error: e.toString()));
+    }
+  }
+
+  void _onEditModeSet(
+    TableEditorEditModeSet event,
+    Emitter<TableEditorState> emit,
+  ) {
+    emit(state.copyWith(
+      isEditing: event.isEditing,
+      isViewing: !event.isEditing,
+    ));
+  }
+
+  void _onViewModeSet(
+    TableEditorViewModeSet event,
+    Emitter<TableEditorState> emit,
+  ) {
+    emit(state.copyWith(
+      isViewing: event.isViewing,
+      isEditing: !event.isViewing,
+    ));
+  }
+
+  Future<void> _onNavigationReset(
+    TableEditorNavigationReset event,
+    Emitter<TableEditorState> emit,
+  ) async {
+    emit(state.copyWith(isEditing: false, isViewing: false));
+    add(TableEditorInit());
+  }
+
+  Future<void> _onTableAdded(
+    TableEditorTableAdded event,
+    Emitter<TableEditorState> emit,
+  ) async {
+    final hallId = state.selectedHall?.id;
+    if (hallId == null) return;
+
+    final tableWithHall = event.table.copyWith(hallId: hallId);
+
+    emit(state.copyWith(isLoading: true, error: null));
+    try {
+      await _tableRepository.addTable(tableWithHall);
+      final updatedTables = [...state.tables, tableWithHall];
+      emit(state.copyWith(
+        tables: updatedTables,
+        isLoading: false,
+      ).copyWithSelectedTable(tableWithHall));
+    } catch (e) {
+      emit(state.copyWith(isLoading: false, error: e.toString()));
+    }
+  }
+
+  Future<void> _onTableUpdated(
+    TableEditorTableUpdated event,
+    Emitter<TableEditorState> emit,
+  ) async {
+    emit(state.copyWith(isLoading: true, error: null));
+    try {
+      await _tableRepository.updateTable(event.table);
+      final updatedTables = List<TableModel>.from(state.tables);
+      final idx = updatedTables.indexWhere((t) => t.id == event.table.id);
+      if (idx != -1) updatedTables[idx] = event.table;
+
+      emit(state.copyWith(
+        tables: updatedTables,
+        isLoading: false,
+      ).copyWithSelectedTable(event.table));
+    } catch (e) {
+      emit(state.copyWith(isLoading: false, error: e.toString()));
+    }
+  }
+
+  Future<void> _onTableDeleted(
+    TableEditorTableDeleted event,
+    Emitter<TableEditorState> emit,
+  ) async {
+    emit(state.copyWith(isLoading: true, error: null));
+    try {
+      await _tableRepository.deleteTable(event.id);
+      final updatedTables =
+          state.tables.where((t) => t.id != event.id).toList();
+      final newSelected =
+          state.selectedTable?.id == event.id ? null : state.selectedTable;
+
+      emit(state.copyWith(
+        tables: updatedTables,
+        selectedTable: newSelected,
+        isLoading: false,
+      ));
+    } catch (e) {
+      emit(state.copyWith(isLoading: false, error: e.toString()));
+    }
+  }
+
+  void _onTableSelected(
+    TableEditorTableSelected event,
+    Emitter<TableEditorState> emit,
+  ) {
+    emit(state.copyWithSelectedTable(event.table));
+  }
+
+  Future<void> _onTablePositionUpdated(
+    TableEditorTablePositionUpdated event,
+    Emitter<TableEditorState> emit,
+  ) async {
+    if (state.selectedTable == null) return;
+    final updated = state.selectedTable!.copyWith(
+      x: state.selectedTable!.x + event.dx,
+      y: state.selectedTable!.y + event.dy,
+    );
+    add(TableEditorTableUpdated(updated));
+  }
+
+  Future<void> _onTableSeatsUpdated(
+    TableEditorTableSeatsUpdated event,
+    Emitter<TableEditorState> emit,
+  ) async {
+    if (state.selectedTable == null) return;
+    add(TableEditorTableUpdated(
+      state.selectedTable!.copyWith(seats: event.seats),
+    ));
+  }
+
+  Future<void> _onTableRenamed(
+    TableEditorTableRenamed event,
+    Emitter<TableEditorState> emit,
+  ) async {
+    final idx = state.tables.indexWhere((t) => t.id == event.id);
+    if (idx == -1) return;
+    final updated = state.tables[idx].copyWith(name: event.newName);
+    add(TableEditorTableUpdated(updated));
+  }
+
+  void _onModeSet(
+    TableEditorModeSet event,
+    Emitter<TableEditorState> emit,
+  ) {
+    emit(state.copyWith(mode: event.mode));
+  }
+}

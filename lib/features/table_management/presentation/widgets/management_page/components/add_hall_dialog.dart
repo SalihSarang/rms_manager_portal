@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rms_design_system/rms_design_system.dart';
-import '../../../cubit/table_editor_cubit.dart';
+import '../bloc/table_editor_bloc.dart';
+import '../bloc/table_editor_event.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddHallDialog extends StatelessWidget {
@@ -9,7 +10,7 @@ class AddHallDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final nameController = TextEditingController();
-    final cubit = context.read<TableEditorCubit>();
+    final bloc = context.read<TableEditorBloc>();
 
     return AlertDialog(
       backgroundColor: NeutralColors.surface,
@@ -41,7 +42,7 @@ class AddHallDialog extends StatelessWidget {
                   .toLowerCase()
                   .trim()
                   .replaceAll(RegExp(r'\s+'), '-');
-              cubit.addHall(id, nameController.text);
+              bloc.add(TableEditorHallAdded(id: id, name: nameController.text));
               Navigator.pop(context);
             }
           },

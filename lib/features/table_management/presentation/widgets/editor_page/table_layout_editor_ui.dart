@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../cubit/table_editor_cubit.dart';
-import '../../cubit/table_editor_state.dart';
+import '../bloc/table_editor_bloc.dart';
+import '../bloc/table_editor_event.dart';
+import '../bloc/table_editor_state.dart';
 import 'package:rms_design_system/rms_design_system.dart';
 import 'components/editor_app_bar.dart';
 import 'sidebar/sidebar.dart';
@@ -85,7 +86,7 @@ class _TableLayoutEditorUIState extends State<TableLayoutEditorUI> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<TableEditorCubit, TableEditorState>(
+    return BlocListener<TableEditorBloc, TableEditorState>(
       listenWhen: (prev, curr) => curr.error != null && prev.error != curr.error,
       listener: (context, state) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -120,29 +121,29 @@ class _TableLayoutEditorUIState extends State<TableLayoutEditorUI> {
                               : {
                                   const SingleActivator(LogicalKeyboardKey.arrowUp): () =>
                                       context
-                                          .read<TableEditorCubit>()
-                                          .updateSelectedTablePosition(0, -10),
+                                          .read<TableEditorBloc>()
+                                          .add(const TableEditorTablePositionUpdated(dx: 0, dy: -10)),
                                   const SingleActivator(LogicalKeyboardKey.arrowDown): () =>
                                       context
-                                          .read<TableEditorCubit>()
-                                          .updateSelectedTablePosition(0, 10),
+                                          .read<TableEditorBloc>()
+                                          .add(const TableEditorTablePositionUpdated(dx: 0, dy: 10)),
                                   const SingleActivator(LogicalKeyboardKey.arrowLeft): () =>
                                       context
-                                          .read<TableEditorCubit>()
-                                          .updateSelectedTablePosition(-10, 0),
+                                          .read<TableEditorBloc>()
+                                          .add(const TableEditorTablePositionUpdated(dx: -10, dy: 0)),
                                   const SingleActivator(LogicalKeyboardKey.arrowRight):
                                       () => context
-                                          .read<TableEditorCubit>()
-                                          .updateSelectedTablePosition(10, 0),
+                                          .read<TableEditorBloc>()
+                                          .add(const TableEditorTablePositionUpdated(dx: 10, dy: 0)),
                                   const SingleActivator(LogicalKeyboardKey.delete): () {
-                                    final cubit = context.read<TableEditorCubit>();
-                                    final selected = cubit.state.selectedTable;
-                                    if (selected != null) cubit.deleteTable(selected.id);
+                                    final bloc = context.read<TableEditorBloc>();
+                                    final selected = bloc.state.selectedTable;
+                                    if (selected != null) bloc.add(TableEditorTableDeleted(selected.id));
                                   },
                                   const SingleActivator(LogicalKeyboardKey.backspace): () {
-                                    final cubit = context.read<TableEditorCubit>();
-                                    final selected = cubit.state.selectedTable;
-                                    if (selected != null) cubit.deleteTable(selected.id);
+                                    final bloc = context.read<TableEditorBloc>();
+                                    final selected = bloc.state.selectedTable;
+                                    if (selected != null) bloc.add(TableEditorTableDeleted(selected.id));
                                   },
                                 },
                           child: Focus(
@@ -153,7 +154,7 @@ class _TableLayoutEditorUIState extends State<TableLayoutEditorUI> {
                                 _canvasViewportSize = Size(
                                   constraints.maxWidth,
                                   constraints.maxHeight,
-                                );
+                                ),
                                 return EditorCanvas(
                                   transformationController:
                                       _transformationController,
@@ -165,7 +166,7 @@ class _TableLayoutEditorUIState extends State<TableLayoutEditorUI> {
                           ),
                         ),
                       ),
-                      BlocBuilder<TableEditorCubit, TableEditorState>(
+                      BlocBuilder<TableEditorBloc, TableEditorState>(
                         builder: (context, state) {
                           if (state.isLoading) {
                             return const Center(

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rms_design_system/rms_design_system.dart';
-import '../../../../cubit/table_editor_cubit.dart';
+import '../../../../bloc/table_editor_bloc.dart';
+import '../../../../bloc/table_editor_state.dart';
 import 'app_bar_action_button.dart';
 
 class EditorActionsGroup extends StatelessWidget {
@@ -29,8 +30,8 @@ class EditorActionsGroup extends StatelessWidget {
       icon: Icons.save_alt_rounded,
       label: 'Save',
       onTap: () {
-        final cubit = context.read<TableEditorCubit>();
-        final state = cubit.state;
+        final bloc = context.read<TableEditorBloc>();
+        final state = bloc.state;
         // In a real app, logic for saving to backend would go here.
         debugPrint('Tables: ${state.tables.length}');
         ScaffoldMessenger.of(context).showSnackBar(

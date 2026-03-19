@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../cubit/table_editor_cubit.dart';
-import '../../cubit/table_editor_state.dart';
+import '../bloc/table_editor_bloc.dart';
+import '../bloc/table_editor_event.dart';
+import '../bloc/table_editor_state.dart';
 import 'components/hall_preview_card.dart';
 import 'hall_grid/components/add_new_hall_card.dart';
 import 'hall_grid/utils/hall_grid_utils.dart';
@@ -42,7 +43,7 @@ class HallGrid extends StatelessWidget {
           hall: hall,
           tables: hallTables,
           onTap: () {
-            context.read<TableEditorCubit>().selectHall(hall);
+            context.read<TableEditorBloc>().add(TableEditorHallSelected(hall));
           },
         );
       },
