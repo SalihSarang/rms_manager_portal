@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bloc/table_editor_bloc.dart';
-import '../bloc/table_editor_event.dart';
-import '../bloc/table_editor_state.dart';
+import 'package:manager_portal/features/table_management/presentation/bloc/table_editor_bloc.dart';
+import 'package:manager_portal/features/table_management/presentation/bloc/table_editor_event.dart';
+import 'package:manager_portal/features/table_management/presentation/bloc/table_editor_state.dart';
 import 'package:rms_design_system/rms_design_system.dart';
 import 'components/editor_app_bar.dart';
 import 'sidebar/sidebar.dart';
@@ -89,12 +89,14 @@ class _TableLayoutEditorUIState extends State<TableLayoutEditorUI> {
     return BlocListener<TableEditorBloc, TableEditorState>(
       listenWhen: (prev, curr) => curr.error != null && prev.error != curr.error,
       listener: (context, state) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(state.error!),
-            backgroundColor: SemanticColors.error,
-          ),
-        );
+        if (state.error != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.error!),
+              backgroundColor: SemanticColors.error,
+            ),
+          );
+        }
       },
       child: Column(
         children: [
@@ -154,7 +156,7 @@ class _TableLayoutEditorUIState extends State<TableLayoutEditorUI> {
                                 _canvasViewportSize = Size(
                                   constraints.maxWidth,
                                   constraints.maxHeight,
-                                ),
+                                );
                                 return EditorCanvas(
                                   transformationController:
                                       _transformationController,

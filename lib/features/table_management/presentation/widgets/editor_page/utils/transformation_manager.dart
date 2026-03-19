@@ -15,7 +15,7 @@ class TransformationManager {
     final dx = ((canvasWidth - viewportSize.width) / 2).clamp(0.0, canvasWidth);
     final dy = ((canvasHeight - viewportSize.height) / 2).clamp(0.0, canvasHeight);
     
-    controller.value = Matrix4.identity()..translate(-dx, -dy);
+    controller.value = Matrix4.translationValues(-dx, -dy, 0.0);
   }
 
   /// Performs a zoom-in operation on the given controller.
