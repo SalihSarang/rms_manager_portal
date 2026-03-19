@@ -14,7 +14,7 @@ import 'package:manager_portal/features/table_management/domain/usecases/table_u
 import 'package:manager_portal/features/table_management/domain/usecases/table_usecases/get_all_table_usecase.dart';
 import 'package:manager_portal/features/table_management/domain/usecases/table_usecases/get_tables_by_hall_usecase.dart';
 import 'package:manager_portal/features/table_management/domain/usecases/table_usecases/update_table_usecase.dart';
-import 'package:manager_portal/features/table_management/presentation/cubit/table_editor_cubit.dart';
+import 'package:manager_portal/features/table_management/presentation/bloc/table_editor_bloc/table_editor_bloc.dart';
 
 void setUpTableManagementDI() {
   // Datasources
@@ -58,7 +58,7 @@ void setUpTableManagementDI() {
   );
 
   // BloCs / Cubits
-  getIt.registerFactory<TableEditorCubit>(
-    () => TableEditorCubit(getIt(), getIt()),
+  getIt.registerFactory<TableEditorBloc>(
+    () => TableEditorBloc(getIt(), getIt()),
   );
 }

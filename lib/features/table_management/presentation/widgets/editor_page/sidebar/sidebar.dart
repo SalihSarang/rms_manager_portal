@@ -3,8 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rms_design_system/rms_design_system.dart';
-import '../../../cubit/table_editor_cubit.dart';
-import '../../../cubit/table_editor_state.dart';
+import 'package:manager_portal/features/table_management/presentation/bloc/table_editor_bloc/table_editor_bloc.dart';
+import 'package:manager_portal/features/table_management/presentation/bloc/table_editor_bloc/table_editor_state.dart';
 import 'hall_selector.dart';
 import 'properties_panel.dart';
 import 'components/library_header.dart';
@@ -17,7 +17,7 @@ class Sidebar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<TableEditorCubit>();
+    final bloc = context.read<TableEditorBloc>();
 
     return Container(
       width: 288,
@@ -39,13 +39,13 @@ class Sidebar extends StatelessWidget {
           const TableLibrary(),
 
           /// Properties panel / Empty Hint
-          BlocBuilder<TableEditorCubit, TableEditorState>(
+          BlocBuilder<TableEditorBloc, TableEditorState>(
             buildWhen: (p, c) => p.selectedTable != c.selectedTable,
             builder: (context, state) {
               if (state.selectedTable != null) {
                 return PropertiesPanel(
                   selectedTable: state.selectedTable!,
-                  cubit: cubit,
+                  bloc: bloc,
                 );
               }
               return const EmptySelectionHint();

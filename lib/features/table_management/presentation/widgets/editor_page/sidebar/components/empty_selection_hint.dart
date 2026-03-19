@@ -50,7 +50,7 @@ class EmptySelectionHint extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 2),
-                const Text(
+                Text(
                   'Tap a table to edit properties',
                   style: TextStyle(
                     fontSize: 11,

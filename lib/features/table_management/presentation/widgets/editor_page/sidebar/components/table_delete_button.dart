@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:rms_design_system/rms_design_system.dart';
-import '../../../../cubit/table_editor_cubit.dart';
+import 'package:manager_portal/features/table_management/presentation/bloc/table_editor_bloc/table_editor_bloc.dart';
+import 'package:manager_portal/features/table_management/presentation/bloc/table_editor_bloc/table_editor_event.dart';
 
 class TableDeleteButton extends StatelessWidget {
   final String tableId;
-  final TableEditorCubit cubit;
+  final TableEditorBloc bloc;
 
   const TableDeleteButton({
     super.key,
     required this.tableId,
-    required this.cubit,
+    required this.bloc,
   });
 
   @override
@@ -17,7 +18,7 @@ class TableDeleteButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
       child: GestureDetector(
-        onTap: () => cubit.deleteTable(tableId),
+        onTap: () => bloc.add(TableEditorTableDeleted(tableId)),
         child: Container(
           width: double.infinity,
           padding: const EdgeInsets.symmetric(vertical: 12),
@@ -34,7 +35,7 @@ class TableDeleteButton extends StatelessWidget {
               Icon(Icons.delete_outline_rounded,
                   size: 17, color: TableColors.destructive),
               SizedBox(width: 8),
-              const Text(
+              Text(
                 'Delete Table',
                 style: TextStyle(
                   color: TableColors.destructive,

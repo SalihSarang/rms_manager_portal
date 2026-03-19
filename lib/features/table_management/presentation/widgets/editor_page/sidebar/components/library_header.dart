@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rms_design_system/rms_design_system.dart';
-import '../../../../cubit/table_editor_cubit.dart';
-import '../../../../cubit/table_editor_state.dart';
+import 'package:manager_portal/features/table_management/presentation/bloc/table_editor_bloc/table_editor_bloc.dart';
+import 'package:manager_portal/features/table_management/presentation/bloc/table_editor_bloc/table_editor_state.dart';
 
 class LibraryHeader extends StatelessWidget {
   const LibraryHeader({super.key});
@@ -11,7 +11,7 @@ class LibraryHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 18, 20, 6),
-      child: BlocBuilder<TableEditorCubit, TableEditorState>(
+      child: BlocBuilder<TableEditorBloc, TableEditorState>(
         buildWhen: (p, c) => p.tables.length != c.tables.length,
         builder: (context, state) {
           return Row(

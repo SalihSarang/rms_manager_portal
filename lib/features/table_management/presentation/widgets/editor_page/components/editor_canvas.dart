@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rms_design_system/rms_design_system.dart';
 import 'package:rms_shared_package/rms_shared_package.dart';
-import '../../../cubit/table_editor_cubit.dart';
-import '../../../cubit/table_editor_state.dart';
+import 'package:manager_portal/features/table_management/presentation/bloc/table_editor_bloc/table_editor_bloc.dart';
+import 'package:manager_portal/features/table_management/presentation/bloc/table_editor_bloc/table_editor_event.dart';
+import 'package:manager_portal/features/table_management/presentation/bloc/table_editor_bloc/table_editor_state.dart';
 import '../../../painters/dot_grid_painter.dart';
 import 'draggable_table_item.dart';
 
@@ -37,9 +38,9 @@ class _EditorCanvasState extends State<EditorCanvas> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TableEditorCubit, TableEditorState>(
+    return BlocBuilder<TableEditorBloc, TableEditorState>(
       builder: (context, state) {
-        final cubit = context.read<TableEditorCubit>();
+        final bloc = context.read<TableEditorBloc>();
         return DragTarget<TableModel>(
           onAcceptWithDetails: widget.readOnly
               ? null
@@ -71,7 +72,7 @@ class _EditorCanvasState extends State<EditorCanvas> {
                     hallId: state.selectedHall?.id ?? 'default',
                   );
 
-                  cubit.addTable(newTable);
+                  bloc.add(TableEditorTableAdded(newTable));
                   widget.focusNode.requestFocus();
                 },
           builder: (context, candidateData, rejectedData) {
@@ -81,7 +82,7 @@ class _EditorCanvasState extends State<EditorCanvas> {
                 child: GestureDetector(
                   onTap: () {
                     if (!widget.readOnly && state.mode == PlanMode.select) {
-                      cubit.selectTable(null);
+                      bloc.add(const TableEditorTableSelected(null));
                     }
                     widget.focusNode.requestFocus();
                   },

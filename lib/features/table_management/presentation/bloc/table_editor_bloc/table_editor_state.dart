@@ -45,7 +45,7 @@ class TableEditorState extends Equatable {
       selectedHall: selectedHall ?? this.selectedHall,
       allTables: allTables ?? this.allTables,
       tables: tables ?? this.tables,
-      selectedTable: selectedTable,
+      selectedTable: selectedTable ?? this.selectedTable,
       mode: mode ?? this.mode,
       isEditing: isEditing ?? this.isEditing,
       isViewing: isViewing ?? this.isViewing,

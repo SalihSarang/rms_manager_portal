@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:rms_design_system/rms_design_system.dart';
 import 'package:rms_shared_package/rms_shared_package.dart';
-import '../../../../cubit/table_editor_cubit.dart';
+import 'package:manager_portal/features/table_management/presentation/bloc/table_editor_bloc/table_editor_bloc.dart';
+import 'package:manager_portal/features/table_management/presentation/bloc/table_editor_bloc/table_editor_event.dart';
 
 class TableNameField extends StatefulWidget {
   final TableModel table;
-  final TableEditorCubit cubit;
+  final TableEditorBloc bloc;
 
   const TableNameField({
     super.key,
     required this.table,
-    required this.cubit,
+    required this.bloc,
   });
 
   @override
@@ -46,7 +47,7 @@ class _TableNameFieldState extends State<TableNameField> {
   void _submitName() {
     final newName = _nameController.text.trim();
     if (newName.isNotEmpty && newName != widget.table.name) {
-      widget.cubit.renameTable(widget.table.id, newName);
+      widget.bloc.add(TableEditorTableRenamed(id: widget.table.id, newName: newName));
     }
   }
 
