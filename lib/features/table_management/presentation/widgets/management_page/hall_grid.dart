@@ -14,10 +14,7 @@ class HallGrid extends StatelessWidget {
   final TableEditorState state;
 
   /// Creates a [HallGrid].
-  const HallGrid({
-    super.key,
-    required this.state,
-  });
+  const HallGrid({super.key, required this.state});
 
   @override
   Widget build(BuildContext context) {
@@ -33,14 +30,13 @@ class HallGrid extends StatelessWidget {
       itemCount: state.halls.length + 1,
       itemBuilder: (context, index) {
         if (index == state.halls.length) {
-          return _AddNewHallCard(
-            onTap: () => _showAddHallDialog(context),
-          );
+          return _AddNewHallCard(onTap: () => _showAddHallDialog(context));
         }
 
         final hall = state.halls[index];
-        final hallTables =
-            state.allTables.where((t) => t.hallId == hall.id).toList();
+        final hallTables = state.allTables
+            .where((t) => t.hallId == hall.id)
+            .toList();
         return HallPreviewCard(
           hall: hall,
           tables: hallTables,
@@ -57,10 +53,8 @@ class HallGrid extends StatelessWidget {
     final cubit = context.read<TableEditorCubit>();
     showDialog(
       context: context,
-      builder: (context) => BlocProvider.value(
-        value: cubit,
-        child: const AddHallDialog(),
-      ),
+      builder: (context) =>
+          BlocProvider.value(value: cubit, child: const AddHallDialog()),
     );
   }
 }
@@ -117,8 +111,7 @@ class _AddNewHallCardState extends State<_AddNewHallCard> {
                     colors: _isHovered
                         ? [
                             PrimaryColors.defaultColor,
-                            PrimaryColors.defaultColor
-                                .withValues(alpha: 0.7),
+                            PrimaryColors.defaultColor.withValues(alpha: 0.7),
                           ]
                         : [
                             PrimaryColors.defaultColor.withValues(alpha: 0.15),
@@ -131,8 +124,9 @@ class _AddNewHallCardState extends State<_AddNewHallCard> {
                   boxShadow: _isHovered
                       ? [
                           BoxShadow(
-                            color: PrimaryColors.defaultColor
-                                .withValues(alpha: 0.4),
+                            color: PrimaryColors.defaultColor.withValues(
+                              alpha: 0.4,
+                            ),
                             blurRadius: 20,
                             offset: const Offset(0, 4),
                           ),
