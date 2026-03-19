@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:manager_portal/core/utils/error_handler.dart';
 import 'package:manager_portal/core/utils/image_picker_service/feature_specific_usecase/food_img_picker.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/add_food_item_usecase.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/update_food_item_usecase.dart';
@@ -12,11 +13,21 @@ import 'add_menu_item_event.dart';
 export 'add_menu_item_state.dart';
 export 'add_menu_item_event.dart';
 
+/// Business logic component for adding or editing individual food items.
+///
+/// Manages the state of the food item form, including image picking,
+/// portions, add-ons, and basic details.
 class AddMenuItemBloc extends Bloc<AddMenuItemEvent, AddMenuItemState> {
+  /// Service for picking and uploading food images.
   final FoodImgPickerUsecase foodImgPickerUsecase;
+
+  /// Use case for saving a new food item.
   final AddFoodItemUsecase addFoodItemUsecase;
+
+  /// Use case for updating an existing food item.
   final UpdateFoodItemUsecase updateFoodItemUsecase;
 
+  /// Creates an [AddMenuItemBloc] with the required dependencies.
   AddMenuItemBloc({
     required this.foodImgPickerUsecase,
     required this.addFoodItemUsecase,
@@ -161,11 +172,11 @@ class AddMenuItemBloc extends Bloc<AddMenuItemEvent, AddMenuItemState> {
   ) async {
     // Basic validation
     if (state.name.isEmpty) {
-      emit(state.copyWith(errorMessage: 'Name is required'));
+      emit(state.copyWith(errorMessage: 'Please enter a name for the food item.'));
       return;
     }
     if (state.category == null) {
-      emit(state.copyWith(errorMessage: 'Category is required'));
+      emit(state.copyWith(errorMessage: 'Please select a category.'));
       return;
     }
 
@@ -205,7 +216,7 @@ class AddMenuItemBloc extends Bloc<AddMenuItemEvent, AddMenuItemState> {
 
       emit(state.copyWith(isSubmitting: false, isSuccess: true));
     } catch (e) {
-      emit(state.copyWith(isSubmitting: false, errorMessage: e.toString()));
+      emit(state.copyWith(isSubmitting: false, errorMessage: ErrorHandler.getFriendlyMessage(e)));
     }
   }
 }

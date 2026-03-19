@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:rms_design_system/app_colors/primary_colors.dart';
 
+/// A full-width primary button styled for authentication actions.
+///
+/// Displays a loading indicator when [isLoading] is true.
 class AuthButton extends StatelessWidget {
+  /// The text to display on the button.
   final String text;
+
+  /// Callback when the button is pressed.
   final VoidCallback? onPressed;
+
+  /// Whether to show a loading indicator instead of [text].
   final bool isLoading;
 
+  /// Creates an [AuthButton].
   const AuthButton({
     super.key,
     required this.text,

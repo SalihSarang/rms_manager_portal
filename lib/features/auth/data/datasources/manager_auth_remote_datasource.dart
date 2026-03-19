@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:rms_shared_package/constants/db_constants.dart';
@@ -20,29 +22,75 @@ class ManagerAuthRemoteDataSourceImpl implements ManagerAuthRemoteDataSource {
 
   @override
   Future<ManagerModel?> signIn(String email, String password) async {
+    log(
+      '[AuthDatasource] signIn -> email: $email',
+      name: 'ManagerAuthRemoteDataSource',
+    );
     try {
-      await auth.signInWithEmailAndPassword(email: email, password: password);
+      final credential = await auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      log(
+        '[AuthDatasource] signIn <- Firebase Auth success, uid: ${credential.user?.uid}',
+        name: 'ManagerAuthRemoteDataSource',
+      );
       return getCurrentManager();
     } catch (e) {
+      log(
+        '[AuthDatasource] signIn <- error: $e',
+        name: 'ManagerAuthRemoteDataSource',
+      );
       rethrow;
     }
   }
 
   @override
-  Future<void> signOut() async => await auth.signOut();
+  Future<void> signOut() async {
+    log(
+      '[AuthDatasource] signOut -> calling Firebase Auth',
+      name: 'ManagerAuthRemoteDataSource',
+    );
+    await auth.signOut();
+    log(
+      '[AuthDatasource] signOut <- success',
+      name: 'ManagerAuthRemoteDataSource',
+    );
+  }
 
   @override
   Future<ManagerModel?> getCurrentManager() async {
     final user = auth.currentUser;
+    log(
+      '[AuthDatasource] getCurrentManager -> uid: ${user?.uid}',
+      name: 'ManagerAuthRemoteDataSource',
+    );
 
-    if (user == null) return null;
+    if (user == null) {
+      log(
+        '[AuthDatasource] getCurrentManager <- no current user',
+        name: 'ManagerAuthRemoteDataSource',
+      );
+      return null;
+    }
     final docSnapshot = await firestore
         .collection(ManagerDbConstants.manager)
         .doc(user.uid)
         .get();
 
-    if (!docSnapshot.exists || docSnapshot.data() == null) return null;
+    if (!docSnapshot.exists || docSnapshot.data() == null) {
+      log(
+        '[AuthDatasource] getCurrentManager <- Firestore doc not found for uid: ${user.uid}',
+        name: 'ManagerAuthRemoteDataSource',
+      );
+      return null;
+    }
 
-    return ManagerModel.fromJson(docSnapshot.data()!);
+    final manager = ManagerModel.fromJson(docSnapshot.data()!);
+    log(
+      '[AuthDatasource] getCurrentManager <- received manager: ${docSnapshot.data()}',
+      name: 'ManagerAuthRemoteDataSource',
+    );
+    return manager;
   }
 }

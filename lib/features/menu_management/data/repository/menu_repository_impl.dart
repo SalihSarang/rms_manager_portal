@@ -3,6 +3,7 @@ import 'package:rms_shared_package/models/menu_models/category_model/category_mo
 import 'package:rms_shared_package/models/menu_models/food_model/food_model.dart';
 import 'package:manager_portal/features/menu_management/domain/repository/menu_repository.dart';
 
+/// Implementation of [MenuRepository] that uses [MenuRemoteDatasource] for data operations.
 class MenuRepositoryImpl implements MenuRepository {
   final MenuRemoteDatasource remoteDatasource;
 
@@ -36,5 +37,10 @@ class MenuRepositoryImpl implements MenuRepository {
   @override
   Future<List<FoodModel>> getFoodItemsByCategory(String categoryId) async {
     return await remoteDatasource.getFoodItemsByCategory(categoryId);
+  }
+
+  @override
+  Future<List<FoodModel>> getAllFoodItems() async {
+    return await remoteDatasource.getAllFoodItems();
   }
 }

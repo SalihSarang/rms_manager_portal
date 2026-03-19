@@ -6,7 +6,12 @@ import 'package:manager_portal/features/staff_management/presentation/utils/side
 import 'package:manager_portal/features/staff_management/presentation/widgets/staff_listing/appbar/appbar.dart';
 import 'package:manager_portal/features/staff_management/presentation/widgets/staff_listing/staff_listing_layouts.dart';
 
+/// Screen that displays a list of all staff members.
+///
+/// Features include a responsive layout for different screen sizes and
+/// an action to add new staff members via a sidebar.
 class StaffListingScreen extends StatelessWidget {
+  /// Creates a [StaffListingScreen].
   const StaffListingScreen({super.key});
 
   @override

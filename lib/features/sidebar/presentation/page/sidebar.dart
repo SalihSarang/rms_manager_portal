@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:manager_portal/features/menu_management/presentation/pages/menu_management_page.dart';
 import 'package:manager_portal/features/staff_management/presentation/pages/staff_listing_page.dart';
+import 'package:manager_portal/features/table_management/presentation/pages/table_management_page.dart';
 import 'package:sidebarx/sidebarx.dart';
 import 'package:manager_portal/features/sidebar/presentation/widgets/manager_sidebar_x.dart';
 
+/// The primary navigation shell for the manager portal.
+///
+/// It coordinates the [SidebarX] drawer and the [PageView] used to switch
+/// between different management screens (Staff, Menu, Tables, etc.).
 class Sidebar extends StatefulWidget {
+  /// Creates the application's [Sidebar] shell.
   const Sidebar({super.key});
 
   @override
@@ -63,13 +69,14 @@ class _SidebarState extends State<Sidebar> {
             child: PageView(
               controller: _pageController,
               physics: const NeverScrollableScrollPhysics(),
-              children: const [
-                Center(child: Text('Overview Page')),
-                StaffListingScreen(),
-                MenuManagementPage(),
-                Center(child: Text('Reports Page')),
-                Center(child: Text('Settings Page')),
-                Center(child: Text('Logout Page')),
+              children: [
+                const Center(child: Text('Overview Page')),
+                const StaffListingScreen(),
+                const MenuManagementPage(),
+                const TableManagementPage(),
+                const Center(child: Text('Reports Page')),
+                const Center(child: Text('Settings Page')),
+                const Center(child: Text('Logout Page')),
               ],
             ),
           ),

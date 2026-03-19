@@ -7,16 +7,22 @@ import 'package:manager_portal/features/menu_management/presentation/bloc/add_me
 import 'package:manager_portal/features/menu_management/presentation/widgets/add_menu_item/add_item_bottom_action_bar.dart';
 import 'package:manager_portal/features/menu_management/presentation/widgets/add_menu_item/addons_pricing_section.dart';
 import 'package:manager_portal/features/menu_management/presentation/widgets/add_menu_item/basic_info_section.dart';
-import 'package:manager_portal/features/menu_management/presentation/widgets/add_menu_item/customization_settings_section.dart';
+import 'package:manager_portal/features/menu_management/presentation/widgets/add_menu_item/dietary_preferences_section.dart';
 import 'package:manager_portal/features/menu_management/presentation/widgets/add_menu_item/portions_pricing_section.dart';
 import 'package:rms_design_system/app_colors/neutral_colors.dart';
 import 'package:rms_design_system/app_colors/semantic_colors.dart';
 import 'package:rms_design_system/app_colors/text_colors.dart';
 import 'package:rms_shared_package/models/menu_models/food_model/food_model.dart';
 
+/// A page for creating or editing a food item.
+///
+/// If [foodItemToEdit] is provided, the page initializes in edit mode;
+/// otherwise, it opens as a blank "Add New Item" form.
 class AddMenuItemPage extends StatelessWidget {
+  /// The food item to be edited, or `null` if creating a new item.
   final FoodModel? foodItemToEdit;
 
+  /// Creates an [AddMenuItemPage].
   const AddMenuItemPage({super.key, this.foodItemToEdit});
 
   @override
@@ -45,8 +51,12 @@ class AddMenuItemPage extends StatelessWidget {
         listener: (context, state) {
           if (state.isSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Food item added successfully!'),
+              SnackBar(
+                content: Text(
+                  foodItemToEdit != null
+                      ? 'Food item updated successfully!'
+                      : 'Food item added successfully!',
+                ),
                 backgroundColor: SemanticColors.success,
               ),
             );
@@ -78,54 +88,65 @@ class AddMenuItemPage extends StatelessWidget {
               child: Container(color: NeutralColors.border, height: 1.0),
             ),
           ),
-          body: Column(
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.all(32),
-                  child: Center(
-                    child: ConstrainedBox(
-                      constraints: const BoxConstraints(maxWidth: 900),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            foodItemToEdit != null
-                                ? "Edit Food Item"
-                                : "Add New Food Item",
-                            style: const TextStyle(
-                              color: TextColors.inverse,
-                              fontSize: 24,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            "Configure basic details, portions, and customization settings for your menu.",
-                            style: TextStyle(
-                              color: TextColors.secondary.withValues(
-                                alpha: 0.7,
+          body: BlocBuilder<AddMenuItemBloc, AddMenuItemState>(
+            builder: (context, state) {
+              if (foodItemToEdit != null &&
+                  state.editingFoodId != foodItemToEdit!.id) {
+                return const Center(
+                  child: CircularProgressIndicator(color: TextColors.inverse),
+                );
+              }
+
+              return Column(
+                children: [
+                  Expanded(
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.all(32),
+                      child: Center(
+                        child: ConstrainedBox(
+                          constraints: const BoxConstraints(maxWidth: 900),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                foodItemToEdit != null
+                                    ? "Edit Food Item"
+                                    : "Add New Food Item",
+                                style: const TextStyle(
+                                  color: TextColors.inverse,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
-                              fontSize: 14,
-                            ),
+                              const SizedBox(height: 8),
+                              Text(
+                                "Configure basic details, portions, and customization settings for your menu.",
+                                style: TextStyle(
+                                  color: TextColors.secondary.withValues(
+                                    alpha: 0.7,
+                                  ),
+                                  fontSize: 14,
+                                ),
+                              ),
+                              const SizedBox(height: 32),
+                              const BasicInfoSection(),
+                              const SizedBox(height: 16),
+                              const PortionsAndPricingSection(),
+                              const SizedBox(height: 16),
+                              const AddOnsAndPricingSection(),
+                              const SizedBox(height: 16),
+                              const DietaryPreferencesSection(),
+                              const SizedBox(height: 32),
+                            ],
                           ),
-                          const SizedBox(height: 32),
-                          const BasicInfoSection(),
-                          const SizedBox(height: 16),
-                          const PortionsAndPricingSection(),
-                          const SizedBox(height: 16),
-                          const AddOnsAndPricingSection(),
-                          const SizedBox(height: 16),
-                          const CustomizationAndSettingsSection(),
-                          const SizedBox(height: 32),
-                        ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ),
-              const AddItemBottomActionBar(),
-            ],
+                  const AddItemBottomActionBar(),
+                ],
+              );
+            },
           ),
         ),
       ),

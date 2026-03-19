@@ -2,8 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:rms_design_system/app_colors/neutral_colors.dart';
 import 'package:rms_design_system/app_colors/text_colors.dart';
 
+/// A header widget displayed above the food items table.
+///
+/// Shows the [categoryName], the total [itemCount], and provides
+/// actions for filtering and sorting.
 class MenuItemsHeader extends StatelessWidget {
+  /// The name of the category currently being viewed.
   final String categoryName;
+
+  /// The number of items available in this category.
   final int itemCount;
 
   const MenuItemsHeader({

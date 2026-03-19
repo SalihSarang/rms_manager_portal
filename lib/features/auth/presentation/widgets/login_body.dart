@@ -8,18 +8,25 @@ import 'package:manager_portal/features/auth/presentation/widgets/auth_text_fiel
 import 'package:rms_design_system/app_colors/primary_colors.dart';
 import 'package:rms_design_system/app_colors/text_colors.dart';
 
+/// The main form area of the login screen.
+///
+/// Contains email and password input fields, forgot password link,
+/// and the sign-in button. It interacts with [AuthBloc] to handle input and submission.
 class LoginBody extends StatelessWidget {
+  /// Creates a [LoginBody].
   const LoginBody({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthBloc, AuthState>(
-      listener: (BuildContext context, AuthState state) {
-        if (state is LoginSuccess) {
-          // Navigator.pushReplacement(
-          //   context,
-          //   MaterialPageRoute(builder: (context) => Sidebar()),
-          // );
+      listener: (context, state) {
+        if (state is LoginFailure) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.error),
+              backgroundColor: const Color(0xFFE53935),
+            ),
+          );
         }
       },
       builder: (context, state) {
@@ -54,8 +61,8 @@ class LoginBody extends StatelessWidget {
                 ),
                 onPressed: () {
                   context.read<AuthBloc>().add(
-                    const LoginPasswordVisibilityChanged(),
-                  );
+                        const LoginPasswordVisibilityChanged(),
+                      );
                 },
               ),
             ),

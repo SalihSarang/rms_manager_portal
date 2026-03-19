@@ -1,0 +1,11 @@
+Analyzing manager_portal...                                     
+
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/table_management/presentation/pages/table_detail_screen.dart:48:56 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/table_management/presentation/pages/table_detail_screen.dart:76:56 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/table_management/presentation/widgets/table_list_view.dart:36:56 • deprecated_member_use
+   info • 'MaterialStateProperty' is deprecated and shouldn't be used. Use WidgetStateProperty instead. Moved to the Widgets layer to make code available outside of Material. This feature was deprecated after v3.19.0-0.3.pre • lib/features/table_management/presentation/widgets/table_list_view.dart:41:28 • deprecated_member_use
+   info • 'dataRowHeight' is deprecated and shouldn't be used. Migrate to use dataRowMinHeight and dataRowMaxHeight instead. This feature was deprecated after v3.7.0-5.0.pre • lib/features/table_management/presentation/widgets/table_list_view.dart:42:11 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/table_management/presentation/widgets/table_list_view.dart:98:22 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/table_management/presentation/widgets/table_list_view.dart:100:41 • deprecated_member_use
+
+7 issues found. (ran in 2.5s)

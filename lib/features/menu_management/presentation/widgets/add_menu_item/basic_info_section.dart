@@ -12,7 +12,6 @@ import 'package:rms_design_system/app_colors/primary_colors.dart';
 import 'package:rms_design_system/app_colors/text_colors.dart';
 import 'package:rms_design_system/app_colors/semantic_colors.dart';
 
-
 class BasicInfoSection extends StatefulWidget {
   const BasicInfoSection({super.key});
 
@@ -76,7 +75,10 @@ class _BasicInfoSectionState extends State<BasicInfoSection> {
                     RichText(
                       text: const TextSpan(
                         text: 'Food Name ',
-                        style: TextStyle(color: NeutralColors.white, fontSize: 14),
+                        style: TextStyle(
+                          color: NeutralColors.white,
+                          fontSize: 14,
+                        ),
                         children: [
                           TextSpan(
                             text: '*',
@@ -100,7 +102,10 @@ class _BasicInfoSectionState extends State<BasicInfoSection> {
                   children: [
                     const Text(
                       'Category',
-                      style: TextStyle(color: NeutralColors.white, fontSize: 14),
+                      style: TextStyle(
+                        color: NeutralColors.white,
+                        fontSize: 14,
+                      ),
                     ),
                     const SizedBox(height: 8),
                     BlocBuilder<AddCategoryBloc, AddCategoryState>(
@@ -216,8 +221,21 @@ class _BasicInfoSectionState extends State<BasicInfoSection> {
           const SizedBox(height: 8),
           BlocBuilder<AddMenuItemBloc, AddMenuItemState>(
             buildWhen: (previous, current) =>
-                previous.pickedImage != current.pickedImage,
+                previous.pickedImage != current.pickedImage ||
+                previous.imageUrl != current.imageUrl,
             builder: (context, state) {
+              final hasImage =
+                  state.pickedImage != null || state.imageUrl.isNotEmpty;
+
+              ImageProvider? imageProvider;
+              if (state.pickedImage != null) {
+                imageProvider = kIsWeb
+                    ? NetworkImage(state.pickedImage!.path)
+                    : FileImage(File(state.pickedImage!.path)) as ImageProvider;
+              } else if (state.imageUrl.isNotEmpty) {
+                imageProvider = NetworkImage(state.imageUrl);
+              }
+
               return GestureDetector(
                 onTap: () {
                   context.read<AddMenuItemBloc>().add(PickFoodImage());
@@ -230,12 +248,9 @@ class _BasicInfoSectionState extends State<BasicInfoSection> {
                     color: NeutralColors.background,
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(color: NeutralColors.border, width: 1),
-                    image: state.pickedImage != null
+                    image: hasImage && imageProvider != null
                         ? DecorationImage(
-                            image: kIsWeb
-                                ? NetworkImage(state.pickedImage!.path)
-                                : FileImage(File(state.pickedImage!.path))
-                                      as ImageProvider,
+                            image: imageProvider,
                             fit: BoxFit.cover,
                             colorFilter: ColorFilter.mode(
                               NeutralColors.shadow.withValues(alpha: 0.3),
@@ -248,7 +263,7 @@ class _BasicInfoSectionState extends State<BasicInfoSection> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(
-                        state.pickedImage != null
+                        hasImage
                             ? Icons.edit_outlined
                             : Icons.cloud_upload_outlined,
                         color: NeutralColors.white,
@@ -258,6 +273,8 @@ class _BasicInfoSectionState extends State<BasicInfoSection> {
                       Text(
                         state.pickedImage != null
                             ? 'Selected: ${state.pickedImage!.name}'
+                            : hasImage
+                            ? 'Click to change image'
                             : 'Click to upload or drag and drop',
                         style: const TextStyle(
                           color: NeutralColors.white,

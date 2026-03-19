@@ -4,7 +4,12 @@ import 'package:manager_portal/features/auth/presentation/widgets/login_footer.d
 import 'package:manager_portal/features/auth/presentation/widgets/login_header.dart';
 import 'package:rms_design_system/app_colors/neutral_colors.dart';
 
+/// Main entry point for the authentication flow.
+///
+/// This screen provides a container for the login header, body, and footer,
+/// and applies a premium gradient background.
 class LoginScreen extends StatelessWidget {
+  /// Creates a new [LoginScreen].
   const LoginScreen({super.key});
 
   @override

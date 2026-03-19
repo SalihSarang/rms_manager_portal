@@ -4,10 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:manager_portal/core/widgets/reusable_table.dart';
 import 'package:manager_portal/features/menu_management/presentation/cubit/menu_items_pagination_cubit.dart';
 import 'package:manager_portal/features/menu_management/presentation/pages/add_menu_item_page.dart';
+import 'package:manager_portal/features/menu_management/presentation/pages/menu_details_screen.dart';
 import 'package:manager_portal/features/menu_management/presentation/widgets/menu_items_table/components/menu_items_table_footer.dart';
 import 'package:manager_portal/features/menu_management/presentation/widgets/menu_items_table/components/menu_items_table_row.dart';
 import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_bloc.dart';
 import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_event.dart';
+import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_state.dart';
 import 'package:rms_design_system/app_colors/neutral_colors.dart';
 import 'package:rms_design_system/app_colors/semantic_colors.dart';
 import 'package:rms_shared_package/models/menu_models/food_model/food_model.dart';
@@ -65,16 +67,27 @@ class MenuItemsTableContent extends StatelessWidget {
                   index: startIndex + currentData.indexOf(item) + 1,
                   item: item,
                   onTap: () {
-                    // Navigate to details or open modal
-                  },
-                  onEdit: () {
                     Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            MenuDetailsScreen(foodItem: item),
+                      ),
+                    );
+                  },
+                  onEdit: () async {
+                    final bloc = context.read<AddCategoryBloc>();
+                    await Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
                             AddMenuItemPage(foodItemToEdit: item),
                       ),
                     );
+                    if (bloc.state is CategoriesLoaded) {
+                      final state = bloc.state as CategoriesLoaded;
+                      bloc.add(LoadCategories(selectedCategoryId: state.selectedCategoryId));
+                    }
                   },
                   onToggleStatus: () {
                     showDialog(

@@ -4,7 +4,11 @@ import 'package:rms_design_system/app_colors/neutral_colors.dart';
 import 'package:rms_design_system/app_colors/semantic_colors.dart';
 import 'package:rms_design_system/app_colors/text_colors.dart';
 
+/// Utility class for displaying standardized application dialogs.
 class DialogUtils {
+  /// Displays a confirmation dialog before performing a destructive action.
+  ///
+  /// Returns `true` if the user confirms, `false` otherwise.
   static Future<bool?> showDeleteConfirmationDialog({
     required BuildContext context,
     required String title,

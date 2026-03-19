@@ -9,7 +9,14 @@ abstract class AddCategoryEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class LoadCategories extends AddCategoryEvent {}
+class LoadCategories extends AddCategoryEvent {
+  final String? selectedCategoryId;
+
+  const LoadCategories({this.selectedCategoryId});
+
+  @override
+  List<Object?> get props => [selectedCategoryId];
+}
 
 class SelectCategory extends AddCategoryEvent {
   final String categoryId;

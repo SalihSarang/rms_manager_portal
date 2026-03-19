@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -27,23 +29,47 @@ class StaffDatasourceImpl implements StaffDatasource {
 
   @override
   Future<void> addNewStaff(StaffModel staff) async {
+    log(
+      '[StaffDatasource] addNewStaff -> id: ${staff.id}, payload: ${staff.toMap()}',
+      name: 'StaffDatasource',
+    );
     await firestore
         .collection(StaffDbConstants.staff)
         .doc(staff.id)
         .set(staff.toMap());
+    log(
+      '[StaffDatasource] addNewStaff <- success for id: ${staff.id}',
+      name: 'StaffDatasource',
+    );
   }
 
   @override
   Future<void> updateStaff(StaffModel staff) async {
+    log(
+      '[StaffDatasource] updateStaff -> id: ${staff.id}, payload: ${staff.toMap()}',
+      name: 'StaffDatasource',
+    );
     await firestore
         .collection(StaffDbConstants.staff)
         .doc(staff.id)
         .update(staff.toMap());
+    log(
+      '[StaffDatasource] updateStaff <- success for id: ${staff.id}',
+      name: 'StaffDatasource',
+    );
   }
 
   @override
   Future<void> deleteStaff(String staffId) async {
+    log(
+      '[StaffDatasource] deleteStaff -> staffId: $staffId',
+      name: 'StaffDatasource',
+    );
     await firestore.collection(StaffDbConstants.staff).doc(staffId).delete();
+    log(
+      '[StaffDatasource] deleteStaff <- success for staffId: $staffId',
+      name: 'StaffDatasource',
+    );
   }
 
   @override
@@ -51,6 +77,10 @@ class StaffDatasourceImpl implements StaffDatasource {
     required String email,
     required String password,
   }) async {
+    log(
+      '[StaffDatasource] createNewUserWithEmailAndPassword -> email: $email',
+      name: 'StaffDatasource',
+    );
     FirebaseApp? secondaryApp;
     try {
       secondaryApp = await Firebase.initializeApp(
@@ -65,8 +95,17 @@ class StaffDatasourceImpl implements StaffDatasource {
         password: password,
       );
 
-      return credential.user!.uid;
+      final uid = credential.user!.uid;
+      log(
+        '[StaffDatasource] createNewUserWithEmailAndPassword <- success, uid: $uid',
+        name: 'StaffDatasource',
+      );
+      return uid;
     } catch (e) {
+      log(
+        '[StaffDatasource] createNewUserWithEmailAndPassword <- error: $e',
+        name: 'StaffDatasource',
+      );
       rethrow;
     } finally {
       await secondaryApp?.delete();
@@ -75,21 +114,43 @@ class StaffDatasourceImpl implements StaffDatasource {
 
   @override
   Future<List<StaffModel?>> getAllStaffs() async {
+    log(
+      '[StaffDatasource] getAllStaffs -> calling Firestore',
+      name: 'StaffDatasource',
+    );
     final snapshot = await firestore.collection(StaffDbConstants.staff).get();
-    return snapshot.docs
+    final staffs = snapshot.docs
         .map((doc) => StaffModel.fromMap(doc.data(), doc.id))
         .toList();
+    log(
+      '[StaffDatasource] getAllStaffs <- received ${staffs.length} staff records: ${staffs.map((s) => s.toMap()).toList()}',
+      name: 'StaffDatasource',
+    );
+    return staffs;
   }
 
   @override
   Future<StaffModel> getStaffDetails(String staffId) async {
+    log(
+      '[StaffDatasource] getStaffDetails -> staffId: $staffId',
+      name: 'StaffDatasource',
+    );
     final doc = await firestore
         .collection(StaffDbConstants.staff)
         .doc(staffId)
         .get();
     if (doc.exists) {
-      return StaffModel.fromMap(doc.data()!, doc.id);
+      final staff = StaffModel.fromMap(doc.data()!, doc.id);
+      log(
+        '[StaffDatasource] getStaffDetails <- received: ${doc.data()}',
+        name: 'StaffDatasource',
+      );
+      return staff;
     } else {
+      log(
+        '[StaffDatasource] getStaffDetails <- staff not found for id: $staffId',
+        name: 'StaffDatasource',
+      );
       throw Exception('Staff not found');
     }
   }
