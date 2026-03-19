@@ -23,7 +23,7 @@ class ManagerAuthRemoteDataSourceImpl implements ManagerAuthRemoteDataSource {
   @override
   Future<ManagerModel?> signIn(String email, String password) async {
     log(
-      '[AuthDatasource] signIn → email: $email',
+      '[AuthDatasource] signIn -> email: $email',
       name: 'ManagerAuthRemoteDataSource',
     );
     try {
@@ -32,13 +32,13 @@ class ManagerAuthRemoteDataSourceImpl implements ManagerAuthRemoteDataSource {
         password: password,
       );
       log(
-        '[AuthDatasource] signIn ← Firebase Auth success, uid: ${credential.user?.uid}',
+        '[AuthDatasource] signIn <- Firebase Auth success, uid: ${credential.user?.uid}',
         name: 'ManagerAuthRemoteDataSource',
       );
       return getCurrentManager();
     } catch (e) {
       log(
-        '[AuthDatasource] signIn ← error: $e',
+        '[AuthDatasource] signIn <- error: $e',
         name: 'ManagerAuthRemoteDataSource',
       );
       rethrow;
@@ -48,12 +48,12 @@ class ManagerAuthRemoteDataSourceImpl implements ManagerAuthRemoteDataSource {
   @override
   Future<void> signOut() async {
     log(
-      '[AuthDatasource] signOut → calling Firebase Auth',
+      '[AuthDatasource] signOut -> calling Firebase Auth',
       name: 'ManagerAuthRemoteDataSource',
     );
     await auth.signOut();
     log(
-      '[AuthDatasource] signOut ← success',
+      '[AuthDatasource] signOut <- success',
       name: 'ManagerAuthRemoteDataSource',
     );
   }
@@ -62,13 +62,13 @@ class ManagerAuthRemoteDataSourceImpl implements ManagerAuthRemoteDataSource {
   Future<ManagerModel?> getCurrentManager() async {
     final user = auth.currentUser;
     log(
-      '[AuthDatasource] getCurrentManager → uid: ${user?.uid}',
+      '[AuthDatasource] getCurrentManager -> uid: ${user?.uid}',
       name: 'ManagerAuthRemoteDataSource',
     );
 
     if (user == null) {
       log(
-        '[AuthDatasource] getCurrentManager ← no current user',
+        '[AuthDatasource] getCurrentManager <- no current user',
         name: 'ManagerAuthRemoteDataSource',
       );
       return null;
@@ -80,7 +80,7 @@ class ManagerAuthRemoteDataSourceImpl implements ManagerAuthRemoteDataSource {
 
     if (!docSnapshot.exists || docSnapshot.data() == null) {
       log(
-        '[AuthDatasource] getCurrentManager ← Firestore doc not found for uid: ${user.uid}',
+        '[AuthDatasource] getCurrentManager <- Firestore doc not found for uid: ${user.uid}',
         name: 'ManagerAuthRemoteDataSource',
       );
       return null;
@@ -88,7 +88,7 @@ class ManagerAuthRemoteDataSourceImpl implements ManagerAuthRemoteDataSource {
 
     final manager = ManagerModel.fromJson(docSnapshot.data()!);
     log(
-      '[AuthDatasource] getCurrentManager ← received manager: ${docSnapshot.data()}',
+      '[AuthDatasource] getCurrentManager <- received manager: ${docSnapshot.data()}',
       name: 'ManagerAuthRemoteDataSource',
     );
     return manager;

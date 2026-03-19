@@ -30,7 +30,7 @@ class StaffDatasourceImpl implements StaffDatasource {
   @override
   Future<void> addNewStaff(StaffModel staff) async {
     log(
-      '[StaffDatasource] addNewStaff → id: ${staff.id}, payload: ${staff.toMap()}',
+      '[StaffDatasource] addNewStaff -> id: ${staff.id}, payload: ${staff.toMap()}',
       name: 'StaffDatasource',
     );
     await firestore
@@ -38,7 +38,7 @@ class StaffDatasourceImpl implements StaffDatasource {
         .doc(staff.id)
         .set(staff.toMap());
     log(
-      '[StaffDatasource] addNewStaff ← success for id: ${staff.id}',
+      '[StaffDatasource] addNewStaff <- success for id: ${staff.id}',
       name: 'StaffDatasource',
     );
   }
@@ -46,7 +46,7 @@ class StaffDatasourceImpl implements StaffDatasource {
   @override
   Future<void> updateStaff(StaffModel staff) async {
     log(
-      '[StaffDatasource] updateStaff → id: ${staff.id}, payload: ${staff.toMap()}',
+      '[StaffDatasource] updateStaff -> id: ${staff.id}, payload: ${staff.toMap()}',
       name: 'StaffDatasource',
     );
     await firestore
@@ -54,7 +54,7 @@ class StaffDatasourceImpl implements StaffDatasource {
         .doc(staff.id)
         .update(staff.toMap());
     log(
-      '[StaffDatasource] updateStaff ← success for id: ${staff.id}',
+      '[StaffDatasource] updateStaff <- success for id: ${staff.id}',
       name: 'StaffDatasource',
     );
   }
@@ -62,12 +62,12 @@ class StaffDatasourceImpl implements StaffDatasource {
   @override
   Future<void> deleteStaff(String staffId) async {
     log(
-      '[StaffDatasource] deleteStaff → staffId: $staffId',
+      '[StaffDatasource] deleteStaff -> staffId: $staffId',
       name: 'StaffDatasource',
     );
     await firestore.collection(StaffDbConstants.staff).doc(staffId).delete();
     log(
-      '[StaffDatasource] deleteStaff ← success for staffId: $staffId',
+      '[StaffDatasource] deleteStaff <- success for staffId: $staffId',
       name: 'StaffDatasource',
     );
   }
@@ -78,7 +78,7 @@ class StaffDatasourceImpl implements StaffDatasource {
     required String password,
   }) async {
     log(
-      '[StaffDatasource] createNewUserWithEmailAndPassword → email: $email',
+      '[StaffDatasource] createNewUserWithEmailAndPassword -> email: $email',
       name: 'StaffDatasource',
     );
     FirebaseApp? secondaryApp;
@@ -97,13 +97,13 @@ class StaffDatasourceImpl implements StaffDatasource {
 
       final uid = credential.user!.uid;
       log(
-        '[StaffDatasource] createNewUserWithEmailAndPassword ← success, uid: $uid',
+        '[StaffDatasource] createNewUserWithEmailAndPassword <- success, uid: $uid',
         name: 'StaffDatasource',
       );
       return uid;
     } catch (e) {
       log(
-        '[StaffDatasource] createNewUserWithEmailAndPassword ← error: $e',
+        '[StaffDatasource] createNewUserWithEmailAndPassword <- error: $e',
         name: 'StaffDatasource',
       );
       rethrow;
@@ -115,7 +115,7 @@ class StaffDatasourceImpl implements StaffDatasource {
   @override
   Future<List<StaffModel?>> getAllStaffs() async {
     log(
-      '[StaffDatasource] getAllStaffs → calling Firestore',
+      '[StaffDatasource] getAllStaffs -> calling Firestore',
       name: 'StaffDatasource',
     );
     final snapshot = await firestore.collection(StaffDbConstants.staff).get();
@@ -123,7 +123,7 @@ class StaffDatasourceImpl implements StaffDatasource {
         .map((doc) => StaffModel.fromMap(doc.data(), doc.id))
         .toList();
     log(
-      '[StaffDatasource] getAllStaffs ← received ${staffs.length} staff records: ${staffs.map((s) => s.toMap()).toList()}',
+      '[StaffDatasource] getAllStaffs <- received ${staffs.length} staff records: ${staffs.map((s) => s.toMap()).toList()}',
       name: 'StaffDatasource',
     );
     return staffs;
@@ -132,7 +132,7 @@ class StaffDatasourceImpl implements StaffDatasource {
   @override
   Future<StaffModel> getStaffDetails(String staffId) async {
     log(
-      '[StaffDatasource] getStaffDetails → staffId: $staffId',
+      '[StaffDatasource] getStaffDetails -> staffId: $staffId',
       name: 'StaffDatasource',
     );
     final doc = await firestore
@@ -142,13 +142,13 @@ class StaffDatasourceImpl implements StaffDatasource {
     if (doc.exists) {
       final staff = StaffModel.fromMap(doc.data()!, doc.id);
       log(
-        '[StaffDatasource] getStaffDetails ← received: ${doc.data()}',
+        '[StaffDatasource] getStaffDetails <- received: ${doc.data()}',
         name: 'StaffDatasource',
       );
       return staff;
     } else {
       log(
-        '[StaffDatasource] getStaffDetails ← staff not found for id: $staffId',
+        '[StaffDatasource] getStaffDetails <- staff not found for id: $staffId',
         name: 'StaffDatasource',
       );
       throw Exception('Staff not found');

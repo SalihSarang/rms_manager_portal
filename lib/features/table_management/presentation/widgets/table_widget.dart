@@ -1,140 +1,191 @@
+// components/table_widget.dart
+// The visual representation of a single table on the canvas.
 import 'package:flutter/material.dart';
-import 'package:manager_portal/features/table_management/presentation/pages/table_detail_screen.dart';
-import 'package:rms_shared_package/models/table_model/table_model.dart';
-import 'package:rms_design_system/app_colors/semantic_colors.dart';
-import 'package:rms_design_system/app_colors/text_colors.dart';
+import 'package:rms_design_system/rms_design_system.dart';
+import 'package:rms_shared_package/rms_shared_package.dart';
 
-/// A widget representing a single restaurant table with a premium design matching the reference image.
-///
-/// Displays the table name in the center and seat count in a top-right bubble.
-/// Responds to taps by navigating to the [TableDetailScreen].
 class TableWidget extends StatelessWidget {
-  /// The [TableModel] data for this table.
   final TableModel table;
+  final bool isSelected;
+  final bool isPreview;
 
-  /// Whether this widget is being used as a drag feedback.
-  final bool isFeedback;
-
-  /// Creates a [TableWidget].
-  const TableWidget({super.key, required this.table, this.isFeedback = false});
+  const TableWidget({
+    super.key,
+    required this.table,
+    this.isSelected = false,
+    this.isPreview = false,
+  });
 
   @override
   Widget build(BuildContext context) {
-    Color statusColor;
-    switch (table.status) {
-      case TableStatus.available:
-        statusColor = SemanticColors.success;
-        break;
-      case TableStatus.occupied:
-        statusColor = SemanticColors.error;
-        break;
-      case TableStatus.partiallyOccupied:
-        statusColor = Colors.orange;
-        break;
-      case TableStatus.disabled:
-        statusColor = Colors.grey;
-        break;
-    }
+    final bool isCircle = table.shape == TableShape.circle;
+    final (Color fill, Color border, Color textColor, Color badgeBg) =
+        _resolveColors();
 
-    final double width = _getWidth(table.shape);
-    final double height = _getHeight(table.shape);
-
-    return GestureDetector(
-      onTap: isFeedback
-          ? null
-          : () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => TableDetailScreen(table: table),
-                ),
-              );
-            },
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          // Table Body
-          Container(
-            width: width,
-            height: height,
-            decoration: BoxDecoration(
-              color: const Color(0xFF1E1E2D).withValues(alpha: isFeedback ? 0.6 : 0.95),
-              shape: table.shape == TableShape.circle ? BoxShape.circle : BoxShape.rectangle,
-              borderRadius: table.shape == TableShape.circle ? null : BorderRadius.circular(12),
-              border: Border.all(
-                color: isFeedback ? Colors.blue : statusColor.withValues(alpha: 0.5),
-                width: 2,
+    return Container(
+      width: table.width,
+      height: table.height,
+      decoration: BoxDecoration(
+        color: fill,
+        shape: isCircle ? BoxShape.circle : BoxShape.rectangle,
+        borderRadius: isCircle ? null : BorderRadius.circular(16),
+        border: Border.all(color: border, width: isSelected ? 2.5 : 1.5),
+        boxShadow: isPreview
+            ? []
+            : isSelected
+                ? [
+                    BoxShadow(
+                      color: PrimaryColors.defaultColor.withValues(alpha: 0.5),
+                      blurRadius: 16,
+                      spreadRadius: 2,
+                    ),
+                  ]
+                : [
+                    BoxShadow(
+                      color: NeutralColors.shadow.withValues(alpha: 0.4),
+                      blurRadius: 8,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
+        gradient: isPreview ? null : _resolveGradient(),
+      ),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              table.name,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w700,
+                color: isPreview ? NeutralColors.icon : textColor,
+                letterSpacing: 0.2,
               ),
-              boxShadow: [
-                BoxShadow(
-                  color: (isFeedback ? Colors.blue : statusColor).withValues(alpha: 0.2),
-                  blurRadius: 10,
-                  spreadRadius: 2,
-                ),
-              ],
+              textAlign: TextAlign.center,
+              overflow: TextOverflow.ellipsis,
             ),
-            child: Center(
-              child: Text(
-                table.name,
-                style: const TextStyle(
-                  color: TextColors.primary,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-              ),
-            ),
-          ),
-          // Seat Count Bubble (Top Right)
-          Positioned(
-            top: -5,
-            right: -5,
-            child: Container(
-              padding: const EdgeInsets.all(6),
+            const SizedBox(height: 5),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
               decoration: BoxDecoration(
-                color: isFeedback ? Colors.blue : const Color(0xFF2A2A3C),
-                shape: BoxShape.circle,
-                border: Border.all(color: Colors.white24, width: 1),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.3),
-                    blurRadius: 4,
+                color: isPreview
+                    ? NeutralColors.border.withValues(alpha: 0.5)
+                    : badgeBg,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.chair_rounded,
+                    size: 9,
+                    color: isSelected
+                        ? Colors.white.withValues(alpha: 0.7)
+                        : NeutralColors.icon,
+                  ),
+                  const SizedBox(width: 3),
+                  Text(
+                    '${table.seats}',
+                    style: TextStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w600,
+                      color: isSelected
+                          ? Colors.white.withValues(alpha: 0.85)
+                          : NeutralColors.icon,
+                    ),
                   ),
                 ],
               ),
-              child: Text(
-                '${table.capacity}',
-                style: const TextStyle(
-                  color: Colors.white70,
-                  fontSize: 10,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
-  double _getWidth(TableShape shape) {
-    switch (shape) {
-      case TableShape.square:
-        return 90;
-      case TableShape.rectangle:
-        return 140;
-      case TableShape.circle:
-        return 100;
+  (Color, Color, Color, Color) _resolveColors() {
+    if (isPreview) {
+      return (
+        NeutralColors.surface,
+        NeutralColors.border,
+        NeutralColors.icon,
+        NeutralColors.background,
+      );
+    }
+    if (isSelected) {
+      return (
+        PrimaryColors.defaultColor,
+        PrimaryColors.hoverColor,
+        Colors.white,
+        Colors.white.withValues(alpha: 0.2),
+      );
+    }
+    switch (table.status) {
+      case TableStatus.occupied:
+        return (
+          const Color(0xFF3D1A1A),
+          SemanticColors.error,
+          const Color(0xFFFF8A80),
+          SemanticColors.error.withValues(alpha: 0.2),
+        );
+      case TableStatus.reserved:
+        return (
+          const Color(0xFF1A2A3D),
+          SemanticColors.info,
+          const Color(0xFF90CAF9),
+          SemanticColors.info.withValues(alpha: 0.2),
+        );
+      case TableStatus.billRequested:
+        return (
+          const Color(0xFF3D2E10),
+          SemanticColors.warning,
+          const Color(0xFFFFCC80),
+          SemanticColors.warning.withValues(alpha: 0.2),
+        );
+      case TableStatus.cleaning:
+        return (
+          const Color(0xFF1A3D2A),
+          SemanticColors.success,
+          const Color(0xFFA5D6A7),
+          SemanticColors.success.withValues(alpha: 0.2),
+        );
+      default:
+        return (
+          NeutralColors.card,
+          NeutralColors.border,
+          NeutralColors.white,
+          NeutralColors.border.withValues(alpha: 0.5),
+        );
     }
   }
 
-  double _getHeight(TableShape shape) {
-    switch (shape) {
-      case TableShape.square:
-        return 90;
-      case TableShape.rectangle:
-        return 90;
-      case TableShape.circle:
-        return 100;
+  LinearGradient? _resolveGradient() {
+    if (isSelected) return null;
+    switch (table.status) {
+      case TableStatus.occupied:
+        return const LinearGradient(
+          colors: [Color(0xFF4A1F1F), Color(0xFF3D1A1A)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        );
+      case TableStatus.reserved:
+        return const LinearGradient(
+          colors: [Color(0xFF1F2E4A), Color(0xFF1A2A3D)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        );
+      case TableStatus.billRequested:
+        return const LinearGradient(
+          colors: [Color(0xFF4A381A), Color(0xFF3D2E10)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        );
+      default:
+        return const LinearGradient(
+          colors: [NeutralColors.cardGradientStart, NeutralColors.cardGradientEnd],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        );
     }
   }
 }

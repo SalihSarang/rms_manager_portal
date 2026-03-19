@@ -1,87 +1,95 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rms_design_system/rms_design_system.dart';
 import 'package:manager_portal/core/di/injector.dart';
-import 'package:manager_portal/features/table_management/presentation/bloc/table_management_bloc.dart';
-import 'package:manager_portal/features/table_management/presentation/widgets/table_layout_view.dart';
-import 'package:manager_portal/features/table_management/presentation/widgets/tables_library.dart';
-import 'package:rms_design_system/app_colors/neutral_colors.dart';
-import 'package:rms_design_system/app_colors/text_colors.dart';
+import 'package:manager_portal/features/table_management/presentation/cubit/table_editor_cubit.dart';
+import 'package:manager_portal/features/table_management/presentation/cubit/table_editor_state.dart';
+import 'package:manager_portal/features/table_management/presentation/pages/table_layout_editor.dart';
+import '../widgets/management_page/management_header.dart';
+import '../widgets/management_page/hall_grid.dart';
 
-/// A page for managing the restaurant's table layout.
+/// The main management page for restaurant floor plans and tables.
 ///
-/// This screen allows managers to visualize and arrange tables using a grid-based hall layout.
-/// In "Edit" mode, a library of table templates is available for drag-and-drop additions.
-class TableManagementPage extends StatefulWidget {
+/// This page allows users to:
+///   View an overview of all halls and total table counts.
+///   Create new halls (sections).
+///   Navigate to a specific hall's layout editor or viewer.
+///   Manage global table settings.
+class TableManagementPage extends StatelessWidget {
   /// Creates a [TableManagementPage].
   const TableManagementPage({super.key});
 
   @override
-  State<TableManagementPage> createState() => _TableManagementPageState();
-}
-
-class _TableManagementPageState extends State<TableManagementPage> {
-  bool _isEditMode = false;
-
-  @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => getIt<TableManagementBloc>()..add(LoadTables()),
-      child: Scaffold(
-        backgroundColor: NeutralColors.background,
-        appBar: AppBar(
-          backgroundColor: NeutralColors.background,
-          elevation: 0,
-          title: Text(
-            _isEditMode ? 'Builder: Floor Layout' : 'Table Management',
-            style: const TextStyle(color: TextColors.primary, fontWeight: FontWeight.bold),
-          ),
-          actions: [
-            // Toggle Edit Mode
-            TextButton.icon(
-              onPressed: () {
-                setState(() {
-                  _isEditMode = !_isEditMode;
-                });
-              },
-              icon: Icon(
-                _isEditMode ? Icons.check_circle_outline : Icons.edit_location_alt_outlined,
-                color: _isEditMode ? Colors.green : const Color(0xFF3B71FE),
-              ),
-              label: Text(
-                _isEditMode ? 'Save Layout' : 'Edit Layout',
-                style: TextStyle(
-                  color: _isEditMode ? Colors.green : const Color(0xFF3B71FE),
-                ),
-              ),
+      create: (context) => getIt<TableEditorCubit>(),
+      child: BlocListener<TableEditorCubit, TableEditorState>(
+        listenWhen: (prev, curr) =>
+            curr.error != null && prev.error != curr.error,
+        listener: (context, state) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.error!),
+              backgroundColor: Colors.redAccent,
             ),
-            const SizedBox(width: 24),
-          ],
-        ),
-        body: BlocBuilder<TableManagementBloc, TableManagementState>(
+          );
+        },
+        child: BlocBuilder<TableEditorCubit, TableEditorState>(
           builder: (context, state) {
-            if (state is TableManagementLoading) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (state is TableManagementLoaded) {
-              return Row(
-                children: [
-                  if (_isEditMode) const TablesLibrary(),
-                  Expanded(
-                    child: TableLayoutView(
-                      tables: state.tables,
-                      isReadOnly: !_isEditMode,
-                    ),
-                  ),
-                ],
-              );
-            } else if (state is TableManagementError) {
-              return Center(
-                child: Text(
-                  state.message,
-                  style: const TextStyle(color: Colors.red),
-                ),
+            if (state.isEditing || state.isViewing) {
+              return TableLayoutEditorPage(
+                readOnly: state.isViewing,
+                onBack: () =>
+                    context.read<TableEditorCubit>().resetNavigation(),
+                onEdit: () => context.read<TableEditorCubit>().setEditing(true),
               );
             }
-            return const SizedBox.shrink();
+
+            return Scaffold(
+              backgroundColor: NeutralColors.background,
+              appBar: AppBar(
+                backgroundColor: NeutralColors.surface,
+                elevation: 0,
+                centerTitle: false,
+                title: const Text(
+                  'Table Management',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w800,
+                    fontSize: 22,
+                    color: NeutralColors.white,
+                  ),
+                ),
+              ),
+              body: state.isLoading
+                  ? const Center(
+                      child: CircularProgressIndicator(
+                        color: PrimaryColors.defaultColor,
+                      ),
+                    )
+                  : SingleChildScrollView(
+                      padding: const EdgeInsets.all(32),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ManagementHeader(
+                            hallCount: state.halls.length,
+                            totalTables: state.allTables.length,
+                          ),
+                          const SizedBox(height: 48),
+                          const Text(
+                            'Floor Sections',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w800,
+                              color: NeutralColors.white,
+                            ),
+                          ),
+                          const SizedBox(height: 24),
+                          HallGrid(state: state),
+                        ],
+                      ),
+                    ),
+            );
           },
         ),
       ),

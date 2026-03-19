@@ -23,7 +23,7 @@ class MenuRemoteDatasourceImpl implements MenuRemoteDatasource {
   @override
   Future<List<CategoryModel>> getCategories() async {
     log(
-      '[MenuDatasource] getCategories → calling Firestore',
+      '[MenuDatasource] getCategories -> calling Firestore',
       name: 'MenuRemoteDatasource',
     );
     final snapshot = await firestore
@@ -36,7 +36,7 @@ class MenuRemoteDatasourceImpl implements MenuRemoteDatasource {
       return CategoryModel.fromMap(data);
     }).toList();
     log(
-      '[MenuDatasource] getCategories ← received ${categories.length} categories: ${categories.map((c) => c.toMap()).toList()}',
+      '[MenuDatasource] getCategories <- received ${categories.length} categories: ${categories.map((c) => c.toMap()).toList()}',
       name: 'MenuRemoteDatasource',
     );
     return categories;
@@ -45,7 +45,7 @@ class MenuRemoteDatasourceImpl implements MenuRemoteDatasource {
   @override
   Future<void> addCategory(CategoryModel category) async {
     log(
-      '[MenuDatasource] addCategory → payload: ${category.toMap()}',
+      '[MenuDatasource] addCategory -> payload: ${category.toMap()}',
       name: 'MenuRemoteDatasource',
     );
     await firestore
@@ -53,7 +53,7 @@ class MenuRemoteDatasourceImpl implements MenuRemoteDatasource {
         .doc(category.id)
         .set(category.toMap());
     log(
-      '[MenuDatasource] addCategory ← success for id: ${category.id}',
+      '[MenuDatasource] addCategory <- success for id: ${category.id}',
       name: 'MenuRemoteDatasource',
     );
   }
@@ -61,7 +61,7 @@ class MenuRemoteDatasourceImpl implements MenuRemoteDatasource {
   @override
   Future<void> updateCategory(CategoryModel category) async {
     log(
-      '[MenuDatasource] updateCategory → id: ${category.id}, payload: ${category.toMap()}',
+      '[MenuDatasource] updateCategory -> id: ${category.id}, payload: ${category.toMap()}',
       name: 'MenuRemoteDatasource',
     );
     await firestore
@@ -69,7 +69,7 @@ class MenuRemoteDatasourceImpl implements MenuRemoteDatasource {
         .doc(category.id)
         .update(category.toMap());
     log(
-      '[MenuDatasource] updateCategory ← success for id: ${category.id}',
+      '[MenuDatasource] updateCategory <- success for id: ${category.id}',
       name: 'MenuRemoteDatasource',
     );
   }
@@ -77,14 +77,14 @@ class MenuRemoteDatasourceImpl implements MenuRemoteDatasource {
   @override
   Future<void> addFoodItem(FoodModel food) async {
     log(
-      '[MenuDatasource] addFoodItem → payload: ${food.toJson()}',
+      '[MenuDatasource] addFoodItem -> payload: ${food.toJson()}',
       name: 'MenuRemoteDatasource',
     );
     final docRef = await firestore
         .collection(MenuDbConstants.foods)
         .add(food.toJson());
     log(
-      '[MenuDatasource] addFoodItem ← success, new doc id: ${docRef.id}',
+      '[MenuDatasource] addFoodItem <- success, new doc id: ${docRef.id}',
       name: 'MenuRemoteDatasource',
     );
   }
@@ -92,7 +92,7 @@ class MenuRemoteDatasourceImpl implements MenuRemoteDatasource {
   @override
   Future<void> updateFoodItem(FoodModel food) async {
     log(
-      '[MenuDatasource] updateFoodItem → id: ${food.id}, payload: ${food.toJson()}',
+      '[MenuDatasource] updateFoodItem -> id: ${food.id}, payload: ${food.toJson()}',
       name: 'MenuRemoteDatasource',
     );
     await firestore
@@ -100,7 +100,7 @@ class MenuRemoteDatasourceImpl implements MenuRemoteDatasource {
         .doc(food.id)
         .update(food.toJson());
     log(
-      '[MenuDatasource] updateFoodItem ← success for id: ${food.id}',
+      '[MenuDatasource] updateFoodItem <- success for id: ${food.id}',
       name: 'MenuRemoteDatasource',
     );
   }
@@ -108,7 +108,7 @@ class MenuRemoteDatasourceImpl implements MenuRemoteDatasource {
   @override
   Future<List<FoodModel>> getFoodItemsByCategory(String categoryId) async {
     log(
-      '[MenuDatasource] getFoodItemsByCategory → categoryId: $categoryId',
+      '[MenuDatasource] getFoodItemsByCategory -> categoryId: $categoryId',
       name: 'MenuRemoteDatasource',
     );
     final snapshot = await firestore
@@ -120,7 +120,7 @@ class MenuRemoteDatasourceImpl implements MenuRemoteDatasource {
         .map((doc) => FoodModel.fromJson(doc.data(), docId: doc.id))
         .toList();
     log(
-      '[MenuDatasource] getFoodItemsByCategory ← received ${foods.length} items: ${foods.map((f) => f.toJson()).toList()}',
+      '[MenuDatasource] getFoodItemsByCategory <- received ${foods.length} items: ${foods.map((f) => f.toJson()).toList()}',
       name: 'MenuRemoteDatasource',
     );
     return foods;
@@ -128,12 +128,12 @@ class MenuRemoteDatasourceImpl implements MenuRemoteDatasource {
 
   @override
   Future<List<FoodModel>> getAllFoodItems() async {
-    log('[MenuDatasource] getAllFoodItems → calling Firestore', name: 'MenuRemoteDatasource');
+    log('[MenuDatasource] getAllFoodItems -> calling Firestore', name: 'MenuRemoteDatasource');
     final snapshot = await firestore.collection(MenuDbConstants.foods).get();
     final foods = snapshot.docs
         .map((doc) => FoodModel.fromJson(doc.data(), docId: doc.id))
         .toList();
-    log('[MenuDatasource] getAllFoodItems ← received ${foods.length} items', name: 'MenuRemoteDatasource');
+    log('[MenuDatasource] getAllFoodItems <- received ${foods.length} items', name: 'MenuRemoteDatasource');
     return foods;
   }
 }

@@ -46,7 +46,7 @@ class CloudinaryServiceImpl implements CloudinaryService {
     Function(double progress)? onProgress,
   }) async {
     log(
-      '[CloudinaryService] uploadImage → file: ${file.name}, folder: $folder, preset: $uploadPreset',
+      '[CloudinaryService] uploadImage -> file: ${file.name}, folder: $folder, preset: $uploadPreset',
       name: 'CloudinaryService',
     );
 
@@ -71,7 +71,7 @@ class CloudinaryServiceImpl implements CloudinaryService {
     );
 
     log(
-      '[CloudinaryService] uploadImage ← status: ${response.statusCode}, data: ${response.data}',
+      '[CloudinaryService] uploadImage <- status: ${response.statusCode}, data: ${response.data}',
       name: 'CloudinaryService',
     );
 
@@ -81,7 +81,7 @@ class CloudinaryServiceImpl implements CloudinaryService {
 
     final secureUrl = response.data['secure_url'] as String;
     log(
-      '[CloudinaryService] uploadImage ← secure_url: $secureUrl',
+      '[CloudinaryService] uploadImage <- secure_url: $secureUrl',
       name: 'CloudinaryService',
     );
     return secureUrl;
@@ -90,7 +90,7 @@ class CloudinaryServiceImpl implements CloudinaryService {
   @override
   Future<void> deleteImage(String publicId) async {
     log(
-      '[CloudinaryService] deleteImage → publicId: $publicId',
+      '[CloudinaryService] deleteImage -> publicId: $publicId',
       name: 'CloudinaryService',
     );
     // TODO: implement delete via Cloudinary Admin API

@@ -69,14 +69,14 @@ class _SidebarState extends State<Sidebar> {
             child: PageView(
               controller: _pageController,
               physics: const NeverScrollableScrollPhysics(),
-              children: const [
-                Center(child: Text('Overview Page')),
-                StaffListingScreen(),
-                MenuManagementPage(),
-                TableManagementPage(),
-                Center(child: Text('Reports Page')),
-                Center(child: Text('Settings Page')),
-                Center(child: Text('Logout Page')),
+              children: [
+                const Center(child: Text('Overview Page')),
+                const StaffListingScreen(),
+                const MenuManagementPage(),
+                const TableManagementPage(),
+                const Center(child: Text('Reports Page')),
+                const Center(child: Text('Settings Page')),
+                const Center(child: Text('Logout Page')),
               ],
             ),
           ),
