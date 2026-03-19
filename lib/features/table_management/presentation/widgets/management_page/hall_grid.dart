@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:manager_portal/features/table_management/presentation/bloc/table_editor_bloc.dart';
-import 'package:manager_portal/features/table_management/presentation/bloc/table_editor_event.dart';
-import 'package:manager_portal/features/table_management/presentation/bloc/table_editor_state.dart';
+import 'package:manager_portal/features/table_management/presentation/bloc/table_editor_bloc/table_editor_bloc.dart';
+import 'package:manager_portal/features/table_management/presentation/bloc/table_editor_bloc/table_editor_event.dart';
+import 'package:manager_portal/features/table_management/presentation/bloc/table_editor_bloc/table_editor_state.dart';
 import 'components/hall_preview_card.dart';
 import 'hall_grid/components/add_new_hall_card.dart';
 import 'hall_grid/utils/hall_grid_utils.dart';

@@ -3,9 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rms_shared_package/rms_shared_package.dart';
-import '../../../bloc/table_editor_bloc.dart';
-import '../../../bloc/table_editor_event.dart';
-import '../../../bloc/table_editor_state.dart';
+import 'package:manager_portal/features/table_management/presentation/bloc/table_editor_bloc/table_editor_bloc.dart';
+import 'package:manager_portal/features/table_management/presentation/bloc/table_editor_bloc/table_editor_event.dart';
+import 'package:manager_portal/features/table_management/presentation/bloc/table_editor_bloc/table_editor_state.dart';
 import '../../table_widget.dart';
 
 /// A wrapper widget that provides dragging and selection capabilities to a [TableWidget].
@@ -46,7 +46,8 @@ class DraggableTableItem extends StatelessWidget {
         // or if its specific properties (like name or position) in the list changed.
         final wasSelected = prev.selectedTable?.id == table.id;
         final isSelected = curr.selectedTable?.id == table.id;
-        final posChanged = prev.tables.firstWhere(
+        final posChanged =
+            prev.tables.firstWhere(
               (t) => t.id == table.id,
               orElse: () => table,
             ) !=
@@ -68,7 +69,7 @@ class DraggableTableItem extends StatelessWidget {
         return Stack(
           clipBehavior: Clip.none,
           children: [
-            // ─── The Static / Placed Table ──────────────────────────
+            /// The Static / Placed Table
             // This is the version of the table that stays on the "grid"
             Positioned(
               key: ValueKey(table.id),
@@ -131,7 +132,7 @@ class DraggableTableItem extends StatelessWidget {
               ),
             ),
 
-            // ─── Drag Preview Overlay ─────────────────────────────
+            /// Drag Preview Overlay
             // This "ghost" table follows the mouse perfectly during movement
             Positioned(
               left: 0,

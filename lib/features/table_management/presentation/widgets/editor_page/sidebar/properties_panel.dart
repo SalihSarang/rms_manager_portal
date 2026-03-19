@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:rms_design_system/rms_design_system.dart';
 import 'package:rms_shared_package/rms_shared_package.dart';
-import '../../../bloc/table_editor_bloc.dart';
+import 'package:manager_portal/features/table_management/presentation/bloc/table_editor_bloc/table_editor_bloc.dart';
 import 'components/properties_header.dart';
 import 'components/table_name_field.dart';
 import 'components/table_position_display.dart';

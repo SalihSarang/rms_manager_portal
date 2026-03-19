@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rms_design_system/rms_design_system.dart';
-import 'package:manager_portal/features/table_management/presentation/bloc/table_editor_bloc.dart';
-import 'package:manager_portal/features/table_management/presentation/bloc/table_editor_event.dart';
+import 'package:manager_portal/features/table_management/presentation/bloc/table_editor_bloc/table_editor_bloc.dart';
+import 'package:manager_portal/features/table_management/presentation/bloc/table_editor_bloc/table_editor_event.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddHallDialog extends StatelessWidget {

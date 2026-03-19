@@ -1,11 +1,12 @@
 import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rms_shared_package/rms_shared_package.dart';
-import '../../domain/repositories/hall_repository.dart';
-import '../../domain/repositories/table_repository.dart';
+import '../../../domain/repositories/hall_repository.dart';
+import '../../../domain/repositories/table_repository.dart';
 import 'table_editor_event.dart';
 import 'table_editor_state.dart';
 
+/// BloC that manages the table editor state and logic.
 class TableEditorBloc extends Bloc<TableEditorEvent, TableEditorState> {
   final IHallRepository _hallRepository;
   final ITableRepository _tableRepository;
@@ -30,6 +31,8 @@ class TableEditorBloc extends Bloc<TableEditorEvent, TableEditorState> {
     on<TableEditorModeSet>(_onModeSet);
   }
 
+  /// Initial Load
+  /// Performs initial fetch of halls and all tables from repositories.
   Future<void> _onInit(
     TableEditorInit event,
     Emitter<TableEditorState> emit,
@@ -49,6 +52,8 @@ class TableEditorBloc extends Bloc<TableEditorEvent, TableEditorState> {
     }
   }
 
+  /// Hall Operations
+  /// Handles selection of a hall and loads its associated tables.
   Future<void> _onHallSelected(
     TableEditorHallSelected event,
     Emitter<TableEditorState> emit,
@@ -78,6 +83,7 @@ class TableEditorBloc extends Bloc<TableEditorEvent, TableEditorState> {
     }
   }
 
+  /// Adds a new hall to the repository.
   Future<void> _onHallAdded(
     TableEditorHallAdded event,
     Emitter<TableEditorState> emit,
@@ -100,6 +106,7 @@ class TableEditorBloc extends Bloc<TableEditorEvent, TableEditorState> {
     }
   }
 
+  /// Toggles editing mode.
   void _onEditModeSet(
     TableEditorEditModeSet event,
     Emitter<TableEditorState> emit,
@@ -110,6 +117,7 @@ class TableEditorBloc extends Bloc<TableEditorEvent, TableEditorState> {
     ));
   }
 
+  /// Toggles viewing mode.
   void _onViewModeSet(
     TableEditorViewModeSet event,
     Emitter<TableEditorState> emit,
@@ -120,6 +128,7 @@ class TableEditorBloc extends Bloc<TableEditorEvent, TableEditorState> {
     ));
   }
 
+  /// Resets navigation state and re-initializes.
   Future<void> _onNavigationReset(
     TableEditorNavigationReset event,
     Emitter<TableEditorState> emit,
@@ -128,6 +137,8 @@ class TableEditorBloc extends Bloc<TableEditorEvent, TableEditorState> {
     add(TableEditorInit());
   }
 
+  /// Table Operations
+  /// Adds a new table to the currently selected hall.
   Future<void> _onTableAdded(
     TableEditorTableAdded event,
     Emitter<TableEditorState> emit,
@@ -150,6 +161,7 @@ class TableEditorBloc extends Bloc<TableEditorEvent, TableEditorState> {
     }
   }
 
+  /// Updates an existing table in the repository.
   Future<void> _onTableUpdated(
     TableEditorTableUpdated event,
     Emitter<TableEditorState> emit,
@@ -170,6 +182,7 @@ class TableEditorBloc extends Bloc<TableEditorEvent, TableEditorState> {
     }
   }
 
+  /// Deletes a table by ID.
   Future<void> _onTableDeleted(
     TableEditorTableDeleted event,
     Emitter<TableEditorState> emit,
@@ -192,6 +205,7 @@ class TableEditorBloc extends Bloc<TableEditorEvent, TableEditorState> {
     }
   }
 
+  /// Updates the currently selected table in the state.
   void _onTableSelected(
     TableEditorTableSelected event,
     Emitter<TableEditorState> emit,
@@ -199,6 +213,7 @@ class TableEditorBloc extends Bloc<TableEditorEvent, TableEditorState> {
     emit(state.copyWithSelectedTable(event.table));
   }
 
+  /// Updates the position (x, y) of the selected table.
   Future<void> _onTablePositionUpdated(
     TableEditorTablePositionUpdated event,
     Emitter<TableEditorState> emit,
@@ -211,6 +226,7 @@ class TableEditorBloc extends Bloc<TableEditorEvent, TableEditorState> {
     add(TableEditorTableUpdated(updated));
   }
 
+  /// Updates the number of seats for the selected table.
   Future<void> _onTableSeatsUpdated(
     TableEditorTableSeatsUpdated event,
     Emitter<TableEditorState> emit,
@@ -221,6 +237,7 @@ class TableEditorBloc extends Bloc<TableEditorEvent, TableEditorState> {
     ));
   }
 
+  /// Renames a table.
   Future<void> _onTableRenamed(
     TableEditorTableRenamed event,
     Emitter<TableEditorState> emit,
@@ -231,6 +248,8 @@ class TableEditorBloc extends Bloc<TableEditorEvent, TableEditorState> {
     add(TableEditorTableUpdated(updated));
   }
 
+  /// UI State
+  /// Sets the interaction mode (select, etc.).
   void _onModeSet(
     TableEditorModeSet event,
     Emitter<TableEditorState> emit,
