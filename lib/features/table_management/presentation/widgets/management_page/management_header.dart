@@ -58,7 +58,7 @@ class ManagementHeader extends StatelessWidget {
           icon: Icons.table_restaurant_rounded,
           label: 'Total Tables',
           value: '$totalTables',
-          color: Colors.blueAccent,
+          color: PrimaryColors.defaultColor,
         ),
       ],
     );

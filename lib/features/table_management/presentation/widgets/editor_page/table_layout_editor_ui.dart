@@ -91,7 +91,7 @@ class _TableLayoutEditorUIState extends State<TableLayoutEditorUI> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(state.error!),
-            backgroundColor: Colors.redAccent,
+            backgroundColor: SemanticColors.error,
           ),
         );
       },

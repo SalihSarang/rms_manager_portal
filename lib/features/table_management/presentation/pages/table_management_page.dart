@@ -30,7 +30,7 @@ class TableManagementPage extends StatelessWidget {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(state.error!),
-              backgroundColor: Colors.redAccent,
+              backgroundColor: SemanticColors.error,
             ),
           );
         },

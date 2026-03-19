@@ -12,8 +12,8 @@ class EmptySelectionHint extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            const Color(0xFF7C5CFC).withValues(alpha: 0.06),
-            const Color(0xFF5CE0E6).withValues(alpha: 0.04),
+            TableColors.rectangular.withValues(alpha: 0.06),
+            TableColors.round.withValues(alpha: 0.04),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -50,7 +50,7 @@ class EmptySelectionHint extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 2),
-                Text(
+                const Text(
                   'Tap a table to edit properties',
                   style: TextStyle(
                     fontSize: 11,

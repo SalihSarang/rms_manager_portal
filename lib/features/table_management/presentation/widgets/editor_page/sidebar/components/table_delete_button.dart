@@ -22,22 +22,22 @@ class TableDeleteButton extends StatelessWidget {
           width: double.infinity,
           padding: const EdgeInsets.symmetric(vertical: 12),
           decoration: BoxDecoration(
-            color: SemanticColors.error.withValues(alpha: 0.1),
+            color: TableColors.destructive.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
-              color: SemanticColors.error.withValues(alpha: 0.3),
+              color: TableColors.destructive.withValues(alpha: 0.3),
             ),
           ),
           child: const Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(Icons.delete_outline_rounded,
-                  size: 17, color: SemanticColors.error),
+                  size: 17, color: TableColors.destructive),
               SizedBox(width: 8),
               const Text(
                 'Delete Table',
                 style: TextStyle(
-                  color: SemanticColors.error,
+                  color: TableColors.destructive,
                   fontWeight: FontWeight.w600,
                   fontSize: 13,
                 ),

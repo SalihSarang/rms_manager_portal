@@ -65,7 +65,8 @@ class EditorAppBar extends StatelessWidget implements PreferredSizeWidget {
           children: [
             IconButton(
               onPressed: onBack,
-              icon: const Icon(Icons.arrow_back_rounded, color: NeutralColors.icon),
+              icon: const Icon(Icons.arrow_back_rounded,
+                  color: NeutralColors.icon),
               tooltip: 'Back to Management',
             ),
             const SizedBox(width: 8),
@@ -77,7 +78,7 @@ class EditorAppBar extends StatelessWidget implements PreferredSizeWidget {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: const Icon(Icons.grid_view_rounded,
-                  color: Colors.white, size: 20),
+                  color: NeutralColors.white, size: 20),
             ),
             const SizedBox(width: 12),
             Flexible(
@@ -119,7 +120,7 @@ class EditorAppBar extends StatelessWidget implements PreferredSizeWidget {
               tooltip: 'Zoom In',
               onPressed: onZoomIn,
             ),
-            
+
             if (!readOnly) ...[
               _ToolbarDivider(),
               // Save button
@@ -134,7 +135,8 @@ class EditorAppBar extends StatelessWidget implements PreferredSizeWidget {
                     SnackBar(
                       content: const Row(
                         children: [
-                          Icon(Icons.check_circle, color: Colors.white, size: 18),
+                          Icon(Icons.check_circle,
+                              color: NeutralColors.white, size: 18),
                           SizedBox(width: 8),
                           Text('Layout saved!'),
                         ],
@@ -187,12 +189,12 @@ class EditorAppBar extends StatelessWidget implements PreferredSizeWidget {
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Row(
             children: [
-              Icon(icon, color: Colors.white, size: 18),
+              Icon(icon, color: NeutralColors.white, size: 18),
               const SizedBox(width: 8),
               Text(
                 label,
                 style: const TextStyle(
-                  color: Colors.white,
+                  color: NeutralColors.white,
                   fontWeight: FontWeight.w700,
                   fontSize: 14,
                 ),
@@ -231,7 +233,7 @@ class _AppBarIconButton extends StatelessWidget {
           width: 40,
           height: 40,
           decoration: BoxDecoration(
-            color: Colors.transparent,
+            color: NeutralColors.transparent,
             borderRadius: BorderRadius.circular(10),
           ),
           child: Icon(

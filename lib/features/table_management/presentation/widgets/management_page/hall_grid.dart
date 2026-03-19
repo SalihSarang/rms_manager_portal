@@ -142,7 +142,7 @@ class _AddNewHallCardState extends State<_AddNewHallCard> {
                 child: Icon(
                   Icons.add_rounded,
                   color: _isHovered
-                      ? Colors.white
+                      ? NeutralColors.white
                       : PrimaryColors.defaultColor,
                   size: 30,
                 ),

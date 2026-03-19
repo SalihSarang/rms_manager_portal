@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rms_design_system/rms_design_system.dart';
 
 class LibraryGuideText extends StatelessWidget {
   const LibraryGuideText({super.key});
@@ -12,22 +13,23 @@ class LibraryGuideText extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
             decoration: BoxDecoration(
-              color: const Color(0xFF7C5CFC).withValues(alpha: 0.12),
+              color: TableColors.rectangular.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(20),
               border: Border.all(
-                color: const Color(0xFF7C5CFC).withValues(alpha: 0.25),
+                color: TableColors.rectangular.withValues(alpha: 0.25),
               ),
             ),
             child: const Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.drag_indicator_rounded, size: 11, color: Color(0xFF7C5CFC)),
+                Icon(Icons.drag_indicator_rounded,
+                    size: 11, color: TableColors.rectangular),
                 SizedBox(width: 4),
                 Text(
                   'Drag to canvas',
                   style: TextStyle(
                     fontSize: 10,
-                    color: Color(0xFF7C5CFC),
+                    color: TableColors.rectangular,
                     fontWeight: FontWeight.w600,
                   ),
                 ),

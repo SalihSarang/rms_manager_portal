@@ -78,7 +78,7 @@ class _HallPreviewCardState extends State<HallPreviewCard> {
                   ]
                 : [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.2),
+                      color: NeutralColors.shadow.withValues(alpha: 0.2),
                       blurRadius: 10,
                       offset: const Offset(0, 4),
                     ),
@@ -169,7 +169,7 @@ class _HallPreviewCardState extends State<HallPreviewCard> {
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
                               colors: [
-                                Colors.transparent,
+                                NeutralColors.transparent,
                                 PrimaryColors.defaultColor.withValues(alpha: 0.15),
                               ],
                               begin: Alignment.topCenter,
@@ -258,7 +258,7 @@ class _HallPreviewCardState extends State<HallPreviewCard> {
                         child: Icon(
                           Icons.arrow_forward_rounded,
                           color: _isHovered
-                              ? Colors.white
+                              ? NeutralColors.white
                               : PrimaryColors.defaultColor,
                           size: 16,
                         ),

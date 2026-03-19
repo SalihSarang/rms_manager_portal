@@ -20,7 +20,7 @@ class LibraryHeader extends StatelessWidget {
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   gradient: const LinearGradient(
-                    colors: [Color(0xFF7C5CFC), Color(0xFF5CE0E6)],
+                    colors: [TableColors.rectangular, TableColors.round],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
@@ -29,7 +29,7 @@ class LibraryHeader extends StatelessWidget {
                 child: const Icon(
                   Icons.table_restaurant_rounded,
                   size: 16,
-                  color: Colors.white,
+                  color: NeutralColors.white,
                 ),
               ),
               const SizedBox(width: 10),

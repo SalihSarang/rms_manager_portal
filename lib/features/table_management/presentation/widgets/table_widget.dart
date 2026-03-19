@@ -80,7 +80,7 @@ class TableWidget extends StatelessWidget {
                     Icons.chair_rounded,
                     size: 9,
                     color: isSelected
-                        ? Colors.white.withValues(alpha: 0.7)
+                        ? NeutralColors.white.withValues(alpha: 0.7)
                         : NeutralColors.icon,
                   ),
                   const SizedBox(width: 3),
@@ -90,7 +90,7 @@ class TableWidget extends StatelessWidget {
                       fontSize: 10,
                       fontWeight: FontWeight.w600,
                       color: isSelected
-                          ? Colors.white.withValues(alpha: 0.85)
+                          ? NeutralColors.white.withValues(alpha: 0.85)
                           : NeutralColors.icon,
                     ),
                   ),
@@ -116,37 +116,37 @@ class TableWidget extends StatelessWidget {
       return (
         PrimaryColors.defaultColor,
         PrimaryColors.hoverColor,
-        Colors.white,
-        Colors.white.withValues(alpha: 0.2),
+        NeutralColors.white,
+        NeutralColors.white.withValues(alpha: 0.2),
       );
     }
     switch (table.status) {
       case TableStatus.occupied:
         return (
-          const Color(0xFF3D1A1A),
+          TableColors.occupiedFill,
           SemanticColors.error,
-          const Color(0xFFFF8A80),
+          TableColors.occupiedText,
           SemanticColors.error.withValues(alpha: 0.2),
         );
       case TableStatus.reserved:
         return (
-          const Color(0xFF1A2A3D),
+          TableColors.reservedFill,
           SemanticColors.info,
-          const Color(0xFF90CAF9),
+          TableColors.reservedText,
           SemanticColors.info.withValues(alpha: 0.2),
         );
       case TableStatus.billRequested:
         return (
-          const Color(0xFF3D2E10),
+          TableColors.billRequestedFill,
           SemanticColors.warning,
-          const Color(0xFFFFCC80),
+          TableColors.billRequestedText,
           SemanticColors.warning.withValues(alpha: 0.2),
         );
       case TableStatus.cleaning:
         return (
-          const Color(0xFF1A3D2A),
+          TableColors.cleaningFill,
           SemanticColors.success,
-          const Color(0xFFA5D6A7),
+          TableColors.cleaningText,
           SemanticColors.success.withValues(alpha: 0.2),
         );
       default:
@@ -164,19 +164,19 @@ class TableWidget extends StatelessWidget {
     switch (table.status) {
       case TableStatus.occupied:
         return const LinearGradient(
-          colors: [Color(0xFF4A1F1F), Color(0xFF3D1A1A)],
+          colors: [TableColors.occupiedGradientStart, TableColors.occupiedFill],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         );
       case TableStatus.reserved:
         return const LinearGradient(
-          colors: [Color(0xFF1F2E4A), Color(0xFF1A2A3D)],
+          colors: [TableColors.reservedGradientStart, TableColors.reservedFill],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         );
       case TableStatus.billRequested:
         return const LinearGradient(
-          colors: [Color(0xFF4A381A), Color(0xFF3D2E10)],
+          colors: [TableColors.billRequestedGradientStart, TableColors.billRequestedFill],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         );

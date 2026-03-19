@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rms_shared_package/rms_shared_package.dart';
+import 'package:rms_design_system/rms_design_system.dart';
 import '../library_card.dart';
 
 class TableLibrary extends StatelessWidget {
@@ -16,57 +17,57 @@ class TableLibrary extends StatelessWidget {
             const _SectionLabel(
               label: 'Rectangular',
               icon: Icons.crop_square_rounded,
-              color: Color(0xFF7C5CFC),
+              color: TableColors.rectangular,
             ),
             const SizedBox(height: 8),
             const LibraryCard(
               name: '2 Seats',
               shape: TableShape.rectangle,
               seats: 2,
-              accentColor: Color(0xFF7C5CFC),
+              accentColor: TableColors.rectangular,
             ),
             const LibraryCard(
               name: '4 Seats',
               shape: TableShape.rectangle,
               seats: 4,
-              accentColor: Color(0xFF7C5CFC),
+              accentColor: TableColors.rectangular,
             ),
             const LibraryCard(
               name: '6 Seats',
               shape: TableShape.rectangle,
               seats: 6,
-              accentColor: Color(0xFF7C5CFC),
+              accentColor: TableColors.rectangular,
             ),
             const LibraryCard(
               name: '8 Seats',
               shape: TableShape.rectangle,
               seats: 8,
-              accentColor: Color(0xFF7C5CFC),
+              accentColor: TableColors.rectangular,
             ),
             const SizedBox(height: 20),
             const _SectionLabel(
               label: 'Round',
               icon: Icons.radio_button_checked_rounded,
-              color: Color(0xFF5CE0E6),
+              color: TableColors.round,
             ),
             const SizedBox(height: 8),
             const LibraryCard(
               name: '2 Seats',
               shape: TableShape.circle,
               seats: 2,
-              accentColor: Color(0xFF5CE0E6),
+              accentColor: TableColors.round,
             ),
             const LibraryCard(
               name: '4 Seats',
               shape: TableShape.circle,
               seats: 4,
-              accentColor: Color(0xFF5CE0E6),
+              accentColor: TableColors.round,
             ),
             const LibraryCard(
               name: '6 Seats',
               shape: TableShape.circle,
               seats: 6,
-              accentColor: Color(0xFF5CE0E6),
+              accentColor: TableColors.round,
             ),
           ],
         ),
