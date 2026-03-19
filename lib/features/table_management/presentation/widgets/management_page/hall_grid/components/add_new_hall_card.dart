@@ -56,7 +56,7 @@ class _AddNewHallCardState extends State<AddNewHallCard> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // ─── Animated Plus Icon ────────────────────────────────
+              /// Animated Plus Icon
               AnimatedContainer(
                 duration: const Duration(milliseconds: 200),
                 padding: const EdgeInsets.all(18),
@@ -96,7 +96,8 @@ class _AddNewHallCardState extends State<AddNewHallCard> {
                 ),
               ),
               const SizedBox(height: 18),
-              // ─── Label ─────────────────────────────────────────────
+
+              /// Label
               const Text(
                 'Add New Section',
                 style: TextStyle(
@@ -106,7 +107,8 @@ class _AddNewHallCardState extends State<AddNewHallCard> {
                 ),
               ),
               const SizedBox(height: 6),
-              // ─── Sublabel ──────────────────────────────────────────
+
+              /// Sublabel
               Text(
                 'Create a new floor plan',
                 style: TextStyle(

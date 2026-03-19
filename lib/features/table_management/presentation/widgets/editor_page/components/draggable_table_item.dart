@@ -7,12 +7,28 @@ import '../../../cubit/table_editor_cubit.dart';
 import '../../../cubit/table_editor_state.dart';
 import '../../table_widget.dart';
 
+/// A wrapper widget that provides dragging and selection capabilities to a [TableWidget].
+///
+/// This component handles:
+/// 1. Positioning the table on the 2D canvas using [Positioned].
+/// 2. Detecting gestures (tap to select, drag to move).
+/// 3. Providing a visual "ghost" preview during active dragging.
+/// 4. Updating the state via [TableEditorCubit] when a drag interaction ends.
 class DraggableTableItem extends StatelessWidget {
+  /// The table data associated with this item.
   final TableModel table;
+
+  /// Focus node to manage keyboard/selection focus.
   final FocusNode focusNode;
+
+  /// Notifier to track which table is currently being dragged across the layout.
+  /// This allows for smooth "ghost" previews without triggering full rebuilds of all items.
   final ValueNotifier<TableModel?> draggingTableNotifier;
+
+  /// Whether the editor is in preview-only mode (disables dragging).
   final bool readOnly;
 
+  /// Creates a [DraggableTableItem].
   const DraggableTableItem({
     super.key,
     required this.table,
@@ -25,10 +41,11 @@ class DraggableTableItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<TableEditorCubit, TableEditorState>(
       buildWhen: (prev, curr) {
+        // Only rebuild if the selection status of THIS table changed,
+        // or if its specific properties (like name or position) in the list changed.
         final wasSelected = prev.selectedTable?.id == table.id;
         final isSelected = curr.selectedTable?.id == table.id;
-        final posChanged =
-            prev.tables.firstWhere(
+        final posChanged = prev.tables.firstWhere(
               (t) => t.id == table.id,
               orElse: () => table,
             ) !=
@@ -39,6 +56,7 @@ class DraggableTableItem extends StatelessWidget {
         return wasSelected != isSelected || posChanged;
       },
       builder: (context, state) {
+        // Extract current table data from state
         final current = state.tables.firstWhere(
           (t) => t.id == table.id,
           orElse: () => table,
@@ -49,7 +67,8 @@ class DraggableTableItem extends StatelessWidget {
         return Stack(
           clipBehavior: Clip.none,
           children: [
-            /// Placed table
+            // ─── The Static / Placed Table ──────────────────────────
+            // This is the version of the table that stays on the "grid"
             Positioned(
               key: ValueKey(table.id),
               left: current.x,
@@ -57,6 +76,7 @@ class DraggableTableItem extends StatelessWidget {
               child: ValueListenableBuilder<TableModel?>(
                 valueListenable: draggingTableNotifier,
                 builder: (_, dragging, child) {
+                  // Hide the static table if it's currently being "lifted" and dragged elsewhere
                   final hidden = dragging?.id == table.id;
                   return Opacity(opacity: hidden ? 0.0 : 1.0, child: child);
                 },
@@ -66,12 +86,14 @@ class DraggableTableItem extends StatelessWidget {
                     focusNode.requestFocus();
                     cubit.selectTable(table);
                   },
+                  // Start drag: mark this table as the active dragging item
                   onScaleStart: readOnly
                       ? null
                       : (_) {
                           draggingTableNotifier.value = current;
                           cubit.selectTable(current);
                         },
+                  // Update: move the "ghost" preview based on delta
                   onScaleUpdate: readOnly
                       ? null
                       : (details) {
@@ -79,6 +101,7 @@ class DraggableTableItem extends StatelessWidget {
                           if (dragging == null || dragging.id != table.id) {
                             return;
                           }
+                          // Hardcoded constraints for the hall bounds (matches CanvasGrid)
                           const hallWidth = 4000.0;
                           const hallHeight = 3000.0;
                           final newX = (dragging.x + details.focalPointDelta.dx)
@@ -90,6 +113,7 @@ class DraggableTableItem extends StatelessWidget {
                             y: newY,
                           );
                         },
+                  // End drag: commit the new position to the BloC/database
                   onScaleEnd: readOnly
                       ? null
                       : (_) {
@@ -106,7 +130,8 @@ class DraggableTableItem extends StatelessWidget {
               ),
             ),
 
-            /// Drag preview overlay
+            // ─── Drag Preview Overlay ─────────────────────────────
+            // This "ghost" table follows the mouse perfectly during movement
             Positioned(
               left: 0,
               top: 0,
