@@ -64,7 +64,7 @@ class _HallPreviewCardState extends State<HallPreviewCard> {
           clipBehavior: Clip.antiAlias,
           child: Column(
             children: [
-              // ─── Preview Area ────────────────────────────────────
+              /// Preview Area
               Expanded(
                 child: HallPreviewArea(
                   tables: widget.tables,
@@ -81,7 +81,7 @@ class _HallPreviewCardState extends State<HallPreviewCard> {
                     : NeutralColors.border,
               ),
 
-              // ─── Hall Info Footer ────────────────────────────────
+              /// Hall Info Footer
               HallPreviewFooter(
                 hall: widget.hall,
                 tableCount: widget.tables.length,
