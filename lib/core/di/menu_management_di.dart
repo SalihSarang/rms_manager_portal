@@ -1,7 +1,10 @@
 import 'package:manager_portal/core/di/injector.dart';
-import 'package:manager_portal/features/menu_management/data/datasources/menu_remote_datasource.dart';
-import 'package:manager_portal/features/menu_management/data/repository/menu_repository_impl.dart';
-import 'package:manager_portal/features/menu_management/domain/repository/menu_repository.dart';
+import 'package:manager_portal/features/menu_management/data/datasources/category_remote_datasource.dart';
+import 'package:manager_portal/features/menu_management/data/datasources/food_remote_datasource.dart';
+import 'package:manager_portal/features/menu_management/data/repository/category_repository_impl.dart';
+import 'package:manager_portal/features/menu_management/data/repository/food_repository_impl.dart';
+import 'package:manager_portal/features/menu_management/domain/repository/category_repository.dart';
+import 'package:manager_portal/features/menu_management/domain/repository/food_repository.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/add_category_usecase.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/add_food_item_usecase.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/get_all_food_items_usecase.dart';
@@ -14,13 +17,19 @@ import 'package:manager_portal/features/menu_management/presentation/bloc/add_me
 
 void setUpMenuManagementDI() {
   // Datasources
-  getIt.registerLazySingleton<MenuRemoteDatasource>(
-    () => MenuRemoteDatasourceImpl(firestore: getIt()),
+  getIt.registerLazySingleton<ICategoryRemoteDataSource>(
+    () => CategoryRemoteDataSourceImpl(firestore: getIt()),
+  );
+  getIt.registerLazySingleton<IFoodRemoteDataSource>(
+    () => FoodRemoteDataSourceImpl(firestore: getIt()),
   );
 
   // Repositories
-  getIt.registerLazySingleton<MenuRepository>(
-    () => MenuRepositoryImpl(getIt()),
+  getIt.registerLazySingleton<ICategoryRepository>(
+    () => CategoryRepositoryImpl(getIt()),
+  );
+  getIt.registerLazySingleton<IFoodRepository>(
+    () => FoodRepositoryImpl(getIt()),
   );
 
   // UseCases
@@ -33,11 +42,11 @@ void setUpMenuManagementDI() {
   getIt.registerLazySingleton<UpdateCategoryUseCase>(
     () => UpdateCategoryUseCase(getIt()),
   );
-  getIt.registerLazySingleton<AddFoodItemUsecase>(
-    () => AddFoodItemUsecase(getIt()),
+  getIt.registerLazySingleton<AddFoodItemUseCase>(
+    () => AddFoodItemUseCase(getIt()),
   );
-  getIt.registerLazySingleton<UpdateFoodItemUsecase>(
-    () => UpdateFoodItemUsecase(getIt()),
+  getIt.registerLazySingleton<UpdateFoodItemUseCase>(
+    () => UpdateFoodItemUseCase(getIt()),
   );
   getIt.registerLazySingleton<GetFoodItemsByCategoryUseCase>(
     () => GetFoodItemsByCategoryUseCase(getIt()),
@@ -60,8 +69,8 @@ void setUpMenuManagementDI() {
   getIt.registerFactory(
     () => AddMenuItemBloc(
       foodImgPickerUsecase: getIt(),
-      addFoodItemUsecase: getIt(),
-      updateFoodItemUsecase: getIt(),
+      addFoodItemUseCase: getIt(),
+      updateFoodItemUseCase: getIt(),
     ),
   );
 }

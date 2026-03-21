@@ -22,16 +22,16 @@ class AddMenuItemBloc extends Bloc<AddMenuItemEvent, AddMenuItemState> {
   final FoodImgPickerUsecase foodImgPickerUsecase;
 
   /// Use case for saving a new food item.
-  final AddFoodItemUsecase addFoodItemUsecase;
+  final AddFoodItemUseCase addFoodItemUseCase;
 
   /// Use case for updating an existing food item.
-  final UpdateFoodItemUsecase updateFoodItemUsecase;
+  final UpdateFoodItemUseCase updateFoodItemUseCase;
 
   /// Creates an [AddMenuItemBloc] with the required dependencies.
   AddMenuItemBloc({
     required this.foodImgPickerUsecase,
-    required this.addFoodItemUsecase,
-    required this.updateFoodItemUsecase,
+    required this.addFoodItemUseCase,
+    required this.updateFoodItemUseCase,
   }) : super(const AddMenuItemState()) {
     on<InitializeForEdit>(_onInitializeForEdit);
     on<NameChanged>(_onNameChanged);
@@ -208,10 +208,10 @@ class AddMenuItemBloc extends Bloc<AddMenuItemEvent, AddMenuItemState> {
 
       if (state.editingFoodId != null) {
         // Call usecase to update existing food item
-        await updateFoodItemUsecase.execute(foodItem);
+        await updateFoodItemUseCase(foodItem);
       } else {
         // Call usecase to save new food item to backend
-        await addFoodItemUsecase.execute(foodItem);
+        await addFoodItemUseCase(foodItem);
       }
 
       emit(state.copyWith(isSubmitting: false, isSuccess: true));

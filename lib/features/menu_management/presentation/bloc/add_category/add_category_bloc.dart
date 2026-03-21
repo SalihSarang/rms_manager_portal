@@ -32,7 +32,7 @@ class AddCategoryBloc extends Bloc<AddCategoryEvent, AddCategoryState> {
   final GetAllFoodItemsUseCase getAllFoodItemsUseCase;
 
   /// Use case for updating food item details.
-  final UpdateFoodItemUsecase updateFoodItemUsecase;
+  final UpdateFoodItemUseCase updateFoodItemUseCase;
 
   /// Creates an [AddCategoryBloc] with the required use cases.
   AddCategoryBloc(
@@ -41,7 +41,7 @@ class AddCategoryBloc extends Bloc<AddCategoryEvent, AddCategoryState> {
     this.updateCategoryUseCase,
     this.getFoodItemsByCategoryUseCase,
     this.getAllFoodItemsUseCase,
-    this.updateFoodItemUsecase,
+    this.updateFoodItemUseCase,
   ) : super(MenuInitial()) {
     on<LoadCategories>((event, emit) async {
       if (state is CategoriesLoaded) {
@@ -157,7 +157,7 @@ class AddCategoryBloc extends Bloc<AddCategoryEvent, AddCategoryState> {
             isCustomNotes: event.food.isCustomNotes,
           );
 
-          await updateFoodItemUsecase.execute(updatedFood);
+          await updateFoodItemUseCase(updatedFood);
 
           // Update the list of foods locally to avoid a full fetch
           final updatedFoodItems = currentState.foodItems.map((item) {
@@ -174,7 +174,7 @@ class AddCategoryBloc extends Bloc<AddCategoryEvent, AddCategoryState> {
 
   Future<void> _loadCategoriesAndItems(Emitter<AddCategoryState> emit, {String? selectedId}) async {
     final categories = await getCategoriesUseCase();
-    final allFoodItems = await getAllFoodItemsUseCase.execute();
+    final allFoodItems = await getAllFoodItemsUseCase();
 
     // Update itemCount for each category
     final updatedCategories = categories.map((cat) {
