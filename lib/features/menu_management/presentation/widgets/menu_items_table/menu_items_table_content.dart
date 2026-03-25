@@ -23,16 +23,24 @@ class MenuItemsTableContent extends StatelessWidget {
     return BlocBuilder<MenuItemsPaginationCubit, int>(
       builder: (context, currentPage) {
         final totalItems = items.length;
-        final totalPages = totalItems == 0 ? 1 : (totalItems / itemsPerPage).ceil();
+        final totalPages = totalItems == 0
+            ? 1
+            : (totalItems / itemsPerPage).ceil();
 
         final cubit = context.read<MenuItemsPaginationCubit>();
         cubit.clampPage(totalPages);
 
-        final safePage = (totalPages > 0 && currentPage > totalPages) ? totalPages : currentPage;
+        final safePage = (totalPages > 0 && currentPage > totalPages)
+            ? totalPages
+            : currentPage;
         final startIndex = (safePage - 1) * itemsPerPage;
-        final endIndex = (startIndex + itemsPerPage < totalItems) ? startIndex + itemsPerPage : totalItems;
+        final endIndex = (startIndex + itemsPerPage < totalItems)
+            ? startIndex + itemsPerPage
+            : totalItems;
 
-        final List<FoodModel> currentData = items.isEmpty ? [] : items.sublist(startIndex, endIndex);
+        final List<FoodModel> currentData = items.isEmpty
+            ? []
+            : items.sublist(startIndex, endIndex);
 
         return Column(
           children: [
@@ -50,9 +58,12 @@ class MenuItemsTableContent extends StatelessWidget {
                 rowBuilder: (item) => MenuItemsTableRow(
                   index: startIndex + currentData.indexOf(item) + 1,
                   item: item,
-                  onTap: () => MenuItemsTableHandlers.handleItemTap(context, item),
-                  onEdit: () => MenuItemsTableHandlers.handleItemEdit(context, item),
-                  onToggleStatus: () => MenuItemsTableHandlers.handleToggleStatus(context, item),
+                  onTap: () =>
+                      MenuItemsTableHandlers.handleItemTap(context, item),
+                  onEdit: () =>
+                      MenuItemsTableHandlers.handleItemEdit(context, item),
+                  onToggleStatus: () =>
+                      MenuItemsTableHandlers.handleToggleStatus(context, item),
                 ),
               ),
             ),
