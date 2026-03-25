@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:manager_portal/core/utils/base_remote_datasource.dart';
+import 'package:rms_shared_package/utils/base_remote_datasource.dart';
 import 'package:manager_portal/firebase_options.dart';
 
 abstract class IStaffAuthRemoteDataSource {

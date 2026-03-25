@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:manager_portal/core/utils/base_remote_datasource.dart';
+import 'package:rms_shared_package/utils/base_remote_datasource.dart';
 
 import 'package:rms_shared_package/models/staff_model/staff_model.dart';
 import 'package:rms_shared_package/constants/db_constants.dart';

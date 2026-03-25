@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:manager_portal/core/utils/error_handler.dart';
+import 'package:rms_shared_package/utils/error_handler.dart';
 import 'package:manager_portal/core/utils/image_picker_service/feature_specific_usecase/food_img_picker.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/add_food_item_usecase.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/update_food_item_usecase.dart';

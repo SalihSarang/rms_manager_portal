@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:manager_portal/core/utils/error_handler.dart';
+import 'package:rms_shared_package/utils/error_handler.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/add_category_usecase.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/get_all_food_items_usecase.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/get_categories_usecase.dart';

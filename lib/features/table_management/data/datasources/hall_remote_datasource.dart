@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:manager_portal/core/utils/base_remote_datasource.dart';
+import 'package:rms_shared_package/utils/base_remote_datasource.dart';
 import 'package:rms_shared_package/rms_shared_package.dart';
 
 abstract class IHallRemoteDataSource {
