@@ -53,6 +53,7 @@ dependencies:
   data_table_2: ^2.5.10
   crypto: ^3.0.7
   fl_chart: ^1.1.1
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_test:

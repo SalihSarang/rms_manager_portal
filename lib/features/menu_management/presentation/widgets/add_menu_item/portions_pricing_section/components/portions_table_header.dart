@@ -11,10 +11,7 @@ class PortionsTableHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: NeutralColors.surface,
-      padding: const EdgeInsets.symmetric(
-        horizontal: 24,
-        vertical: 12,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
       child: Row(
         children: [
           Expanded(
@@ -55,10 +52,7 @@ class PortionsTableHeader extends StatelessWidget {
             child: Text(
               'Actions',
               textAlign: TextAlign.center,
-              style: TextStyle(
-                color: TextColors.secondary,
-                fontSize: 12,
-              ),
+              style: TextStyle(color: TextColors.secondary, fontSize: 12),
             ),
           ),
         ],

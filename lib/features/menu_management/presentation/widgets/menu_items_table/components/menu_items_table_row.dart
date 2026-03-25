@@ -4,6 +4,7 @@ import 'package:rms_shared_package/models/menu_models/food_model/food_model.dart
 import 'package:rms_design_system/app_colors/text_colors.dart';
 import 'package:rms_design_system/app_colors/neutral_colors.dart';
 import 'package:rms_design_system/app_colors/semantic_colors.dart';
+import 'package:shimmer/shimmer.dart';
 
 class MenuItemsTableRow extends DataRow2 {
   final FoodModel item;
@@ -157,18 +158,16 @@ class MenuItemsTableRow extends DataRow2 {
 class _ItemPlaceholder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 32,
-      height: 32,
-      decoration: BoxDecoration(
-        color: NeutralColors.surface,
-        borderRadius: BorderRadius.circular(6),
-        border: Border.all(color: NeutralColors.border),
-      ),
-      child: const Icon(
-        Icons.image_outlined,
-        size: 16,
-        color: TextColors.secondary,
+    return Shimmer.fromColors(
+      baseColor: NeutralColors.surface,
+      highlightColor: NeutralColors.border.withValues(alpha: 0.5),
+      child: Container(
+        width: 32,
+        height: 32,
+        decoration: BoxDecoration(
+          color: NeutralColors.surface,
+          borderRadius: BorderRadius.circular(6),
+        ),
       ),
     );
   }

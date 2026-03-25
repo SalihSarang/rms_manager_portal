@@ -29,9 +29,7 @@ class VisibilityStatusToggles extends StatelessWidget {
               label: 'Featured Item (Shows at top)',
               value: state.isFeatured,
               onChanged: (val) {
-                context.read<AddMenuItemBloc>().add(
-                      IsFeaturedChanged(val),
-                    );
+                context.read<AddMenuItemBloc>().add(IsFeaturedChanged(val));
               },
             );
           },
@@ -44,9 +42,7 @@ class VisibilityStatusToggles extends StatelessWidget {
               label: 'Allow Custom Notes',
               value: state.isCustomNotes,
               onChanged: (val) {
-                context.read<AddMenuItemBloc>().add(
-                      IsCustomNotesChanged(val),
-                    );
+                context.read<AddMenuItemBloc>().add(IsCustomNotesChanged(val));
               },
             );
           },

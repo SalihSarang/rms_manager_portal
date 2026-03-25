@@ -77,8 +77,8 @@ class FoodImagePicker extends StatelessWidget {
                       state.pickedImage != null
                           ? 'Selected: ${state.pickedImage!.name}'
                           : hasImage
-                              ? 'Click to change image'
-                              : 'Click to upload or drag and drop',
+                          ? 'Click to change image'
+                          : 'Click to upload or drag and drop',
                       style: const TextStyle(
                         color: NeutralColors.white,
                         fontSize: 14,

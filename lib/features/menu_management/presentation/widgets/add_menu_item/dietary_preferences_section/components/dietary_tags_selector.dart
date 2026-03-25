@@ -31,9 +31,7 @@ class DietaryTagsSelector extends StatelessWidget {
                   label: 'Vegetarian',
                   isSelected: state.isVeg,
                   onTap: () {
-                    context.read<AddMenuItemBloc>().add(
-                          IsVegChanged(true),
-                        );
+                    context.read<AddMenuItemBloc>().add(IsVegChanged(true));
                   },
                 ),
                 const SizedBox(width: 12),
@@ -41,9 +39,7 @@ class DietaryTagsSelector extends StatelessWidget {
                   label: 'Non-Vegetarian',
                   isSelected: !state.isVeg,
                   onTap: () {
-                    context.read<AddMenuItemBloc>().add(
-                          IsVegChanged(false),
-                        );
+                    context.read<AddMenuItemBloc>().add(IsVegChanged(false));
                   },
                 ),
               ],

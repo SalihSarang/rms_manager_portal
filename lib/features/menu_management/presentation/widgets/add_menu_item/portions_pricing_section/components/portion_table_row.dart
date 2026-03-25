@@ -20,20 +20,14 @@ class PortionTableRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 24,
-        vertical: 16,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       child: Row(
         children: [
           Expanded(
             flex: 2,
             child: Text(
               portion.name,
-              style: const TextStyle(
-                color: TextColors.secondary,
-                fontSize: 14,
-              ),
+              style: const TextStyle(color: TextColors.secondary, fontSize: 14),
             ),
           ),
           const SizedBox(width: 16),
@@ -41,10 +35,7 @@ class PortionTableRow extends StatelessWidget {
             flex: 2,
             child: Text(
               portion.price.toStringAsFixed(2),
-              style: const TextStyle(
-                color: TextColors.secondary,
-                fontSize: 14,
-              ),
+              style: const TextStyle(color: TextColors.secondary, fontSize: 14),
             ),
           ),
           const SizedBox(width: 16),
@@ -52,10 +43,7 @@ class PortionTableRow extends StatelessWidget {
             flex: 1,
             child: Text(
               '${portion.count ?? ''} ${portion.unit ?? ''}'.trim(),
-              style: const TextStyle(
-                color: TextColors.secondary,
-                fontSize: 14,
-              ),
+              style: const TextStyle(color: TextColors.secondary, fontSize: 14),
             ),
           ),
           const SizedBox(width: 16),

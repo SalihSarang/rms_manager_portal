@@ -9,10 +9,7 @@ import 'package:rms_design_system/app_colors/primary_colors.dart';
 class SaveActionButton extends StatelessWidget {
   final bool isSubmitting;
 
-  const SaveActionButton({
-    super.key,
-    required this.isSubmitting,
-  });
+  const SaveActionButton({super.key, required this.isSubmitting});
 
   @override
   Widget build(BuildContext context) {
@@ -20,18 +17,11 @@ class SaveActionButton extends StatelessWidget {
       // Triggers the food item submission via BLoC
       onPressed: isSubmitting
           ? null
-          : () => context.read<AddMenuItemBloc>().add(
-                const SubmitFoodItem(),
-              ),
+          : () => context.read<AddMenuItemBloc>().add(const SubmitFoodItem()),
       style: ElevatedButton.styleFrom(
         backgroundColor: PrimaryColors.defaultColor,
-        padding: const EdgeInsets.symmetric(
-          horizontal: 24,
-          vertical: 12,
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       ),
       // Icon toggles based on Submission Status
       icon: isSubmitting
@@ -40,9 +30,7 @@ class SaveActionButton extends StatelessWidget {
               height: 16,
               child: CircularProgressIndicator(
                 strokeWidth: 2,
-                valueColor: AlwaysStoppedAnimation<Color>(
-                  NeutralColors.white,
-                ),
+                valueColor: AlwaysStoppedAnimation<Color>(NeutralColors.white),
               ),
             )
           : const Icon(Icons.save, size: 16, color: NeutralColors.white),

@@ -42,10 +42,7 @@ class _FoodNameInputState extends State<FoodNameInput> {
         RichText(
           text: const TextSpan(
             text: 'Food Name ',
-            style: TextStyle(
-              color: NeutralColors.white,
-              fontSize: 14,
-            ),
+            style: TextStyle(color: NeutralColors.white, fontSize: 14),
             children: [
               TextSpan(
                 text: '*',
@@ -58,7 +55,8 @@ class _FoodNameInputState extends State<FoodNameInput> {
         PrimaryTextField(
           controller: _controller,
           hintText: 'e.g. Classic Margherita Pizza',
-          validator: MenuValidators.validatePortionName, // Reusing validator logic for menu items too
+          validator: MenuValidators
+              .validatePortionName, // Reusing validator logic for menu items too
         ),
       ],
     );

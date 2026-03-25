@@ -19,10 +19,7 @@ class CategoryDropdown extends StatelessWidget {
       children: [
         const Text(
           'Category',
-          style: TextStyle(
-            color: NeutralColors.white,
-            fontSize: 14,
-          ),
+          style: TextStyle(color: NeutralColors.white, fontSize: 14),
         ),
         const SizedBox(height: 8),
         BlocBuilder<AddCategoryBloc, AddCategoryState>(
@@ -48,15 +45,11 @@ class CategoryDropdown extends StatelessWidget {
                     ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
-                      borderSide: const BorderSide(
-                        color: NeutralColors.border,
-                      ),
+                      borderSide: const BorderSide(color: NeutralColors.border),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
-                      borderSide: const BorderSide(
-                        color: NeutralColors.border,
-                      ),
+                      borderSide: const BorderSide(color: NeutralColors.border),
                     ),
                   ),
                   hint: Text(
@@ -64,14 +57,10 @@ class CategoryDropdown extends StatelessWidget {
                         ? 'Loading categories...'
                         : 'Select Category',
                     style: TextStyle(
-                      color: TextColors.secondary.withValues(
-                        alpha: 0.5,
-                      ),
+                      color: TextColors.secondary.withValues(alpha: 0.5),
                     ),
                   ),
-                  items: categories.map<DropdownMenuItem<String>>((
-                    cat,
-                  ) {
+                  items: categories.map<DropdownMenuItem<String>>((cat) {
                     return DropdownMenuItem<String>(
                       value: cat.id,
                       child: Text(cat.name),
