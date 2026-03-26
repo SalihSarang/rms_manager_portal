@@ -72,6 +72,7 @@ class AddMenuItemPage extends StatelessWidget {
         },
         child: Scaffold(
           backgroundColor: NeutralColors.background,
+          ////////-------------------------
           appBar: AppBar(
             backgroundColor: NeutralColors.background,
             elevation: 0,
@@ -88,6 +89,8 @@ class AddMenuItemPage extends StatelessWidget {
               child: Container(color: NeutralColors.border, height: 1.0),
             ),
           ),
+
+          /////----------------------------
           body: BlocBuilder<AddMenuItemBloc, AddMenuItemState>(
             builder: (context, state) {
               if (foodItemToEdit != null &&
