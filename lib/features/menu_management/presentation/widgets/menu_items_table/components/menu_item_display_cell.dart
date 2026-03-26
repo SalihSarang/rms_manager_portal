@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:manager_portal/features/menu_management/presentation/widgets/menu_items_table/components/item_shimmer_placeholder.dart';
+import 'package:manager_portal/features/menu_management/presentation/widgets/menu_items_table/components/item_image_placeholder.dart';
 import 'package:rms_design_system/app_colors/text_colors.dart';
 
 /// [MenuItemDisplayCell] handles the rendering of the food item's image and name.
-/// It uses a network image with a shimmer loading state and a fallback placeholder.
+/// It uses a network image with a fallback static placeholder.
 class MenuItemDisplayCell extends StatelessWidget {
   final String imageUrl;
   final String itemName;
@@ -18,24 +18,23 @@ class MenuItemDisplayCell extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        if (imageUrl.isNotEmpty)
-          ClipRRect(
-            borderRadius: BorderRadius.circular(6),
-            child: Image.network(
-              imageUrl,
-              width: 32,
-              height: 32,
-              fit: BoxFit.cover,
-              loadingBuilder: (context, child, loadingProgress) {
-                if (loadingProgress == null) return child;
-                return const ItemShimmerPlaceholder();
-              },
-              errorBuilder: (context, error, stack) =>
-                  const ItemShimmerPlaceholder(),
-            ),
-          )
-        else
-          const ItemShimmerPlaceholder(),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(6),
+          child: imageUrl.isNotEmpty
+              ? Image.network(
+                  imageUrl,
+                  width: 32,
+                  height: 32,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) =>
+                      const ItemImagePlaceholder(),
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return const ItemImagePlaceholder();
+                  },
+                )
+              : const ItemImagePlaceholder(),
+        ),
         const SizedBox(width: 12),
         Flexible(
           child: Text(

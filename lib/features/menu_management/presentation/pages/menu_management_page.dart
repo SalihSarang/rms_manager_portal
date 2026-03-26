@@ -45,7 +45,11 @@ class MenuManagementPage extends StatelessWidget {
                 );
                 if (bloc.state is CategoriesLoaded) {
                   final state = bloc.state as CategoriesLoaded;
-                  bloc.add(LoadCategories(selectedCategoryId: state.selectedCategoryId));
+                  bloc.add(
+                    LoadCategories(
+                      selectedCategoryId: state.selectedCategoryId,
+                    ),
+                  );
                 }
               },
             ),

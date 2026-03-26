@@ -28,10 +28,13 @@ class MenuPortionsPricing extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         Container(
+          padding: const EdgeInsets.all(1),
           decoration: BoxDecoration(
             color: NeutralColors.surface,
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: NeutralColors.border.withValues(alpha: 0.5)),
+            border: Border.all(
+              color: NeutralColors.border.withValues(alpha: 0.5),
+            ),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.05),
@@ -40,44 +43,99 @@ class MenuPortionsPricing extends StatelessWidget {
               ),
             ],
           ),
-          child: ListView.separated(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: portions.length,
-            separatorBuilder: (context, index) => Divider(
-              color: NeutralColors.border.withValues(alpha: 0.5),
-              height: 1,
-            ),
-            itemBuilder: (context, index) {
-              final p = portions[index];
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      p.name,
-                      style: const TextStyle(
-                        color: TextColors.inverse,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    Text(
-                      '\$${p.price.toStringAsFixed(2)}',
-                      style: const TextStyle(
-                        color: TextColors.inverse,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                        letterSpacing: 0.5,
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            },
+          child: Column(
+            children: [
+              // Header Row
+              _buildHeader(),
+              Divider(
+                color: NeutralColors.border.withValues(alpha: 0.5),
+                height: 1,
+              ),
+              // Data Rows
+              ...portions.map((p) => _buildDataRow(p)),
+            ],
           ),
         ),
+      ],
+    );
+  }
+
+  Widget _buildHeader() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+      child: Row(
+        children: [
+          Expanded(flex: 3, child: _headerText('Name')),
+          Expanded(flex: 1, child: _headerText('Count')),
+          Expanded(flex: 1, child: _headerText('Unit')),
+          Expanded(flex: 1, child: _headerText('Price')),
+        ],
+      ),
+    );
+  }
+
+  Widget _headerText(String text) {
+    return Text(
+      text,
+      style: const TextStyle(
+        color: TextColors.secondary,
+        fontWeight: FontWeight.bold,
+        fontSize: 14,
+      ),
+    );
+  }
+
+  Widget _buildDataRow(PortionAndPrice p) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          child: Row(
+            children: [
+              Expanded(
+                flex: 3,
+                child: Text(
+                  p.name,
+                  style: const TextStyle(
+                    color: TextColors.inverse,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: Text(
+                  p.count?.toString() ?? '-',
+                  style: const TextStyle(color: TextColors.secondary),
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: Text(
+                  p.unit ?? '-',
+                  style: const TextStyle(color: TextColors.secondary),
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: Text(
+                  '\$${p.price.toStringAsFixed(2)}',
+                  style: const TextStyle(
+                    color: TextColors.inverse,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        if (portions.last != p)
+          Divider(
+            color: NeutralColors.border.withValues(alpha: 0.5),
+            height: 1,
+          ),
       ],
     );
   }

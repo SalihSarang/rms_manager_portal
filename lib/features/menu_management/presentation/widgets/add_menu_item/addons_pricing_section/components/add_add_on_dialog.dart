@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:manager_portal/core/widgets/inputs/primary_dropdown_field.dart';
 import 'package:manager_portal/core/widgets/inputs/primary_text_field.dart';
 import 'package:manager_portal/features/menu_management/presentation/utils/validators.dart';
 import 'package:rms_design_system/app_colors/neutral_colors.dart';
@@ -24,6 +26,19 @@ class _AddAddOnDialogState extends State<AddAddOnDialog> {
   final priceController = TextEditingController();
   final countController = TextEditingController();
   final unitController = TextEditingController();
+
+  String? selectedUnit;
+  final List<String> commonUnits = [
+    'grams',
+    'kg',
+    'ml',
+    'liters',
+    'pieces',
+    'portions',
+    'bottles',
+    'cans',
+    'Other...',
+  ];
 
   @override
   void dispose() {
@@ -69,6 +84,12 @@ class _AddAddOnDialogState extends State<AddAddOnDialog> {
               PrimaryTextField(
                 controller: priceController,
                 hintText: '0.00',
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
+                ],
                 validator: MenuValidators.validatePrice,
               ),
               const SizedBox(height: 16),
@@ -90,6 +111,10 @@ class _AddAddOnDialogState extends State<AddAddOnDialog> {
                         PrimaryTextField(
                           controller: countController,
                           hintText: 'e.g. 500, 8, 1',
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                          ],
                           validator: MenuValidators.validateCount,
                         ),
                       ],
@@ -108,16 +133,62 @@ class _AddAddOnDialogState extends State<AddAddOnDialog> {
                           ),
                         ),
                         const SizedBox(height: 8),
-                        PrimaryTextField(
-                          controller: unitController,
-                          hintText: 'e.g. grams, pieces',
-                          validator: MenuValidators.validateUnit,
+                        PrimaryDropdownField<String>(
+                          initialValue: selectedUnit,
+                          hintText: 'Select Unit',
+                          items: commonUnits
+                              .map(
+                                (unit) => DropdownMenuItem(
+                                  value: unit,
+                                  child: Text(unit),
+                                ),
+                              )
+                              .toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              selectedUnit = value;
+                              if (value != 'Other...') {
+                                unitController.text = value ?? '';
+                              } else {
+                                unitController.clear();
+                              }
+                            });
+                          },
+                          validator: (value) {
+                            if (countController.text.isNotEmpty &&
+                                (value == null)) {
+                              return 'Unit required';
+                            }
+                            return null;
+                          },
                         ),
                       ],
                     ),
                   ),
                 ],
               ),
+              if (selectedUnit == 'Other...') ...[
+                const SizedBox(height: 16),
+                const Text(
+                  'Custom Unit',
+                  style: TextStyle(color: TextColors.secondary, fontSize: 14),
+                ),
+                const SizedBox(height: 8),
+                PrimaryTextField(
+                  controller: unitController,
+                  hintText: 'e.g. ml, spoons',
+                  validator: (value) {
+                    final unitErr = MenuValidators.validateUnit(value);
+                    if (unitErr != null) return unitErr;
+
+                    if (countController.text.isNotEmpty &&
+                        (value == null || value.trim().isEmpty)) {
+                      return 'Unit required';
+                    }
+                    return null;
+                  },
+                ),
+              ],
             ],
           ),
         ),

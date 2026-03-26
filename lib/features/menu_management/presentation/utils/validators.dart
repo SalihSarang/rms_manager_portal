@@ -1,10 +1,10 @@
 class MenuValidators {
   static String? validatePortionName(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return 'Portion name is required';
+      return 'Name is required';
     }
     if (value.trim().length < 2) {
-      return 'Portion name must be at least 2 characters';
+      return 'Name must be at least 2 characters';
     }
     return null;
   }
@@ -43,6 +43,10 @@ class MenuValidators {
     }
     if (value.trim().length > 20) {
       return 'Unit name is too long';
+    }
+    // Check if it's just numbers
+    if (RegExp(r'^\d+$').hasMatch(value.trim())) {
+      return 'Unit should be a proper name (e.g. grams)';
     }
     return null;
   }
