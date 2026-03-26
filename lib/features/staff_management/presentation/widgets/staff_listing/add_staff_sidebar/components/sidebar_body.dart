@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:manager_portal/features/staff_management/presentation/bloc/add_staff/add_staff_bloc.dart';
 import 'package:manager_portal/features/staff_management/presentation/widgets/staff_listing/add_staff_sidebar/components/dialog_avatar.dart';
-import 'package:manager_portal/features/staff_management/presentation/widgets/staff_listing/add_staff_sidebar/components/dialog_form.dart';
+import 'package:manager_portal/features/staff_management/presentation/widgets/staff_listing/add_staff_sidebar/components/dialog_form/dialog_form.dart';
 import 'package:rms_design_system/app_colors/text_colors.dart';
 
 class SidebarBody extends StatelessWidget {

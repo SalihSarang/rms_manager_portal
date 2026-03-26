@@ -9,37 +9,37 @@ abstract class ITableRemoteDataSource {
   Future<void> deleteTable(String id);
 }
 
-class TableRemoteDataSourceImpl with BaseRemoteDataSource implements ITableRemoteDataSource {
+class TableRemoteDataSourceImpl
+    with BaseRemoteDataSource
+    implements ITableRemoteDataSource {
   final FirebaseFirestore _firestore;
 
   TableRemoteDataSourceImpl(this._firestore);
 
-  CollectionReference<TableModel> get _tablesCollection =>
-      _firestore.collection(TableDbConstants.tables).withConverter<TableModel>(
-            fromFirestore: (snapshot, _) => TableModel.fromMap(snapshot.data()!, snapshot.id),
-            toFirestore: (table, _) => table.toMap(),
-          );
+  CollectionReference<TableModel> get _tablesCollection => _firestore
+      .collection(TableDbConstants.tables)
+      .withConverter<TableModel>(
+        fromFirestore: (snapshot, _) =>
+            TableModel.fromMap(snapshot.data()!, snapshot.id),
+        toFirestore: (table, _) => table.toMap(),
+      );
 
   @override
   Future<List<TableModel>> getAllTables() {
-    return performSafeCall(
-      () async {
-        final snapshot = await _tablesCollection.get();
-        return snapshot.docs.map((doc) => doc.data()).toList();
-      },
-      taskName: 'TableRemoteDataSource.getAllTables',
-    );
+    return performSafeCall(() async {
+      final snapshot = await _tablesCollection.get();
+      return snapshot.docs.map((doc) => doc.data()).toList();
+    }, taskName: 'TableRemoteDataSource.getAllTables');
   }
 
   @override
   Future<List<TableModel>> getTables(String hallId) {
-    return performSafeCall(
-      () async {
-        final snapshot = await _tablesCollection.where('hallId', isEqualTo: hallId).get();
-        return snapshot.docs.map((doc) => doc.data()).toList();
-      },
-      taskName: 'TableRemoteDataSource.getTables',
-    );
+    return performSafeCall(() async {
+      final snapshot = await _tablesCollection
+          .where('hallId', isEqualTo: hallId)
+          .get();
+      return snapshot.docs.map((doc) => doc.data()).toList();
+    }, taskName: 'TableRemoteDataSource.getTables');
   }
 
   @override
@@ -52,43 +52,37 @@ class TableRemoteDataSourceImpl with BaseRemoteDataSource implements ITableRemot
 
   @override
   Future<void> updateTable(TableModel table) {
-    return performSafeCall(
-      () async {
-        final docRef = _tablesCollection.doc(table.id);
-        final doc = await docRef.get();
+    return performSafeCall(() async {
+      final docRef = _tablesCollection.doc(table.id);
+      final doc = await docRef.get();
 
-        if (!doc.exists) {
-          throw FirebaseException(
-            plugin: 'cloud_firestore',
-            code: 'not-found',
-            message: 'Table with ID ${table.id} does not exist.',
-          );
-        }
+      if (!doc.exists) {
+        throw FirebaseException(
+          plugin: 'cloud_firestore',
+          code: 'not-found',
+          message: 'Table with ID ${table.id} does not exist.',
+        );
+      }
 
-        return docRef.update(table.toMap());
-      },
-      taskName: 'TableRemoteDataSource.updateTable',
-    );
+      return docRef.update(table.toMap());
+    }, taskName: 'TableRemoteDataSource.updateTable');
   }
 
   @override
   Future<void> deleteTable(String id) {
-    return performSafeCall(
-      () async {
-        final docRef = _tablesCollection.doc(id);
-        final doc = await docRef.get();
+    return performSafeCall(() async {
+      final docRef = _tablesCollection.doc(id);
+      final doc = await docRef.get();
 
-        if (!doc.exists) {
-          throw FirebaseException(
-            plugin: 'cloud_firestore',
-            code: 'not-found',
-            message: 'Table with ID $id does not exist.',
-          );
-        }
+      if (!doc.exists) {
+        throw FirebaseException(
+          plugin: 'cloud_firestore',
+          code: 'not-found',
+          message: 'Table with ID $id does not exist.',
+        );
+      }
 
-        return docRef.delete();
-      },
-      taskName: 'TableRemoteDataSource.deleteTable',
-    );
+      return docRef.delete();
+    }, taskName: 'TableRemoteDataSource.deleteTable');
   }
 }
