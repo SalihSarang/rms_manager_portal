@@ -1,23 +1,31 @@
 import 'package:manager_portal/features/staff_management/data/datasources/staff_datasource.dart';
+import 'package:manager_portal/features/staff_management/data/datasources/staff_auth_datasource.dart';
 import 'package:manager_portal/features/staff_management/domain/repository/staff_repository.dart';
 import 'package:rms_shared_package/models/staff_model/staff_model.dart';
 
+/// Implementation of [StaffRepository] using [IStaffRemoteDataSource] and [IStaffAuthRemoteDataSource].
 class StaffRepositoryImpl implements StaffRepository {
-  final StaffDatasource staffDatasource;
-  StaffRepositoryImpl({required this.staffDatasource});
+  final IStaffRemoteDataSource remoteDataSource;
+  final IStaffAuthRemoteDataSource authRemoteDataSource;
+
+  StaffRepositoryImpl({
+    required this.remoteDataSource,
+    required this.authRemoteDataSource,
+  });
+
   @override
   Future<void> addNewStaff(StaffModel staff) {
-    return staffDatasource.addNewStaff(staff);
+    return remoteDataSource.addNewStaff(staff);
   }
 
   @override
   Future<void> updateStaff(StaffModel staff) {
-    return staffDatasource.updateStaff(staff);
+    return remoteDataSource.updateStaff(staff);
   }
 
   @override
   Future<void> deleteStaff(String staffId) {
-    return staffDatasource.deleteStaff(staffId);
+    return remoteDataSource.deleteStaff(staffId);
   }
 
   @override
@@ -25,7 +33,7 @@ class StaffRepositoryImpl implements StaffRepository {
     required String email,
     required String password,
   }) {
-    return staffDatasource.createNewUserWithEmailAndPassword(
+    return authRemoteDataSource.createNewUserWithEmailAndPassword(
       email: email,
       password: password,
     );
@@ -33,11 +41,11 @@ class StaffRepositoryImpl implements StaffRepository {
 
   @override
   Future<List<StaffModel?>> getAllStaffs() {
-    return staffDatasource.getAllStaffs();
+    return remoteDataSource.getAllStaffs();
   }
 
   @override
   Future<StaffModel> getStaffDetails(String staffId) {
-    return staffDatasource.getStaffDetails(staffId);
+    return remoteDataSource.getStaffDetails(staffId);
   }
 }

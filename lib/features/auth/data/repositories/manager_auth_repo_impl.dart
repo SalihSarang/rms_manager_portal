@@ -2,6 +2,7 @@ import 'package:manager_portal/features/auth/data/datasources/manager_auth_remot
 import 'package:manager_portal/features/auth/domain/repositories/auth_repository.dart';
 import 'package:rms_shared_package/models/manager_model/manager_model.dart';
 
+/// Implementation of [ManagerAuthRepository] using [ManagerAuthRemoteDataSource].
 class ManagerAuthRepoImpl implements ManagerAuthRepository {
   final ManagerAuthRemoteDataSource remoteDataSource;
 

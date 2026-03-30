@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:rms_design_system/app_colors/text_colors.dart';
 
+/// Displays help links or support information at the bottom of the login screen.
 class LoginFooter extends StatelessWidget {
+  /// Callback triggered when the help text is tapped.
   final VoidCallback onHelpTap;
 
+  /// Creates a [LoginFooter] with the given [onHelpTap] callback.
   const LoginFooter({super.key, required this.onHelpTap});
 
   @override

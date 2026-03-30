@@ -4,9 +4,13 @@ import 'package:manager_portal/core/di/image_picker_di.dart';
 import 'package:manager_portal/core/di/manager_auth_di.dart';
 import 'package:manager_portal/core/di/menu_management_di.dart';
 import 'package:manager_portal/core/di/staff_di.dart';
+import 'package:manager_portal/core/di/table_management_di.dart';
 
 final getIt = GetIt.instance;
 
+/// Configures the global dependency injection container using [GetIt].
+///
+/// Registers all repositories, use cases, and services required by the application.
 void setupDI() {
   //Firebase
   getIt.registerLazySingleton<FirebaseFirestore>(
@@ -24,4 +28,7 @@ void setupDI() {
 
   // Menu Management DI
   setUpMenuManagementDI();
+
+  // Table Management DI
+  setUpTableManagementDI();
 }

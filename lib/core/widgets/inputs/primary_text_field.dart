@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:rms_design_system/app_colors/neutral_colors.dart';
 import 'package:rms_design_system/app_colors/primary_colors.dart';
 import 'package:rms_design_system/app_colors/text_colors.dart';
@@ -8,6 +9,8 @@ class PrimaryTextField extends StatelessWidget {
   final String hintText;
   final FormFieldValidator<String>? validator;
   final ValueChanged<String>? onChanged;
+  final TextInputType? keyboardType;
+  final List<TextInputFormatter>? inputFormatters;
 
   const PrimaryTextField({
     super.key,
@@ -15,12 +18,16 @@ class PrimaryTextField extends StatelessWidget {
     required this.hintText,
     this.validator,
     this.onChanged,
+    this.keyboardType,
+    this.inputFormatters,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
+      keyboardType: keyboardType,
+      inputFormatters: inputFormatters,
       style: const TextStyle(color: TextColors.inverse),
       decoration: InputDecoration(
         hintText: hintText,

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:manager_portal/core/di/injector.dart';
 import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_bloc.dart';
 import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_event.dart';
+import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_state.dart';
 import 'package:manager_portal/features/menu_management/presentation/widgets/appbar/menu_appbar.dart';
 import 'package:manager_portal/features/menu_management/presentation/widgets/dialogs/add_category_dialog.dart';
 import 'package:manager_portal/features/menu_management/presentation/widgets/sidebar/categories_sidebar.dart';
@@ -10,7 +11,12 @@ import 'package:manager_portal/features/menu_management/presentation/widgets/men
 import 'package:rms_design_system/app_colors/neutral_colors.dart';
 import 'package:manager_portal/features/menu_management/presentation/pages/add_menu_item_page.dart';
 
+/// Main dashboard for managing menu categories and food items.
+///
+/// This page provides a dual-pane layout with a category sidebar on the left
+/// and the selected category's food items on the right.
 class MenuManagementPage extends StatelessWidget {
+  /// Creates a [MenuManagementPage].
   const MenuManagementPage({super.key});
 
   @override
@@ -32,10 +38,19 @@ class MenuManagementPage extends StatelessWidget {
                   ),
                 );
               },
-              onAddItemPressed: () {
-                Navigator.of(context).push(
+              onAddItemPressed: () async {
+                final bloc = context.read<AddCategoryBloc>();
+                await Navigator.of(context).push(
                   MaterialPageRoute(builder: (_) => const AddMenuItemPage()),
                 );
+                if (bloc.state is CategoriesLoaded) {
+                  final state = bloc.state as CategoriesLoaded;
+                  bloc.add(
+                    LoadCategories(
+                      selectedCategoryId: state.selectedCategoryId,
+                    ),
+                  );
+                }
               },
             ),
             body: Row(

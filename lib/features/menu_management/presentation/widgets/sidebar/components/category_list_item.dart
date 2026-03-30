@@ -73,9 +73,12 @@ class CategoryListItem extends StatelessWidget {
                     fontSize: 15,
                   ),
                 ),
-                subtitle: const Text(
-                  '0 items',
-                  style: TextStyle(color: TextColors.secondary, fontSize: 13),
+                subtitle: Text(
+                  '${category.itemCount} items',
+                  style: const TextStyle(
+                    color: TextColors.secondary,
+                    fontSize: 13,
+                  ),
                 ),
                 trailing: IconButton(
                   onPressed: () {

@@ -4,6 +4,7 @@ import 'package:rms_design_system/app_colors/primary_colors.dart';
 import 'package:rms_design_system/app_colors/neutral_colors.dart';
 import 'package:rms_design_system/app_colors/text_colors.dart';
 
+/// Provides standardized [SidebarXTheme] configurations for the application.
 class ManagerSidebarTheme {
   static SidebarXTheme get mainTheme => SidebarXTheme(
     margin: const EdgeInsets.all(0),

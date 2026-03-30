@@ -39,7 +39,7 @@ class AddUserAvatar extends StatelessWidget {
                         width: size,
                         height: size,
                         errorBuilder: (context, error, stackTrace) {
-                          print('Avatar Image Load Error: $error');
+                          // print('Avatar Image Load Error: $error');
                           return Center(
                             child: Icon(
                               Icons.error,

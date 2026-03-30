@@ -3,17 +3,27 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rms_shared_package/utils/error_handler.dart';
 import 'package:manager_portal/features/auth/domain/usecases/check_auth_status.dart';
 import 'package:manager_portal/features/auth/domain/usecases/sign_in_manager.dart';
 import 'package:manager_portal/features/auth/domain/usecases/sign_out_manager.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
 
+/// Business logic component for managing authentication state and actions.
+///
+/// Handles login submissions, logout requests, and authentication status checks.
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
+  /// Use case for signing in a manager.
   final SignInManager signin;
+
+  /// Use case for signing out the current manager.
   final SignOutManager signout;
+
+  /// Use case for checking the current authentication status.
   final CheckAuthStatus authStatus;
 
+  /// Creates an [AuthBloc] with the required use cases and performs an initial status check.
   AuthBloc({
     required this.signin,
     required this.signout,
@@ -77,7 +87,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await signout();
       emit(Unauthenticated());
     } catch (e) {
-      emit(LogoutFailure('Log-Out Failed: ${e.toString()}'));
+      emit(LogoutFailure(ErrorHandler.getFriendlyMessage(e)));
     }
   }
 
@@ -90,7 +100,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final user = await signin(event.email, event.password);
 
       if (user == null) {
-        emit(LoginFailure('Invalid credentials'));
+        emit(const LoginFailure('Invalid email or password.'));
         return;
       }
 
@@ -100,7 +110,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       log('User Name ${user.name}');
       log('User Email ${user.email}');
     } catch (e) {
-      emit(LoginFailure("Log-In Failed: ${e.toString()}"));
+      emit(LoginFailure(ErrorHandler.getFriendlyMessage(e)));
     }
   }
 
@@ -121,7 +131,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     } catch (e) {
       emit(
-        StatusCheckingFailure('Auth Status Checking Failed: ${e.toString()}'),
+        StatusCheckingFailure(ErrorHandler.getFriendlyMessage(e)),
       );
     }
   }

@@ -5,9 +5,15 @@ import 'contact_card.dart';
 import 'role_status_card.dart';
 import 'id_proof_card.dart';
 
+/// The main body content for the staff details screen.
+///
+/// Arranges various cards (identity, contact, status, ID proof) in a
+/// responsive layout based on the available width.
 class StaffDetailsBody extends StatelessWidget {
+  /// The [StaffModel] whose details are being displayed.
   final StaffModel staff;
 
+  /// Creates a [StaffDetailsBody] for the given [staff].
   const StaffDetailsBody({super.key, required this.staff});
 
   @override

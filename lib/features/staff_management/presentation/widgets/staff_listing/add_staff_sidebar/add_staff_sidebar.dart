@@ -6,7 +6,12 @@ import 'package:manager_portal/features/staff_management/presentation/widgets/st
 import 'package:manager_portal/features/staff_management/presentation/widgets/staff_listing/add_staff_sidebar/components/sidebar_footer.dart';
 import 'package:rms_design_system/app_colors/neutral_colors.dart';
 
+/// A sidebar widget for adding or editing a staff member.
+///
+/// Provides a form for staff details and integrates with [AddStaffBloc]
+/// for lifecycle management and submission.
 class AddStaffSidebar extends StatefulWidget {
+  /// Creates an [AddStaffSidebar].
   const AddStaffSidebar({super.key});
 
   @override

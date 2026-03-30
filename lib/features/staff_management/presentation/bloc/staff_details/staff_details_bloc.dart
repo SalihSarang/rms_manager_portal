@@ -6,9 +6,14 @@ import 'package:rms_shared_package/models/staff_model/staff_model.dart';
 part 'staff_details_event.dart';
 part 'staff_details_state.dart';
 
+/// Business logic component for viewing the details of a single staff member.
+///
+/// Fetches [StaffModel] data using the provided [GetStaffDetails] use case.
 class StaffDetailsBloc extends Bloc<StaffDetailsEvent, StaffDetailsState> {
+  /// The use case for retrieving staff details.
   final GetStaffDetails _getStaffDetails;
 
+  /// Creates a [StaffDetailsBloc] with the given [getStaffDetails] use case.
   StaffDetailsBloc({required GetStaffDetails getStaffDetails})
     : _getStaffDetails = getStaffDetails,
       super(StaffDetailsInitial()) {

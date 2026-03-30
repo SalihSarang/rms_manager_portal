@@ -5,6 +5,7 @@ import 'package:manager_portal/core/widgets/reusable_table.dart';
 import 'package:manager_portal/features/menu_management/presentation/cubit/menu_items_pagination_cubit.dart';
 import 'package:manager_portal/features/menu_management/presentation/widgets/menu_items_table/components/menu_items_table_footer.dart';
 import 'package:manager_portal/features/menu_management/presentation/widgets/menu_items_table/components/menu_items_table_row.dart';
+import 'package:manager_portal/features/menu_management/presentation/widgets/menu_items_table/utils/menu_items_table_handlers.dart';
 import 'package:rms_shared_package/models/menu_models/food_model/food_model.dart';
 
 class MenuItemsTableContent extends StatelessWidget {
@@ -21,27 +22,25 @@ class MenuItemsTableContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<MenuItemsPaginationCubit, int>(
       builder: (context, currentPage) {
-        final List<FoodModel> sourceList = items;
-        final int totalItems = sourceList.length;
-        final int totalPages = totalItems == 0
+        final totalItems = items.length;
+        final totalPages = totalItems == 0
             ? 1
             : (totalItems / itemsPerPage).ceil();
 
         final cubit = context.read<MenuItemsPaginationCubit>();
         cubit.clampPage(totalPages);
 
-        final int safePage = (totalPages > 0 && currentPage > totalPages)
+        final safePage = (totalPages > 0 && currentPage > totalPages)
             ? totalPages
             : currentPage;
-
-        final int startIndex = (safePage - 1) * itemsPerPage;
-        final int endIndex = (startIndex + itemsPerPage < totalItems)
+        final startIndex = (safePage - 1) * itemsPerPage;
+        final endIndex = (startIndex + itemsPerPage < totalItems)
             ? startIndex + itemsPerPage
             : totalItems;
 
-        final List<FoodModel> currentData = sourceList.isEmpty
+        final List<FoodModel> currentData = items.isEmpty
             ? []
-            : sourceList.sublist(startIndex, endIndex);
+            : items.sublist(startIndex, endIndex);
 
         return Column(
           children: [
@@ -59,18 +58,12 @@ class MenuItemsTableContent extends StatelessWidget {
                 rowBuilder: (item) => MenuItemsTableRow(
                   index: startIndex + currentData.indexOf(item) + 1,
                   item: item,
-                  onTap: () {
-                    // Navigate to details or open modal
-                  },
-                  onEdit: () {
-                    // Open edit modal
-                  },
-                  onToggleStatus: () {
-                    // Toggle availability
-                  },
-                  onDelete: () {
-                    // Delete item
-                  },
+                  onTap: () =>
+                      MenuItemsTableHandlers.handleItemTap(context, item),
+                  onEdit: () =>
+                      MenuItemsTableHandlers.handleItemEdit(context, item),
+                  onToggleStatus: () =>
+                      MenuItemsTableHandlers.handleToggleStatus(context, item),
                 ),
               ),
             ),

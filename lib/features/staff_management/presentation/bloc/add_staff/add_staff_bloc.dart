@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rms_shared_package/utils/error_handler.dart';
 import 'package:equatable/equatable.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:manager_portal/core/utils/image_picker_service/cloudinary_service/cloudinary_service.dart';
@@ -15,14 +16,30 @@ import 'package:rms_shared_package/models/staff_model/staff_model.dart';
 part 'add_staff_event.dart';
 part 'add_staff_state.dart';
 
+/// Business logic component for adding and editing staff members.
+///
+/// Manages the state of the staff form, including profile image picking,
+/// ID proof picking, and interacting with authentication and storage services.
 class AddStaffBloc extends Bloc<AddStaffEvent, AddStaffState> {
+  /// Service for picking and uploading staff profile images.
   final StaffProfileImgPickerUsecase avatarPicker;
+
+  /// Service for picking and uploading staff identity proof images.
   final StaffIdProofPickerUsecase idProofPicker;
+
+  /// Use case for saving a new staff member to the backend.
   final AddNewStaff addNewStaff;
+
+  /// Use case for creating a new user account for the staff member.
   final CreateStaffUser createStaffUser;
+
+  /// Use case for updating an existing staff member's information.
   final UpdateStaffUsecase updateStaff;
+
+  /// Service for general Cloudinary operations.
   final CloudinaryService cloudinaryService;
 
+  /// Creates an [AddStaffBloc] with the required services and use cases.
   AddStaffBloc({
     required this.avatarPicker,
     required this.idProofPicker,
@@ -165,7 +182,7 @@ class AddStaffBloc extends Bloc<AddStaffEvent, AddStaffState> {
       emit(
         state.copyWith(
           status: AddStaffStatus.failure,
-          errorMessage: e.toString(),
+          errorMessage: ErrorHandler.getFriendlyMessage(e),
         ),
       );
     }

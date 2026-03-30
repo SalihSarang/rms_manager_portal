@@ -7,7 +7,12 @@ import 'package:manager_portal/features/auth/presentation/bloc/auth_state.dart';
 import 'package:manager_portal/features/auth/presentation/pages/login_screen.dart';
 import 'package:manager_portal/features/sidebar/presentation/page/sidebar.dart';
 
+/// A top-level widget that manages the application's entry point based on authentication state.
+///
+/// It listens to [AuthBloc] and routes the user to either the [Sidebar] (if authenticated),
+/// the [LoginScreen] (if unauthenticated), or a loading/error view.
 class AuthGate extends StatelessWidget {
+  /// Creates an [AuthGate].
   const AuthGate({super.key});
 
   @override

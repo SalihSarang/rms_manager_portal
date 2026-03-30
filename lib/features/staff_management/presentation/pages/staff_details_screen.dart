@@ -7,9 +7,14 @@ import 'package:rms_design_system/app_colors/primary_colors.dart';
 import 'package:rms_design_system/app_colors/semantic_colors.dart';
 import 'package:manager_portal/features/staff_management/presentation/widgets/staff_details/staff_details_widgets.dart';
 
+/// Screen that displays detailed information for a specific staff member.
+///
+/// Fetches [staffId] details upon initialization and handles loading/error states.
 class StaffDetailsScreen extends StatelessWidget {
+  /// The unique identifier of the staff member to display.
   final String staffId;
 
+  /// Creates a [StaffDetailsScreen] for the given [staffId].
   const StaffDetailsScreen({super.key, required this.staffId});
 
   @override
