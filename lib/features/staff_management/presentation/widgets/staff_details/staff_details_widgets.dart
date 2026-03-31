@@ -5,6 +5,7 @@ export 'identity_card.dart';
 export 'contact_card.dart';
 export 'role_status_card.dart';
 export 'id_proof_card.dart';
+export 'staff_details_state_view.dart';
 
 // Components
 export 'components/glass_card.dart';
