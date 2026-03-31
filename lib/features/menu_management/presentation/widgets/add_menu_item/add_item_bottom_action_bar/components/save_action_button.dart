@@ -8,8 +8,13 @@ import 'package:rms_design_system/app_colors/primary_colors.dart';
 /// It dynamically switches between a "Save" icon and a loading spinner.
 class SaveActionButton extends StatelessWidget {
   final bool isSubmitting;
+  final GlobalKey<FormState> formKey;
 
-  const SaveActionButton({super.key, required this.isSubmitting});
+  const SaveActionButton({
+    super.key,
+    required this.isSubmitting,
+    required this.formKey,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +22,11 @@ class SaveActionButton extends StatelessWidget {
       // Triggers the food item submission via BLoC
       onPressed: isSubmitting
           ? null
-          : () => context.read<AddMenuItemBloc>().add(const SubmitFoodItem()),
+          : () {
+              if (formKey.currentState?.validate() ?? false) {
+                context.read<AddMenuItemBloc>().add(const SubmitFoodItem());
+              }
+            },
       style: ElevatedButton.styleFrom(
         backgroundColor: PrimaryColors.defaultColor,
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),

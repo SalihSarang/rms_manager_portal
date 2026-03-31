@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:manager_portal/features/menu_management/presentation/bloc/add_menu_item/add_menu_item_bloc.dart';
+import 'package:manager_portal/features/menu_management/presentation/utils/validators.dart';
 import 'package:rms_design_system/app_colors/neutral_colors.dart';
+import 'package:rms_design_system/app_colors/semantic_colors.dart';
 import 'package:rms_design_system/app_colors/primary_colors.dart';
 import 'package:rms_design_system/app_colors/text_colors.dart';
 
@@ -38,13 +40,22 @@ class _FoodDescriptionInputState extends State<FoodDescriptionInput> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Description',
-          style: TextStyle(color: NeutralColors.white, fontSize: 14),
+        RichText(
+          text: const TextSpan(
+            text: 'Description ',
+            style: TextStyle(color: NeutralColors.white, fontSize: 14),
+            children: [
+              TextSpan(
+                text: '*',
+                style: TextStyle(color: SemanticColors.error),
+              ),
+            ],
+          ),
         ),
         const SizedBox(height: 8),
         TextFormField(
           controller: _controller,
+          validator: MenuValidators.validateDescription,
           maxLines: 4,
           style: const TextStyle(color: TextColors.inverse),
           decoration: InputDecoration(

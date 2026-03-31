@@ -40,9 +40,9 @@ class MenuManagementPage extends StatelessWidget {
               },
               onAddItemPressed: () async {
                 final bloc = context.read<AddCategoryBloc>();
-                await Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => const AddMenuItemPage()),
-                );
+                await Navigator.of(
+                  context,
+                ).push(MaterialPageRoute(builder: (_) => AddMenuItemPage()));
                 if (bloc.state is CategoriesLoaded) {
                   final state = bloc.state as CategoriesLoaded;
                   bloc.add(

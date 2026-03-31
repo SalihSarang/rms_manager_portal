@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:manager_portal/features/menu_management/presentation/bloc/add_menu_item/add_menu_item_bloc.dart';
 import 'package:rms_design_system/app_colors/neutral_colors.dart';
+import 'package:rms_design_system/app_colors/semantic_colors.dart';
 import 'package:rms_design_system/app_colors/text_colors.dart';
 
 /// [FoodImagePicker] handles the selection and preview of food item images.
@@ -17,9 +18,17 @@ class FoodImagePicker extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Food Image',
-          style: TextStyle(color: NeutralColors.white, fontSize: 14),
+        RichText(
+          text: const TextSpan(
+            text: 'Food Image ',
+            style: TextStyle(color: NeutralColors.white, fontSize: 14),
+            children: [
+              TextSpan(
+                text: '*',
+                style: TextStyle(color: SemanticColors.error),
+              ),
+            ],
+          ),
         ),
         const SizedBox(height: 8),
         BlocBuilder<AddMenuItemBloc, AddMenuItemState>(
@@ -39,62 +48,96 @@ class FoodImagePicker extends StatelessWidget {
               imageProvider = NetworkImage(state.imageUrl);
             }
 
-            return GestureDetector(
-              onTap: () {
-                context.read<AddMenuItemBloc>().add(PickFoodImage());
+            return FormField<bool>(
+              validator: (value) {
+                if (!hasImage) {
+                  return 'Please select a food image';
+                }
+                return null;
               },
-              child: Container(
-                width: double.infinity,
-                height: 160,
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                decoration: BoxDecoration(
-                  color: NeutralColors.background,
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: NeutralColors.border, width: 1),
-                  image: hasImage && imageProvider != null
-                      ? DecorationImage(
-                          image: imageProvider,
-                          fit: BoxFit.cover,
-                          colorFilter: ColorFilter.mode(
-                            NeutralColors.shadow.withValues(alpha: 0.3),
-                            BlendMode.darken,
-                          ),
-                        )
-                      : null,
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+              builder: (field) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(
-                      hasImage
-                          ? Icons.edit_outlined
-                          : Icons.cloud_upload_outlined,
-                      color: NeutralColors.white,
-                      size: 32,
-                    ),
-                    const SizedBox(height: 12),
-                    Text(
-                      state.pickedImage != null
-                          ? 'Selected: ${state.pickedImage!.name}'
-                          : hasImage
-                          ? 'Click to change image'
-                          : 'Click to upload or drag and drop',
-                      style: const TextStyle(
-                        color: NeutralColors.white,
-                        fontSize: 14,
+                    GestureDetector(
+                      onTap: () {
+                        context.read<AddMenuItemBloc>().add(PickFoodImage());
+                        // Trigger validation update after tap (user might have selected an image)
+                        // BLoC state change will rebuild the whole BlocBuilder anyway
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        height: 160,
+                        padding: const EdgeInsets.symmetric(vertical: 20),
+                        decoration: BoxDecoration(
+                          color: NeutralColors.background,
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            color: field.hasError
+                                ? SemanticColors.error
+                                : NeutralColors.border,
+                            width: 1,
+                          ),
+                          image: hasImage && imageProvider != null
+                              ? DecorationImage(
+                                  image: imageProvider,
+                                  fit: BoxFit.cover,
+                                  colorFilter: ColorFilter.mode(
+                                    NeutralColors.shadow.withValues(alpha: 0.3),
+                                    BlendMode.darken,
+                                  ),
+                                )
+                              : null,
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              hasImage
+                                  ? Icons.edit_outlined
+                                  : Icons.cloud_upload_outlined,
+                              color: NeutralColors.white,
+                              size: 32,
+                            ),
+                            const SizedBox(height: 12),
+                            Text(
+                              state.pickedImage != null
+                                  ? 'Selected: ${state.pickedImage!.name}'
+                                  : hasImage
+                                  ? 'Click to change image'
+                                  : 'Click to upload or drag and drop',
+                              style: const TextStyle(
+                                color: NeutralColors.white,
+                                fontSize: 14,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              'PNG, JPG or WEBP (MAX. 5MB)',
+                              style: TextStyle(
+                                color: TextColors.secondary.withValues(
+                                  alpha: 0.7,
+                                ),
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                    const SizedBox(height: 4),
-                    Text(
-                      'PNG, JPG or WEBP (MAX. 5MB)',
-                      style: TextStyle(
-                        color: TextColors.secondary.withValues(alpha: 0.7),
-                        fontSize: 12,
+                    if (field.hasError) ...[
+                      const SizedBox(height: 8),
+                      Text(
+                        field.errorText!,
+                        style: const TextStyle(
+                          color: SemanticColors.error,
+                          fontSize: 12,
+                        ),
                       ),
-                    ),
+                    ],
                   ],
-                ),
-              ),
+                );
+              },
             );
           },
         ),
