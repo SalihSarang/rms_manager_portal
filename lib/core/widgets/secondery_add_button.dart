@@ -16,7 +16,7 @@ class SeconderyAddButton extends StatelessWidget {
       child: IconButton(
         onPressed: onAddPressed,
         tooltip: 'Add New employ',
-        icon: const Icon(Icons.add, color: TextColors.inverse),
+        icon: const Icon(Icons.add, color: TextColors.primary),
       ),
     );
   }

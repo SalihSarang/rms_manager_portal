@@ -13,7 +13,7 @@ class MenuAppbarTitle extends StatelessWidget {
       style: TextStyle(
         fontSize: titleSize,
         fontWeight: FontWeight.w600,
-        color: TextColors.inverse,
+        color: TextColors.primary,
       ),
     );
   }

@@ -73,7 +73,7 @@ class PortionsAndPricingSection extends StatelessWidget {
                               text: const TextSpan(
                                 text: 'Portions & Pricing ',
                                 style: TextStyle(
-                                  color: NeutralColors.white,
+                                  color: TextColors.primary,
                                   fontSize: 18,
                                   fontWeight: FontWeight.w600,
                                 ),

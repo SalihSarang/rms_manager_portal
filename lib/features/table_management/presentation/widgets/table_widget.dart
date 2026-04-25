@@ -90,7 +90,7 @@ class TableWidget extends StatelessWidget {
                     Icons.chair_rounded,
                     size: 9,
                     color: isSelected
-                        ? NeutralColors.white.withValues(alpha: 0.7)
+                        ? TextColors.primary.withValues(alpha: 0.7)
                         : NeutralColors.icon,
                   ),
                   const SizedBox(width: 3),
@@ -100,7 +100,7 @@ class TableWidget extends StatelessWidget {
                       fontSize: 10,
                       fontWeight: FontWeight.w600,
                       color: isSelected
-                          ? NeutralColors.white.withValues(alpha: 0.85)
+                          ? TextColors.primary.withValues(alpha: 0.85)
                           : NeutralColors.icon,
                     ),
                   ),

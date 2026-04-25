@@ -73,7 +73,7 @@ class _TableNameFieldState extends State<TableNameField> {
           controller: _nameController,
           focusNode: _nameFocusNode,
           style: const TextStyle(
-            color: NeutralColors.white,
+            color: TextColors.primary,
             fontSize: 13,
             fontWeight: FontWeight.w600,
           ),

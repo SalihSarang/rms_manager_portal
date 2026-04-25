@@ -26,7 +26,7 @@ class LibraryCardInfo extends StatelessWidget {
                 ? 'Round Table'
                 : 'Rectangle Table',
             style: TextStyle(
-              color: NeutralColors.white.withValues(alpha: 0.5),
+              color: TextColors.primary.withValues(alpha: 0.5),
               fontSize: 10,
               fontWeight: FontWeight.w600,
               letterSpacing: 0.8,
@@ -36,7 +36,7 @@ class LibraryCardInfo extends StatelessWidget {
           Text(
             template.name,
             style: const TextStyle(
-              color: NeutralColors.white,
+              color: TextColors.primary,
               fontWeight: FontWeight.w700,
               fontSize: 13,
             ),

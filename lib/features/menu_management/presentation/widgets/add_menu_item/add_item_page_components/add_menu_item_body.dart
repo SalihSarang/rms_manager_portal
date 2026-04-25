@@ -27,7 +27,7 @@ class AddMenuItemBody extends StatelessWidget {
         if (foodItemToEdit != null &&
             state.editingFoodId != foodItemToEdit!.id) {
           return const Center(
-            child: CircularProgressIndicator(color: TextColors.inverse),
+            child: CircularProgressIndicator(color: TextColors.primary),
           );
         }
 
@@ -49,7 +49,7 @@ class AddMenuItemBody extends StatelessWidget {
                                 ? "Edit Food Item"
                                 : "Add New Food Item",
                             style: const TextStyle(
-                              color: TextColors.inverse,
+                              color: TextColors.primary,
                               fontSize: 24,
                               fontWeight: FontWeight.w600,
                             ),

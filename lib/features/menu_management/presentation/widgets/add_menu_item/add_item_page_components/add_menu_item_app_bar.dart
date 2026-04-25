@@ -14,7 +14,7 @@ class AddMenuItemAppBar extends StatelessWidget implements PreferredSizeWidget {
       leading: IconButton(
         icon: const Icon(
           Icons.arrow_back_ios,
-          color: TextColors.inverse,
+          color: TextColors.primary,
           size: 20,
         ),
         onPressed: () => Navigator.of(context).pop(),

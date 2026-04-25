@@ -44,7 +44,7 @@ class StaffDetailsVerifyRow extends StatelessWidget {
                   style: TextStyle(
                     color: isEmpty
                         ? SemanticColors.error
-                        : (valueColor ?? TextColors.inverse),
+                        : (valueColor ?? TextColors.primary),
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
                   ),

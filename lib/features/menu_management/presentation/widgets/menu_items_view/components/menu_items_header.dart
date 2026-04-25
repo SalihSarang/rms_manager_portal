@@ -30,7 +30,7 @@ class MenuItemsHeader extends StatelessWidget {
               Text(
                 categoryName,
                 style: const TextStyle(
-                  color: TextColors.inverse,
+                  color: TextColors.primary,
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
                 ),

@@ -20,7 +20,7 @@ class StaffDetailsAppBar extends StatelessWidget
         child: IconButton(
           icon: const Icon(
             Icons.arrow_back_ios_new,
-            color: TextColors.inverse,
+            color: TextColors.primary,
             size: 20,
           ),
           onPressed: () => Navigator.pop(context),
@@ -33,7 +33,7 @@ class StaffDetailsAppBar extends StatelessWidget
           const Text(
             'Staff Details',
             style: TextStyle(
-              color: TextColors.inverse,
+              color: TextColors.primary,
               fontSize: 20,
               fontWeight: FontWeight.w600,
             ),

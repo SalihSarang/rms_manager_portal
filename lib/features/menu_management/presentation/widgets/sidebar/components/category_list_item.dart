@@ -65,8 +65,8 @@ class CategoryListItem extends StatelessWidget {
                   category.name,
                   style: TextStyle(
                     color: isSelected
-                        ? TextColors.inverse
-                        : TextColors.inverse.withValues(alpha: 0.7),
+                        ? TextColors.primary
+                        : TextColors.primary.withValues(alpha: 0.7),
                     fontWeight: isSelected
                         ? FontWeight.w600
                         : FontWeight.normal,
@@ -99,7 +99,7 @@ class CategoryListItem extends StatelessWidget {
                 ),
                 selected: isSelected,
                 splashColor: NeutralColors.transparent,
-                hoverColor: TextColors.inverse.withValues(alpha: 0.02),
+                hoverColor: TextColors.primary.withValues(alpha: 0.02),
                 onTap: () {
                   context.read<AddCategoryBloc>().add(
                     SelectCategory(category.id),

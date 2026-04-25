@@ -32,7 +32,7 @@ class ManagementHeader extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.w900,
-                  color: NeutralColors.white,
+                  color: TextColors.primary,
                   letterSpacing: -0.5,
                 ),
               ),
@@ -41,7 +41,7 @@ class ManagementHeader extends StatelessWidget {
                 'Visualize and manage your restaurant layout across $hallCount sections.',
                 style: TextStyle(
                   fontSize: 15,
-                  color: NeutralColors.white.withValues(alpha: 0.5),
+                  color: TextColors.primary.withValues(alpha: 0.5),
                 ),
               ),
             ],

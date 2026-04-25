@@ -23,7 +23,7 @@ class MenuDetailsHeaderInfo extends StatelessWidget {
               child: Text(
                 item.name,
                 style: const TextStyle(
-                  color: TextColors.inverse,
+                  color: TextColors.primary,
                   fontSize: 36,
                   fontWeight: FontWeight.bold,
                   height: 1.2,

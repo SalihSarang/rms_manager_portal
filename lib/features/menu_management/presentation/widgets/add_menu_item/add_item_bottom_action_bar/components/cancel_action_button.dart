@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rms_design_system/app_colors/neutral_colors.dart';
+import 'package:rms_design_system/app_colors/text_colors.dart';
 
 /// [CancelActionButton] allows the user to navigate back without saving changes.
 /// This component is automatically disabled during an active submission.
@@ -20,7 +21,7 @@ class CancelActionButton extends StatelessWidget {
       ),
       child: const Text(
         'Cancel',
-        style: TextStyle(color: NeutralColors.white, fontSize: 13),
+        style: TextStyle(color: TextColors.primary, fontSize: 13),
       ),
     );
   }

@@ -12,7 +12,7 @@ class ActivityTitle extends StatelessWidget {
       children: [
         const Padding(
           padding: EdgeInsets.only(top: 25, left: 25, right: 25, bottom: 20),
-          child: Text('Activity', style: TextStyle(color: TextColors.inverse)),
+          child: Text('Activity', style: TextStyle(color: TextColors.primary)),
         ),
         Container(
           height: 1,

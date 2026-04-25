@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:manager_portal/features/menu_management/presentation/bloc/add_menu_item/add_menu_item_bloc.dart';
-import 'package:rms_design_system/app_colors/neutral_colors.dart';
 import 'package:rms_design_system/app_colors/primary_colors.dart';
+import 'package:rms_design_system/app_colors/text_colors.dart';
 
 /// [SaveActionButton] is the primary action trigger for submitting the food item.
 /// It dynamically switches between a "Save" icon and a loading spinner.
@@ -39,15 +39,15 @@ class SaveActionButton extends StatelessWidget {
               height: 16,
               child: CircularProgressIndicator(
                 strokeWidth: 2,
-                valueColor: AlwaysStoppedAnimation<Color>(NeutralColors.white),
+                valueColor: AlwaysStoppedAnimation<Color>(TextColors.primary),
               ),
             )
-          : const Icon(Icons.save, size: 16, color: NeutralColors.white),
+          : const Icon(Icons.save, size: 16, color: TextColors.primary),
       // Text toggles based on Submission Status
       label: Text(
         isSubmitting ? 'Saving...' : 'Save Food Item',
         style: const TextStyle(
-          color: NeutralColors.white,
+          color: TextColors.primary,
           fontWeight: FontWeight.w600,
           fontSize: 13,
         ),

@@ -36,7 +36,7 @@ class HallPreviewBadge extends StatelessWidget {
             '$tableCount',
             style: const TextStyle(
               fontSize: 11,
-              color: NeutralColors.white,
+              color: TextColors.primary,
               fontWeight: FontWeight.w700,
             ),
           ),

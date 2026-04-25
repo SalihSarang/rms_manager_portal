@@ -20,7 +20,7 @@ class MenuPortionsPricing extends StatelessWidget {
         const Text(
           'Portions & Pricing',
           style: TextStyle(
-            color: TextColors.inverse,
+            color: TextColors.primary,
             fontSize: 22,
             fontWeight: FontWeight.bold,
             letterSpacing: -0.5,
@@ -37,7 +37,7 @@ class MenuPortionsPricing extends StatelessWidget {
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.05),
+                color: NeutralColors.shadow.withValues(alpha: 0.05),
                 blurRadius: 10,
                 offset: const Offset(0, 4),
               ),
@@ -97,7 +97,7 @@ class MenuPortionsPricing extends StatelessWidget {
                 child: Text(
                   p.name,
                   style: const TextStyle(
-                    color: TextColors.inverse,
+                    color: TextColors.primary,
                     fontSize: 15,
                     fontWeight: FontWeight.w500,
                   ),
@@ -122,7 +122,7 @@ class MenuPortionsPricing extends StatelessWidget {
                 child: Text(
                   '\$${p.price.toStringAsFixed(2)}',
                   style: const TextStyle(
-                    color: TextColors.inverse,
+                    color: TextColors.primary,
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),

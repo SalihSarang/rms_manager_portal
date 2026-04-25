@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rms_design_system/app_colors/neutral_colors.dart';
 import 'package:rms_design_system/app_colors/semantic_colors.dart';
 import 'package:rms_shared_package/models/menu_models/food_model/food_model.dart';
+import 'package:rms_design_system/app_colors/text_colors.dart';
 
 class ToggleStatusDialog extends StatelessWidget {
   final FoodModel item;
@@ -19,7 +20,7 @@ class ToggleStatusDialog extends StatelessWidget {
       backgroundColor: NeutralColors.surface,
       title: Text(
         item.isAvailable ? 'Mark Sold Out?' : 'Mark Available?',
-        style: const TextStyle(color: Colors.white),
+        style: const TextStyle(color: TextColors.primary),
       ),
       content: Text(
         'Are you sure you want to mark ${item.name} as ${item.isAvailable ? 'sold out' : 'available'}?',
@@ -30,7 +31,7 @@ class ToggleStatusDialog extends StatelessWidget {
           onPressed: () => Navigator.of(context).pop(),
           child: const Text(
             'Cancel',
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: TextColors.primary),
           ),
         ),
         TextButton(

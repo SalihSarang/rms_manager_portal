@@ -65,7 +65,7 @@ class MenuItemsTableRow extends DataRow2 {
                    ? '\$ ${item.portions.first.price.toStringAsFixed(2)}'
                    : '—',
                style: const TextStyle(
-                 color: TextColors.inverse,
+                 color: TextColors.primary,
                  fontWeight: FontWeight.w500,
                ),
              ),

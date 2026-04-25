@@ -57,7 +57,7 @@ class TableManagementPage extends StatelessWidget {
                   style: TextStyle(
                     fontWeight: FontWeight.w800,
                     fontSize: 22,
-                    color: NeutralColors.white,
+                    color: TextColors.primary,
                   ),
                 ),
               ),
@@ -82,7 +82,7 @@ class TableManagementPage extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w800,
-                              color: NeutralColors.white,
+                              color: TextColors.primary,
                             ),
                           ),
                           const SizedBox(height: 24),

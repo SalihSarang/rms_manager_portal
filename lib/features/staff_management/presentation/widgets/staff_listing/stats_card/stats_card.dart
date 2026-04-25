@@ -68,7 +68,7 @@ class StatsCard extends StatelessWidget {
                 Text(
                   value,
                   style: theme.textTheme.titleMedium?.copyWith(
-                    color: TextColors.inverse,
+                    color: TextColors.primary,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

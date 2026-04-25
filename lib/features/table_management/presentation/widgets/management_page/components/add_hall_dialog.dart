@@ -15,14 +15,14 @@ class AddHallDialog extends StatelessWidget {
     return AlertDialog(
       backgroundColor: NeutralColors.surface,
       title: const Text('Add New Hall',
-          style: TextStyle(color: NeutralColors.white)),
+          style: TextStyle(color: TextColors.primary)),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           TextField(
             controller: nameController,
             autofocus: true,
-            style: const TextStyle(color: NeutralColors.white),
+            style: const TextStyle(color: TextColors.primary),
             decoration: const InputDecoration(
               labelText: 'Hall Name',
               hintText: 'e.g., Rooftop Patio',

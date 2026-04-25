@@ -4,6 +4,7 @@ import 'package:manager_portal/features/staff_management/presentation/pages/staf
 import 'package:manager_portal/features/table_management/presentation/pages/table_management_page.dart';
 import 'package:sidebarx/sidebarx.dart';
 import 'package:manager_portal/features/sidebar/presentation/widgets/manager_sidebar_x.dart';
+import 'package:manager_portal/features/overview/presentation/page/overview_page.dart';
 
 /// The primary navigation shell for the manager portal.
 ///
@@ -70,7 +71,8 @@ class _SidebarState extends State<Sidebar> {
               controller: _pageController,
               physics: const NeverScrollableScrollPhysics(),
               children: [
-                const Center(child: Text('Overview Page')),
+                const OverviewPage(),
+
                 const StaffListingScreen(),
                 const MenuManagementPage(),
                 const TableManagementPage(),

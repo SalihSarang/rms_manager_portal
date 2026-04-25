@@ -21,7 +21,7 @@ class FoodImagePicker extends StatelessWidget {
         RichText(
           text: const TextSpan(
             text: 'Food Image ',
-            style: TextStyle(color: NeutralColors.white, fontSize: 14),
+            style: TextStyle(color: TextColors.primary, fontSize: 14),
             children: [
               TextSpan(
                 text: '*',
@@ -96,7 +96,7 @@ class FoodImagePicker extends StatelessWidget {
                               hasImage
                                   ? Icons.edit_outlined
                                   : Icons.cloud_upload_outlined,
-                              color: NeutralColors.white,
+                              color: TextColors.primary,
                               size: 32,
                             ),
                             const SizedBox(height: 12),
@@ -107,7 +107,7 @@ class FoodImagePicker extends StatelessWidget {
                                   ? 'Click to change image'
                                   : 'Click to upload or drag and drop',
                               style: const TextStyle(
-                                color: NeutralColors.white,
+                                color: TextColors.primary,
                                 fontSize: 14,
                               ),
                             ),

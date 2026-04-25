@@ -58,7 +58,7 @@ class DietaryTagItem extends StatelessWidget {
             Text(
               label,
               style: TextStyle(
-                color: isSelected ? NeutralColors.white : TextColors.secondary,
+                color: isSelected ? TextColors.primary : TextColors.secondary,
                 fontSize: 12,
               ),
             ),

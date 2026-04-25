@@ -20,7 +20,7 @@ class CategoryVisibilitySwitch extends StatelessWidget {
       children: [
         const Text(
           'You want to show this category in menu',
-          style: TextStyle(color: TextColors.inverse, fontSize: 16),
+          style: TextStyle(color: TextColors.primary, fontSize: 16),
         ),
         Transform.scale(
           scale: 0.9,

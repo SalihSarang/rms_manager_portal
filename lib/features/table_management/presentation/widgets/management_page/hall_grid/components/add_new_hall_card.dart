@@ -90,7 +90,7 @@ class _AddNewHallCardState extends State<AddNewHallCard> {
                 child: Icon(
                   Icons.add_rounded,
                   color: _isHovered
-                      ? NeutralColors.white
+                      ? TextColors.primary
                       : PrimaryColors.defaultColor,
                   size: 30,
                 ),
@@ -101,7 +101,7 @@ class _AddNewHallCardState extends State<AddNewHallCard> {
               const Text(
                 'Add New Section',
                 style: TextStyle(
-                  color: NeutralColors.white,
+                  color: TextColors.primary,
                   fontWeight: FontWeight.w700,
                   fontSize: 16,
                 ),
@@ -112,7 +112,7 @@ class _AddNewHallCardState extends State<AddNewHallCard> {
               Text(
                 'Create a new floor plan',
                 style: TextStyle(
-                  color: NeutralColors.white.withValues(alpha: 0.35),
+                  color: TextColors.primary.withValues(alpha: 0.35),
                   fontSize: 12,
                 ),
               ),

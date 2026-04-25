@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:rms_design_system/app_colors/neutral_colors.dart';
 import 'package:rms_design_system/app_colors/primary_colors.dart';
+import 'package:rms_design_system/app_colors/text_colors.dart';
 
 /// [ToggleItemRow] is a reusable row containing a label and a [CupertinoSwitch].
 /// It is used for binary settings like "Featured" or "Custom Notes".
@@ -28,7 +29,7 @@ class ToggleItemRow extends StatelessWidget {
       children: [
         Text(
           label,
-          style: const TextStyle(color: NeutralColors.white, fontSize: 13),
+          style: const TextStyle(color: TextColors.primary, fontSize: 13),
         ),
         CupertinoSwitch(
           value: value,

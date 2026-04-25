@@ -71,7 +71,7 @@ class ActivityDoughnutChart extends StatelessWidget {
                               ? '0%'
                               : '${((activeStaffs / totalStaffs) * 100).toInt()}%',
                           style: const TextStyle(
-                            color: TextColors.inverse,
+                            color: TextColors.primary,
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
                           ),

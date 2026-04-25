@@ -43,7 +43,7 @@ class _FoodDescriptionInputState extends State<FoodDescriptionInput> {
         RichText(
           text: const TextSpan(
             text: 'Description ',
-            style: TextStyle(color: NeutralColors.white, fontSize: 14),
+            style: TextStyle(color: TextColors.primary, fontSize: 14),
             children: [
               TextSpan(
                 text: '*',
@@ -57,7 +57,7 @@ class _FoodDescriptionInputState extends State<FoodDescriptionInput> {
           controller: _controller,
           validator: MenuValidators.validateDescription,
           maxLines: 4,
-          style: const TextStyle(color: TextColors.inverse),
+          style: const TextStyle(color: TextColors.primary),
           decoration: InputDecoration(
             hintText: 'Describe the ingredients, taste, and allergens...',
             hintStyle: TextStyle(

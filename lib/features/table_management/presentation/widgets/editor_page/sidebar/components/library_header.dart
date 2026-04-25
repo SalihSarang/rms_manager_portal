@@ -29,7 +29,7 @@ class LibraryHeader extends StatelessWidget {
                 child: const Icon(
                   Icons.table_restaurant_rounded,
                   size: 16,
-                  color: NeutralColors.white,
+                  color: TextColors.primary,
                 ),
               ),
               const SizedBox(width: 10),
@@ -38,7 +38,7 @@ class LibraryHeader extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w800,
-                  color: NeutralColors.white,
+                  color: TextColors.primary,
                   letterSpacing: 0.2,
                 ),
               ),

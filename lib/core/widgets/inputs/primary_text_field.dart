@@ -28,7 +28,7 @@ class PrimaryTextField extends StatelessWidget {
       controller: controller,
       keyboardType: keyboardType,
       inputFormatters: inputFormatters,
-      style: const TextStyle(color: TextColors.inverse),
+      style: const TextStyle(color: TextColors.primary),
       decoration: InputDecoration(
         hintText: hintText,
         hintStyle: TextStyle(

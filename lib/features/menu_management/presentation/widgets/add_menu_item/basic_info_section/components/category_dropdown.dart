@@ -21,7 +21,7 @@ class CategoryDropdown extends StatelessWidget {
         RichText(
           text: const TextSpan(
             text: 'Category ',
-            style: TextStyle(color: NeutralColors.white, fontSize: 14),
+            style: TextStyle(color: TextColors.primary, fontSize: 14),
             children: [
               TextSpan(
                 text: '*',
@@ -44,7 +44,7 @@ class CategoryDropdown extends StatelessWidget {
                 return DropdownButtonFormField<String>(
                   initialValue: state.category?.id,
                   dropdownColor: NeutralColors.surface,
-                  style: const TextStyle(color: TextColors.inverse),
+                  style: const TextStyle(color: TextColors.primary),
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: NeutralColors.background,
