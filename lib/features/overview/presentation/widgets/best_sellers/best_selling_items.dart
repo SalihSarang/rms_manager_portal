@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:manager_portal/features/overview/domain/entities/overview_data.dart';
+import 'package:manager_portal/features/overview/presentation/page/best_selling_items_report_page.dart';
 import 'package:rms_design_system/rms_design_system.dart';
 
 class BestSellingItems extends StatelessWidget {
@@ -31,7 +32,13 @@ class BestSellingItems extends StatelessWidget {
                 ),
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => BestSellingItemsReportPage(entries: entries),
+                    ),
+                  );
+                },
                 child: const Text(
                   'Full Report',
                   style: TextStyle(color: PrimaryColors.defaultColor, fontSize: 12),
@@ -71,7 +78,7 @@ class BestSellingItems extends StatelessWidget {
           ListView.separated(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: entries.length,
+            itemCount: entries.length > 5 ? 5 : entries.length,
             separatorBuilder: (context, index) => const Padding(
               padding: EdgeInsets.symmetric(vertical: 8.0),
               child: Divider(color: NeutralColors.transparent),

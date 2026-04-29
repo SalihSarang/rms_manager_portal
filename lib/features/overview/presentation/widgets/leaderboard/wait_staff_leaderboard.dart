@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:manager_portal/features/overview/domain/entities/overview_data.dart';
+import 'package:manager_portal/features/overview/presentation/page/wait_staff_leaderboard_page.dart';
 import 'package:rms_design_system/rms_design_system.dart';
 
 class WaitStaffLeaderboard extends StatelessWidget {
@@ -31,7 +32,13 @@ class WaitStaffLeaderboard extends StatelessWidget {
                 ),
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => WaitStaffLeaderboardPage(entries: entries),
+                    ),
+                  );
+                },
                 child: const Text(
                   'View All',
                   style: TextStyle(color: PrimaryColors.defaultColor, fontSize: 12),
@@ -43,7 +50,7 @@ class WaitStaffLeaderboard extends StatelessWidget {
           ListView.separated(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: entries.length,
+            itemCount: entries.length > 5 ? 5 : entries.length,
             separatorBuilder: (context, index) => const SizedBox(height: 16),
             itemBuilder: (context, index) {
               final entry = entries[index];

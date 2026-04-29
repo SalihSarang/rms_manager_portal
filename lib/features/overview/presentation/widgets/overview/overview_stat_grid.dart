@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:manager_portal/features/overview/domain/entities/overview_data.dart';
-import 'package:manager_portal/features/overview/presentation/widgets/stat_card.dart';
+import 'package:manager_portal/features/overview/presentation/widgets/overview/stat_card.dart';
 import 'package:rms_design_system/rms_design_system.dart';
 
 class OverviewStatGrid extends StatelessWidget {

@@ -5,6 +5,7 @@ import 'package:manager_portal/core/di/manager_auth_di.dart';
 import 'package:manager_portal/core/di/menu_management_di.dart';
 import 'package:manager_portal/core/di/staff_di.dart';
 import 'package:manager_portal/core/di/table_management_di.dart';
+import 'package:manager_portal/core/di/overview_di.dart';
 
 final getIt = GetIt.instance;
 
@@ -31,4 +32,7 @@ void setupDI() {
 
   // Table Management DI
   setUpTableManagementDI();
+
+  // Overview DI
+  setUpOverviewDI();
 }
