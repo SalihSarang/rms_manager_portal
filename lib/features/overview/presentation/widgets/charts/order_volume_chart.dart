@@ -49,6 +49,7 @@ class OrderVolumeChart extends StatelessWidget {
                   bottomTitles: AxisTitles(
                     sideTitles: SideTitles(
                       showTitles: true,
+                      interval: 1,
                       getTitlesWidget: (value, meta) {
                         if (value < 0 || value >= data.length) return const SizedBox();
                         return Padding(
@@ -57,7 +58,7 @@ class OrderVolumeChart extends StatelessWidget {
                             data[value.toInt()].hour,
                             style: const TextStyle(
                               color: TextColors.muted,
-                              fontSize: 12,
+                              fontSize: 10,
                             ),
                           ),
                         );
@@ -73,11 +74,11 @@ class OrderVolumeChart extends StatelessWidget {
                     barRods: [
                       BarChartRodData(
                         toY: e.value.orders.toDouble(),
-                        color: e.value.orders > 300 
+                        color: e.value.orders > 0 
                             ? PrimaryColors.defaultColor 
                             : PrimaryColors.defaultColor.withValues(alpha: 0.4),
 
-                        width: 24,
+                        width: 16,
                         borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(4),
                           topRight: Radius.circular(4),

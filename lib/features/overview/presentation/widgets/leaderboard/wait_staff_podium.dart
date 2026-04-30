@@ -19,112 +19,177 @@ class WaitStaffPodium extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        if (second != null) ...[
-          Expanded(child: _buildPodiumCard(second, 2, 160, Colors.grey[400]!)),
-          const SizedBox(width: 24),
-        ] else
+        if (second != null)
+          Expanded(
+            child: _buildPodiumItem(
+              context: context,
+              entry: second,
+              rank: 2,
+              height: 220,
+              accentColor: const Color(0xFFC0C0C0), // Silver
+              icon: Icons.workspace_premium,
+            ),
+          )
+        else
           const Expanded(child: SizedBox()),
-        
-        Expanded(child: _buildPodiumCard(first, 1, 200, Colors.amber[600]!)),
         const SizedBox(width: 24),
-
+        Expanded(
+          child: _buildPodiumItem(
+            context: context,
+            entry: first,
+            rank: 1,
+            height: 280,
+            accentColor: const Color(0xFFFFD700), // Gold
+            icon: Icons.workspace_premium,
+            isWinner: true,
+          ),
+        ),
+        const SizedBox(width: 24),
         if (third != null)
-          Expanded(child: _buildPodiumCard(third, 3, 140, Colors.brown[400]!))
+          Expanded(
+            child: _buildPodiumItem(
+              context: context,
+              entry: third,
+              rank: 3,
+              height: 190,
+              accentColor: const Color(0xFFCD7F32), // Bronze
+              icon: Icons.workspace_premium,
+            ),
+          )
         else
           const Expanded(child: SizedBox()),
       ],
     );
   }
 
-  Widget _buildPodiumCard(LeaderboardEntry entry, int rank, double height, Color accentColor) {
-    return Container(
-      height: height + 120,
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: NeutralColors.surface,
-        borderRadius: BorderRadius.circular(24),
-        border: Border.all(
-          color: rank == 1 ? accentColor.withValues(alpha: 0.5) : NeutralColors.border,
-          width: rank == 1 ? 2 : 1,
-        ),
-        boxShadow: [
-          if (rank == 1)
-            BoxShadow(
-              color: accentColor.withValues(alpha: 0.2),
-              blurRadius: 20,
-              spreadRadius: 2,
-            ),
-        ],
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              CircleAvatar(
-                radius: rank == 1 ? 40 : 32,
+  Widget _buildPodiumItem({
+    required BuildContext context,
+    required LeaderboardEntry entry,
+    required int rank,
+    required double height,
+    required Color accentColor,
+    required IconData icon,
+    bool isWinner = false,
+  }) {
+    return Column(
+      children: [
+        Stack(
+          alignment: Alignment.center,
+          clipBehavior: Clip.none,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: accentColor,
+                  width: isWinner ? 4 : 2,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: accentColor.withValues(alpha: 0.3),
+                    blurRadius: 20,
+                    spreadRadius: 2,
+                  ),
+                ],
+              ),
+              child: CircleAvatar(
+                radius: isWinner ? 54 : 42,
                 backgroundImage: NetworkImage(entry.staff.avatar),
                 backgroundColor: NeutralColors.border,
               ),
-              Positioned(
-                bottom: 0,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: accentColor,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Text(
-                    '#$rank',
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12,
+            ),
+            Positioned(
+              bottom: -10,
+              child: Container(
+                padding: const EdgeInsets.all(6),
+                decoration: BoxDecoration(
+                  color: accentColor,
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.2),
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
                     ),
-                  ),
+                  ],
+                ),
+                child: Icon(
+                  icon,
+                  size: isWinner ? 24 : 18,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 24),
+        Container(
+          width: double.infinity,
+          height: height,
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                NeutralColors.surface,
+                NeutralColors.surface.withValues(alpha: 0.8),
+              ],
+            ),
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+            border: Border.all(color: NeutralColors.border),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.05),
+                blurRadius: 10,
+                offset: const Offset(0, -4),
+              ),
+            ],
+          ),
+          child: Column(
+            children: [
+              Text(
+                '#$rank',
+                style: TextStyle(
+                  color: accentColor,
+                  fontSize: 24,
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                entry.staff.name,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: TextColors.primary,
+                  fontSize: isWinner ? 18 : 16,
+                  fontWeight: FontWeight.bold,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(height: 16),
+              const Spacer(),
+              Text(
+                '\$${entry.revenue.toStringAsFixed(0)}',
+                style: TextStyle(
+                  color: PrimaryColors.brandGreen,
+                  fontSize: isWinner ? 28 : 22,
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+              Text(
+                '${entry.ordersCount} Orders',
+                style: const TextStyle(
+                  color: TextColors.secondary,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 16),
-          Text(
-            entry.staff.name,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: TextColors.primary,
-              fontSize: rank == 1 ? 16 : 14,
-              fontWeight: FontWeight.bold,
-            ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-          const SizedBox(height: 4),
-          Text(
-            '${entry.ordersCount} Orders',
-            style: const TextStyle(
-              color: TextColors.secondary,
-              fontSize: 12,
-            ),
-          ),
-          const SizedBox(height: 16),
-          Text(
-            '\$${entry.revenue.toStringAsFixed(2)}',
-            style: TextStyle(
-              color: PrimaryColors.brandGreen,
-              fontSize: rank == 1 ? 20 : 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const Text(
-            'Revenue',
-            style: TextStyle(
-              color: TextColors.muted,
-              fontSize: 10,
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

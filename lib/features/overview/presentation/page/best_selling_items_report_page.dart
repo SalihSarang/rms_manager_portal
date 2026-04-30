@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:manager_portal/core/widgets/rms_detail_app_bar.dart';
 import 'package:manager_portal/features/overview/domain/entities/overview_data.dart';
 import 'package:manager_portal/features/overview/presentation/widgets/best_sellers/best_selling_items_empty_state.dart';
 import 'package:manager_portal/features/overview/presentation/widgets/best_sellers/best_selling_items_report_content.dart';
@@ -13,22 +14,7 @@ class BestSellingItemsReportPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: NeutralColors.background,
-      appBar: AppBar(
-        backgroundColor: NeutralColors.surface,
-        elevation: 0,
-        title: const Text(
-          'Best-Selling Items Report',
-          style: TextStyle(
-            color: TextColors.primary,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: TextColors.primary),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        shape: const Border(bottom: BorderSide(color: NeutralColors.border)),
-      ),
+      appBar: const RmsDetailAppBar(title: 'Best-Selling Items Report'),
       body: entries.isEmpty
           ? const BestSellingItemsEmptyState()
           : BestSellingItemsReportContent(entries: entries),

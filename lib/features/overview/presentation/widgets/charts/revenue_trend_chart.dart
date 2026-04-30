@@ -1,10 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:manager_portal/features/overview/domain/entities/overview_data.dart';
 import 'package:manager_portal/features/overview/domain/entities/timeframe.dart';
-import 'package:manager_portal/features/overview/presentation/bloc/overview_bloc.dart';
-import 'package:manager_portal/features/overview/presentation/bloc/overview_event.dart';
 import 'package:rms_design_system/rms_design_system.dart';
 
 class RevenueTrendChart extends StatelessWidget {
@@ -49,71 +46,22 @@ class RevenueTrendChart extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    timeframe == Timeframe.today || timeframe == Timeframe.yesterday
+                    timeframe == Timeframe.today ||
+                            timeframe == Timeframe.yesterday
                         ? 'Hourly performance'
                         : timeframe == Timeframe.last7Days
-                            ? 'Daily performance over current week'
-                            : timeframe == Timeframe.last30Days
-                                ? 'Daily performance over last 30 days'
-                                : (startDate != null && endDate != null
-                                    ? 'From ${startDate!.day}/${startDate!.month} to ${endDate!.day}/${endDate!.month}'
-                                    : 'Custom date range'),
+                        ? 'Daily performance over current week'
+                        : timeframe == Timeframe.last30Days
+                        ? 'Daily performance over last 30 days'
+                        : (startDate != null && endDate != null
+                              ? 'From ${startDate!.day}/${startDate!.month} to ${endDate!.day}/${endDate!.month}'
+                              : 'Custom date range'),
                     style: const TextStyle(
                       color: TextColors.secondary,
                       fontSize: 12,
                     ),
                   ),
                 ],
-              ),
-              PopupMenuButton<Timeframe>(
-                initialValue: timeframe,
-                onSelected: (selected) async {
-                  if (selected == Timeframe.custom) {
-                    final picked = await showDateRangePicker(
-                      context: context,
-                      firstDate: DateTime(2020),
-                      lastDate: DateTime.now(),
-                    );
-                    if (picked != null) {
-                      if (context.mounted) {
-                        context.read<OverviewBloc>().add(
-                          LoadOverviewData(
-                            timeframe: Timeframe.custom,
-                            startDate: picked.start,
-                            endDate: picked.end,
-                          ),
-                        );
-                      }
-                    }
-                  } else {
-                    context.read<OverviewBloc>().add(LoadOverviewData(timeframe: selected));
-                  }
-                },
-                itemBuilder: (context) => Timeframe.values.map((t) {
-                  return PopupMenuItem(
-                    value: t,
-                    child: Text(t.label),
-                  );
-                }).toList(),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                  decoration: BoxDecoration(
-                    color: NeutralColors.border,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Row(
-                    children: [
-                      Text(
-                        timeframe == Timeframe.custom && startDate != null && endDate != null
-                            ? '${startDate!.day}/${startDate!.month} - ${endDate!.day}/${endDate!.month}'
-                            : timeframe.label,
-                        style: const TextStyle(color: TextColors.primary, fontSize: 12),
-                      ),
-                      const SizedBox(width: 4),
-                      const Icon(Icons.keyboard_arrow_down, color: TextColors.secondary, size: 16),
-                    ],
-                  ),
-                ),
               ),
             ],
           ),
@@ -124,21 +72,30 @@ class RevenueTrendChart extends StatelessWidget {
                 gridData: const FlGridData(show: false),
                 titlesData: FlTitlesData(
                   show: true,
-                  rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                  topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                  leftTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                  rightTitles: const AxisTitles(
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
+                  topTitles: const AxisTitles(
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
+                  leftTitles: const AxisTitles(
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
                   bottomTitles: AxisTitles(
                     sideTitles: SideTitles(
                       showTitles: true,
+                      interval: 1,
                       getTitlesWidget: (value, meta) {
-                        if (value < 0 || value >= data.length) return const SizedBox();
+                        if (value < 0 || value >= data.length) {
+                          return const SizedBox();
+                        }
                         return Padding(
                           padding: const EdgeInsets.only(top: 12.0),
                           child: Text(
                             data[value.toInt()].day,
                             style: const TextStyle(
                               color: TextColors.muted,
-                              fontSize: 12,
+                              fontSize: 10,
                             ),
                           ),
                         );
@@ -165,7 +122,6 @@ class RevenueTrendChart extends StatelessWidget {
                           PrimaryColors.defaultColor.withValues(alpha: 0.3),
                           PrimaryColors.defaultColor.withValues(alpha: 0),
                         ],
-
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                       ),

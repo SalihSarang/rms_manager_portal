@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:manager_portal/features/overview/domain/entities/overview_data.dart';
 import 'package:manager_portal/features/overview/domain/entities/timeframe.dart';
 
 abstract class OverviewEvent extends Equatable {
@@ -21,4 +22,21 @@ class LoadOverviewData extends OverviewEvent {
 
   @override
   List<Object?> get props => [timeframe, startDate, endDate];
+}
+
+class OverviewUpdated extends OverviewEvent {
+  final OverviewData data;
+  final Timeframe timeframe;
+  final DateTime? startDate;
+  final DateTime? endDate;
+
+  const OverviewUpdated({
+    required this.data,
+    required this.timeframe,
+    this.startDate,
+    this.endDate,
+  });
+
+  @override
+  List<Object?> get props => [data, timeframe, startDate, endDate];
 }

@@ -6,6 +6,7 @@ import 'package:rms_shared_package/constants/db_constants.dart';
 
 abstract class IStaffRemoteDataSource {
   Future<List<StaffModel?>> getAllStaffs();
+  Stream<List<StaffModel>> watchAllStaffs();
   Future<StaffModel> getStaffDetails(String staffId);
   Future<void> addNewStaff(StaffModel staff);
   Future<void> updateStaff(StaffModel staff);
@@ -33,6 +34,13 @@ class StaffRemoteDataSourceImpl
       final snapshot = await _staffCollection.get();
       return snapshot.docs.map((doc) => doc.data()).toList();
     }, taskName: 'StaffRemoteDataSource.getAllStaffs');
+  }
+
+  @override
+  Stream<List<StaffModel>> watchAllStaffs() {
+    return _staffCollection.snapshots().map((snapshot) {
+      return snapshot.docs.map((doc) => doc.data()).toList();
+    });
   }
 
   @override

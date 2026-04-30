@@ -5,6 +5,7 @@ import 'package:rms_shared_package/utils/base_remote_datasource.dart';
 
 abstract class OverviewRemoteDataSource {
   Future<List<OrderModel>> getAllOrders();
+  Stream<List<OrderModel>> watchAllOrders();
 }
 
 class OverviewRemoteDataSourceImpl
@@ -33,5 +34,21 @@ class OverviewRemoteDataSourceImpl
       },
       taskName: 'OverviewRemoteDataSource.getAllOrders',
     );
+  }
+
+  @override
+  Stream<List<OrderModel>> watchAllOrders() {
+    return firestore
+        .collection(OrderDbConstants.orders)
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs.map((doc) {
+        final data = doc.data();
+        if (data['id'] == null || data['id'].toString().isEmpty) {
+          data['id'] = doc.id;
+        }
+        return OrderModel.fromJson(data);
+      }).toList();
+    });
   }
 }
