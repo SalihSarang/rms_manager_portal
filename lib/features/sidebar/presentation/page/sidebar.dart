@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:manager_portal/features/menu_management/presentation/pages/menu_management_page.dart';
+import 'package:manager_portal/features/reports/presentation/pages/reports_page.dart';
 import 'package:manager_portal/features/staff_management/presentation/pages/staff_listing_page.dart';
 import 'package:manager_portal/features/table_management/presentation/pages/table_management_page.dart';
 import 'package:sidebarx/sidebarx.dart';
@@ -76,7 +77,7 @@ class _SidebarState extends State<Sidebar> {
                 const StaffListingScreen(),
                 const MenuManagementPage(),
                 const TableManagementPage(),
-                const Center(child: Text('Reports Page')),
+                const ReportsPage(),
                 const Center(child: Text('Settings Page')),
                 const Center(child: Text('Logout Page')),
               ],

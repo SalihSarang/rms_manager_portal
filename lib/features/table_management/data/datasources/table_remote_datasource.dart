@@ -3,6 +3,7 @@ import 'package:rms_shared_package/rms_shared_package.dart';
 
 abstract class ITableRemoteDataSource {
   Future<List<TableModel>> getAllTables();
+  Stream<List<TableModel>> watchAllTables();
   Future<List<TableModel>> getTables(String hallId);
   Future<void> addTable(TableModel table);
   Future<void> updateTable(TableModel table);
@@ -30,6 +31,13 @@ class TableRemoteDataSourceImpl
       final snapshot = await _tablesCollection.get();
       return snapshot.docs.map((doc) => doc.data()).toList();
     }, taskName: 'TableRemoteDataSource.getAllTables');
+  }
+
+  @override
+  Stream<List<TableModel>> watchAllTables() {
+    return _tablesCollection.snapshots().map(
+      (snapshot) => snapshot.docs.map((doc) => doc.data()).toList(),
+    );
   }
 
   @override

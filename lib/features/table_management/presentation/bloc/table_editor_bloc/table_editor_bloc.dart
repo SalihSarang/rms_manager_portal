@@ -11,10 +11,8 @@ class TableEditorBloc extends Bloc<TableEditorEvent, TableEditorState> {
   final IHallRepository _hallRepository;
   final ITableRepository _tableRepository;
 
-  TableEditorBloc(
-    this._hallRepository,
-    this._tableRepository,
-  ) : super(const TableEditorState()) {
+  TableEditorBloc(this._hallRepository, this._tableRepository)
+    : super(const TableEditorState()) {
     on<TableEditorInit>(_onInit);
     on<TableEditorHallSelected>(_onHallSelected);
     on<TableEditorHallAdded>(_onHallAdded);
@@ -29,6 +27,8 @@ class TableEditorBloc extends Bloc<TableEditorEvent, TableEditorState> {
     on<TableEditorTableSeatsUpdated>(_onTableSeatsUpdated);
     on<TableEditorTableRenamed>(_onTableRenamed);
     on<TableEditorModeSet>(_onModeSet);
+    on<TableEditorZoomUpdated>(_onZoomUpdated);
+    on<TableEditorViewportSizeUpdated>(_onViewportSizeUpdated);
   }
 
   /// Initial Load
@@ -41,11 +41,9 @@ class TableEditorBloc extends Bloc<TableEditorEvent, TableEditorState> {
     try {
       final halls = await _hallRepository.getHalls();
       final allTables = await _tableRepository.getAllTables();
-      emit(state.copyWith(
-        halls: halls,
-        allTables: allTables,
-        isLoading: false,
-      ));
+      emit(
+        state.copyWith(halls: halls, allTables: allTables, isLoading: false),
+      );
     } catch (e) {
       log('Error loading halls/tables: $e');
       emit(state.copyWith(isLoading: false, error: e.toString()));
@@ -111,10 +109,9 @@ class TableEditorBloc extends Bloc<TableEditorEvent, TableEditorState> {
     TableEditorEditModeSet event,
     Emitter<TableEditorState> emit,
   ) {
-    emit(state.copyWith(
-      isEditing: event.isEditing,
-      isViewing: !event.isEditing,
-    ));
+    emit(
+      state.copyWith(isEditing: event.isEditing, isViewing: !event.isEditing),
+    );
   }
 
   /// Toggles viewing mode.
@@ -122,10 +119,9 @@ class TableEditorBloc extends Bloc<TableEditorEvent, TableEditorState> {
     TableEditorViewModeSet event,
     Emitter<TableEditorState> emit,
   ) {
-    emit(state.copyWith(
-      isViewing: event.isViewing,
-      isEditing: !event.isViewing,
-    ));
+    emit(
+      state.copyWith(isViewing: event.isViewing, isEditing: !event.isViewing),
+    );
   }
 
   /// Resets navigation state and re-initializes.
@@ -152,10 +148,11 @@ class TableEditorBloc extends Bloc<TableEditorEvent, TableEditorState> {
     try {
       await _tableRepository.addTable(tableWithHall);
       final updatedTables = [...state.tables, tableWithHall];
-      emit(state.copyWith(
-        tables: updatedTables,
-        isLoading: false,
-      ).copyWithSelectedTable(tableWithHall));
+      emit(
+        state
+            .copyWith(tables: updatedTables, isLoading: false)
+            .copyWithSelectedTable(tableWithHall),
+      );
     } catch (e) {
       emit(state.copyWith(isLoading: false, error: e.toString()));
     }
@@ -173,10 +170,11 @@ class TableEditorBloc extends Bloc<TableEditorEvent, TableEditorState> {
       final idx = updatedTables.indexWhere((t) => t.id == event.table.id);
       if (idx != -1) updatedTables[idx] = event.table;
 
-      emit(state.copyWith(
-        tables: updatedTables,
-        isLoading: false,
-      ).copyWithSelectedTable(event.table));
+      emit(
+        state
+            .copyWith(tables: updatedTables, isLoading: false)
+            .copyWithSelectedTable(event.table),
+      );
     } catch (e) {
       emit(state.copyWith(isLoading: false, error: e.toString()));
     }
@@ -190,16 +188,20 @@ class TableEditorBloc extends Bloc<TableEditorEvent, TableEditorState> {
     emit(state.copyWith(isLoading: true, error: null));
     try {
       await _tableRepository.deleteTable(event.id);
-      final updatedTables =
-          state.tables.where((t) => t.id != event.id).toList();
-      final newSelected =
-          state.selectedTable?.id == event.id ? null : state.selectedTable;
+      final updatedTables = state.tables
+          .where((t) => t.id != event.id)
+          .toList();
+      final newSelected = state.selectedTable?.id == event.id
+          ? null
+          : state.selectedTable;
 
-      emit(state.copyWith(
-        tables: updatedTables,
-        selectedTable: newSelected,
-        isLoading: false,
-      ));
+      emit(
+        state.copyWith(
+          tables: updatedTables,
+          selectedTable: newSelected,
+          isLoading: false,
+        ),
+      );
     } catch (e) {
       emit(state.copyWith(isLoading: false, error: e.toString()));
     }
@@ -232,9 +234,11 @@ class TableEditorBloc extends Bloc<TableEditorEvent, TableEditorState> {
     Emitter<TableEditorState> emit,
   ) async {
     if (state.selectedTable == null) return;
-    add(TableEditorTableUpdated(
-      state.selectedTable!.copyWith(seats: event.seats),
-    ));
+    add(
+      TableEditorTableUpdated(
+        state.selectedTable!.copyWith(seats: event.seats),
+      ),
+    );
   }
 
   /// Renames a table.
@@ -250,10 +254,21 @@ class TableEditorBloc extends Bloc<TableEditorEvent, TableEditorState> {
 
   /// UI State
   /// Sets the interaction mode (select, etc.).
-  void _onModeSet(
-    TableEditorModeSet event,
+  void _onModeSet(TableEditorModeSet event, Emitter<TableEditorState> emit) {
+    emit(state.copyWith(mode: event.mode));
+  }
+
+  void _onZoomUpdated(
+    TableEditorZoomUpdated event,
     Emitter<TableEditorState> emit,
   ) {
-    emit(state.copyWith(mode: event.mode));
+    emit(state.copyWith(zoomScale: event.scale));
+  }
+
+  void _onViewportSizeUpdated(
+    TableEditorViewportSizeUpdated event,
+    Emitter<TableEditorState> emit,
+  ) {
+    emit(state.copyWith(viewportSize: event.size));
   }
 }

@@ -13,6 +13,11 @@ class TableRepositoryImpl implements ITableRepository {
   }
 
   @override
+  Stream<List<TableModel>> watchAllTables() {
+    return _remoteDataSource.watchAllTables();
+  }
+
+  @override
   Future<List<TableModel>> getTables(String hallId) async {
     return await _remoteDataSource.getTables(hallId);
   }
