@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rms_design_system/app_colors/status_colors.dart';
-import '../bloc/reports_state.dart';
+import '../../bloc/reports_state.dart';
 import 'status_summary_card.dart';
 
 class ReportsSummaryCards extends StatelessWidget {

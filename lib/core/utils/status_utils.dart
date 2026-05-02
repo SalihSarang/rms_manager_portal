@@ -19,49 +19,76 @@ class StatusUtils {
         return StatusColors.purpleLight;
       case OrderStatus.completed:
         return StatusColors.paid;
+      case OrderStatus.cancelled:
+        return StatusColors.cancelled;
     }
   }
 
-  static bool hasActiveOrder(List<OrderModel> orders) => orders.isNotEmpty;
+  static bool hasActiveOrder(List<OrderModel> orders) => orders.any(
+    (o) =>
+        o.orderStatus != OrderStatus.completed &&
+        o.orderStatus != OrderStatus.cancelled,
+  );
 
   static int getTotalGuests(TableModel table, List<OrderModel> orders) {
-    if (orders.isEmpty) return table.occupiedSeats;
-    return orders.fold(0, (sum, order) => sum + order.seatCount);
+    final activeOrders = orders
+        .where(
+          (o) =>
+              o.orderStatus != OrderStatus.completed &&
+              o.orderStatus != OrderStatus.cancelled,
+        )
+        .toList();
+    if (activeOrders.isEmpty) return table.occupiedSeats;
+    return activeOrders.fold(0, (sum, order) => sum + order.seatCount);
   }
 
   static String getWaiterNames(List<OrderModel> orders) {
-    if (orders.isEmpty) return 'No Waiter Assigned';
-    final names = orders.map((o) => o.staffName).toSet().toList();
+    final activeOrders = orders
+        .where(
+          (o) =>
+              o.orderStatus != OrderStatus.completed &&
+              o.orderStatus != OrderStatus.cancelled,
+        )
+        .toList();
+    if (activeOrders.isEmpty) return 'No Waiter Assigned';
+    final names = activeOrders.map((o) => o.staffName).toSet().toList();
     return names.join(', ');
   }
 
   static Color getTableStatusColor(TableModel table, List<OrderModel> orders) {
-    final totalGuests = getTotalGuests(table, orders);
+    final activeOrders = orders
+        .where(
+          (o) =>
+              o.orderStatus != OrderStatus.completed &&
+              o.orderStatus != OrderStatus.cancelled,
+        )
+        .toList();
+    final totalGuests = getTotalGuests(table, activeOrders);
 
     // 1. Fully Occupied logic (Alert - Red)
     if (totalGuests >= table.seats) {
       return TableColors.destructive;
     }
 
-    if (orders.isEmpty) return TextColors.secondary;
+    if (activeOrders.isEmpty) return TextColors.secondary;
 
     // 2. Pending Order logic (Yellow) - If ANY order is pending
-    if (orders.any((o) => o.orderStatus == OrderStatus.pending)) {
+    if (activeOrders.any((o) => o.orderStatus == OrderStatus.pending)) {
       return StatusColors.pending;
     }
 
     // 3. Preparing logic (Blue) - If any is preparing
-    if (orders.any((o) => o.orderStatus == OrderStatus.preparing)) {
+    if (activeOrders.any((o) => o.orderStatus == OrderStatus.preparing)) {
       return StatusColors.preparing;
     }
 
     // 4. Ready logic (Green)
-    if (orders.any((o) => o.orderStatus == OrderStatus.ready)) {
+    if (activeOrders.any((o) => o.orderStatus == OrderStatus.ready)) {
       return StatusColors.ready;
     }
 
     // 5. Served logic (Purple)
-    if (orders.any((o) => o.orderStatus == OrderStatus.served)) {
+    if (activeOrders.any((o) => o.orderStatus == OrderStatus.served)) {
       return StatusColors.purpleLight;
     }
 
@@ -69,21 +96,28 @@ class StatusUtils {
   }
 
   static String getTableStatusText(TableModel table, List<OrderModel> orders) {
-    final totalGuests = getTotalGuests(table, orders);
+    final activeOrders = orders
+        .where(
+          (o) =>
+              o.orderStatus != OrderStatus.completed &&
+              o.orderStatus != OrderStatus.cancelled,
+        )
+        .toList();
+    final totalGuests = getTotalGuests(table, activeOrders);
 
     if (totalGuests >= table.seats) return 'Fully Occupied';
-    if (orders.isEmpty) return 'Available';
+    if (activeOrders.isEmpty) return 'Available';
 
-    if (orders.any((o) => o.orderStatus == OrderStatus.pending)) {
+    if (activeOrders.any((o) => o.orderStatus == OrderStatus.pending)) {
       return 'Pending Order';
     }
-    if (orders.any((o) => o.orderStatus == OrderStatus.preparing)) {
+    if (activeOrders.any((o) => o.orderStatus == OrderStatus.preparing)) {
       return 'Preparing';
     }
-    if (orders.any((o) => o.orderStatus == OrderStatus.ready)) {
+    if (activeOrders.any((o) => o.orderStatus == OrderStatus.ready)) {
       return 'Ready';
     }
-    if (orders.any((o) => o.orderStatus == OrderStatus.served)) {
+    if (activeOrders.any((o) => o.orderStatus == OrderStatus.served)) {
       return 'Served';
     }
 

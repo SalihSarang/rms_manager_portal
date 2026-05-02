@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:rms_shared_package/enums/enums.dart';
-import '../bloc/reports_state.dart';
-import 'table_status_card.dart';
+import '../../bloc/reports_state.dart';
+import '../table_status_card/table_status_card.dart';
 
 class ReportsTableGrid extends StatelessWidget {
   final ReportsLoaded state;
 
-  const ReportsTableGrid({
-    super.key,
-    required this.state,
-  });
+  const ReportsTableGrid({super.key, required this.state});
 
   @override
   Widget build(BuildContext context) {
+    final filteredTables = state.selectedHallId == null
+        ? state.tables
+        : state.tables.where((t) => t.hallId == state.selectedHallId).toList();
+
     return GridView.builder(
       gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
         maxCrossAxisExtent: 350,
@@ -20,9 +21,9 @@ class ReportsTableGrid extends StatelessWidget {
         crossAxisSpacing: 20,
         childAspectRatio: 1.4,
       ),
-      itemCount: state.tables.length,
+      itemCount: filteredTables.length,
       itemBuilder: (context, index) {
-        final table = state.tables[index];
+        final table = filteredTables[index];
         String? waiter;
         String? duration;
 

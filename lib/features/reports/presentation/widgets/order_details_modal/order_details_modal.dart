@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:manager_portal/core/utils/ui_utils.dart';
 import 'package:rms_shared_package/models/order_model/order_model.dart';
 import 'package:rms_shared_package/models/table_models/table_model.dart';
-import '../../../../core/utils/ui_utils.dart';
-import 'order_details_header.dart';
-import 'order_details_empty_state.dart';
-import 'order_section_card.dart';
-import 'order_details_footer.dart';
+import 'components/order_details_header.dart';
+import 'components/order_details_empty_state.dart';
+import 'components/order_section_card.dart';
+import 'components/order_details_footer.dart';
 
 class OrderDetailsModal extends StatelessWidget {
   final TableModel table;

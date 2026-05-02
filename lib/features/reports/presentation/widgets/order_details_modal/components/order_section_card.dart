@@ -4,7 +4,7 @@ import 'package:rms_shared_package/models/order_model/order_model.dart';
 import 'order_section_header.dart';
 import 'order_section_items.dart';
 import 'order_section_footer.dart';
-import '../../../../core/utils/ui_utils.dart';
+import '../../../../../../core/utils/ui_utils.dart';
 
 class OrderSectionCard extends StatelessWidget {
   final OrderModel order;

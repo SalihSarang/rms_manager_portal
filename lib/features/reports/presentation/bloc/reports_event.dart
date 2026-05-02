@@ -8,3 +8,10 @@ abstract class ReportsEvent extends Equatable {
 }
 
 class FetchReportsData extends ReportsEvent {}
+
+class SelectHall extends ReportsEvent {
+  final String? hallId;
+  const SelectHall(this.hallId);
+  @override
+  List<Object?> get props => [hallId];
+}

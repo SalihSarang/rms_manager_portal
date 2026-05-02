@@ -3,6 +3,7 @@ import 'package:manager_portal/features/reports/domain/repositories/order_reposi
 import 'package:manager_portal/features/reports/data/repositories/order_repository_impl.dart';
 import 'package:manager_portal/features/reports/presentation/bloc/reports_bloc.dart';
 import 'package:manager_portal/features/table_management/domain/repositories/table_repository.dart';
+import 'package:manager_portal/features/table_management/domain/repositories/hall_repository.dart';
 
 final getIt = GetIt.instance;
 
@@ -17,6 +18,7 @@ void setUpReportsDI() {
     () => ReportsBloc(
       tableRepository: getIt<ITableRepository>(),
       orderRepository: getIt<IOrderRepository>(),
+      hallRepository: getIt<IHallRepository>(),
     ),
   );
 }

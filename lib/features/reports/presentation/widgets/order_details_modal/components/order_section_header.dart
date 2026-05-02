@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rms_design_system/app_colors/text_colors.dart';
 import 'package:rms_shared_package/models/order_model/order_model.dart';
 import 'package:intl/intl.dart';
-import '../../../../core/utils/status_utils.dart';
+import '../../../../../../core/utils/status_utils.dart';
 
 class OrderSectionHeader extends StatelessWidget {
   final OrderModel order;

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:manager_portal/core/utils/status_utils.dart';
+import 'package:manager_portal/core/utils/ui_utils.dart';
 import 'package:rms_shared_package/models/table_models/table_model.dart';
 import 'package:rms_shared_package/models/order_model/order_model.dart';
-import '../../../../core/utils/status_utils.dart';
-import '../../../../core/utils/ui_utils.dart';
-import 'order_details_modal.dart';
-import 'table_status_left_indicator.dart';
-import 'table_status_open_badge.dart';
-import 'table_status_card_content.dart';
-import 'table_status_background_icon.dart';
+import '../order_details_modal/order_details_modal.dart';
+import 'components/table_status_left_indicator.dart';
+import 'components/table_status_open_badge.dart';
+import 'components/table_status_card_content.dart';
+import 'components/table_status_background_icon.dart';
 
 class TableStatusCard extends StatelessWidget {
   final TableModel table;

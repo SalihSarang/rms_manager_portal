@@ -20,7 +20,14 @@ class OrderRepositoryImpl implements IOrderRepository {
     return _ordersCollection
         .orderBy('createdAt', descending: true)
         .snapshots()
-        .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
+        .map(
+          (snapshot) => snapshot.docs
+              .map((doc) => doc.data())
+              .where((order) =>
+                order.orderStatus != OrderStatus.completed &&
+                order.orderStatus != OrderStatus.cancelled)
+              .toList(),
+        );
   }
 
   @override
