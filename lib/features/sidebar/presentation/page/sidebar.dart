@@ -6,6 +6,7 @@ import 'package:manager_portal/features/table_management/presentation/pages/tabl
 import 'package:sidebarx/sidebarx.dart';
 import 'package:manager_portal/features/sidebar/presentation/widgets/manager_sidebar_x.dart';
 import 'package:manager_portal/features/overview/presentation/page/overview_page.dart';
+import 'package:manager_portal/features/settings/presentation/pages/settings_page.dart';
 
 /// The primary navigation shell for the manager portal.
 ///
@@ -78,7 +79,7 @@ class _SidebarState extends State<Sidebar> {
                 const MenuManagementPage(),
                 const TableManagementPage(),
                 const ReportsPage(),
-                const Center(child: Text('Settings Page')),
+                const SettingsPage(),
                 const Center(child: Text('Logout Page')),
               ],
             ),
