@@ -31,9 +31,7 @@ class SettingsSectionCard extends StatelessWidget {
         ),
         SurfaceContainer(
           padding: EdgeInsets.zero,
-          child: Column(
-            children: children,
-          ),
+          child: Column(children: children),
         ),
         const SizedBox(height: 24),
       ],

@@ -33,11 +33,7 @@ class SettingsListTile extends StatelessWidget {
               color: PrimaryColors.defaultColor.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8),
             ),
-            child: Icon(
-              icon,
-              color: PrimaryColors.defaultColor,
-              size: 20,
-            ),
+            child: Icon(icon, color: PrimaryColors.defaultColor, size: 20),
           ),
           title: Text(
             title,
@@ -56,7 +52,8 @@ class SettingsListTile extends StatelessWidget {
                   ),
                 )
               : null,
-          trailing: trailing ??
+          trailing:
+              trailing ??
               (onTap != null
                   ? const Icon(
                       Icons.chevron_right,
@@ -66,11 +63,7 @@ class SettingsListTile extends StatelessWidget {
                   : null),
         ),
         if (!isLast)
-          const Divider(
-            color: NeutralColors.border,
-            indent: 56,
-            height: 1,
-          ),
+          const Divider(color: NeutralColors.border, indent: 56, height: 1),
       ],
     );
   }
