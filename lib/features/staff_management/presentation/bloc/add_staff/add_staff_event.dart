@@ -43,6 +43,20 @@ class StaffRoleChanged extends AddStaffEvent {
   List<Object> get props => [role];
 }
 
+class BaseWageChanged extends AddStaffEvent {
+  final String baseWage;
+  const BaseWageChanged(this.baseWage);
+  @override
+  List<Object> get props => [baseWage];
+}
+
+class WageTypeChanged extends AddStaffEvent {
+  final WageType wageType;
+  const WageTypeChanged(this.wageType);
+  @override
+  List<Object> get props => [wageType];
+}
+
 class AvatarChanged extends AddStaffEvent {}
 
 class IdProofChanged extends AddStaffEvent {}

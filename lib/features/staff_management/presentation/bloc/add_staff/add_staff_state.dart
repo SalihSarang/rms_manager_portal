@@ -12,6 +12,8 @@ class AddStaffState extends Equatable {
   final String phoneNumber;
   final String password;
   final UserRole? role;
+  final String baseWage;
+  final WageType? wageType;
   final String avatar;
   final String idProof;
   final XFile? pickedFile;
@@ -27,6 +29,8 @@ class AddStaffState extends Equatable {
     this.phoneNumber = '',
     this.password = '',
     this.role,
+    this.baseWage = '',
+    this.wageType,
     this.avatar = '',
     this.idProof = '',
     this.pickedFile,
@@ -43,6 +47,8 @@ class AddStaffState extends Equatable {
     String? phoneNumber,
     String? password,
     UserRole? role,
+    String? baseWage,
+    WageType? wageType,
     String? avatar,
     String? idProof,
     XFile? pickedFile,
@@ -58,6 +64,8 @@ class AddStaffState extends Equatable {
       phoneNumber: phoneNumber ?? this.phoneNumber,
       password: password ?? this.password,
       role: role ?? this.role,
+      baseWage: baseWage ?? this.baseWage,
+      wageType: wageType ?? this.wageType,
       avatar: avatar ?? this.avatar,
       idProof: idProof ?? this.idProof,
       pickedFile: pickedFile ?? this.pickedFile,
@@ -76,6 +84,8 @@ class AddStaffState extends Equatable {
     phoneNumber,
     password,
     role,
+    baseWage,
+    wageType,
     avatar,
     idProof,
     pickedFile,

@@ -58,6 +58,8 @@ class AddStaffBloc extends Bloc<AddStaffEvent, AddStaffState> {
           phoneNumber: '',
           password: '',
           role: null,
+          baseWage: '',
+          wageType: null,
           avatar: '',
           idProof: '',
           pickedFile: null,
@@ -92,6 +94,14 @@ class AddStaffBloc extends Bloc<AddStaffEvent, AddStaffState> {
       emit(state.copyWith(role: event.role));
     });
 
+    on<BaseWageChanged>((event, emit) {
+      emit(state.copyWith(baseWage: event.baseWage));
+    });
+
+    on<WageTypeChanged>((event, emit) {
+      emit(state.copyWith(wageType: event.wageType));
+    });
+
     on<AvatarChanged>(_onAvatarPicked);
     on<IdProofChanged>(_onIdProofPicked);
     on<InitializeEditMode>(_onInitializeEditMode);
@@ -110,6 +120,8 @@ class AddStaffBloc extends Bloc<AddStaffEvent, AddStaffState> {
         email: event.staff.email,
         phoneNumber: event.staff.phoneNumber,
         role: event.staff.role,
+        baseWage: event.staff.baseWage?.toString() ?? '',
+        wageType: event.staff.wageType,
         avatar: event.staff.avatar,
         idProof: event.staff.idProof,
         originalStaff: event.staff,
@@ -211,6 +223,8 @@ class AddStaffBloc extends Bloc<AddStaffEvent, AddStaffState> {
       email: state.email,
       phoneNumber: state.phoneNumber,
       role: state.role!,
+      baseWage: double.tryParse(state.baseWage),
+      wageType: state.wageType,
       avatar: avatarUrl ?? '',
       idProof: idProofUrl ?? '',
     );
@@ -245,6 +259,8 @@ class AddStaffBloc extends Bloc<AddStaffEvent, AddStaffState> {
       email: state.email,
       phoneNumber: state.phoneNumber,
       role: state.role!,
+      baseWage: double.tryParse(state.baseWage),
+      wageType: state.wageType,
       avatar: avatarUrl ?? '',
       idProof: idProofUrl ?? '',
       isActive: true,

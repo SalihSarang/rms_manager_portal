@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:manager_portal/features/menu_management/presentation/pages/menu_management_page.dart';
 import 'package:manager_portal/features/reports/presentation/pages/reports_page.dart';
 import 'package:manager_portal/features/staff_management/presentation/pages/staff_listing_page.dart';
+import 'package:manager_portal/features/payroll/presentation/pages/payroll_dashboard_page.dart';
 import 'package:manager_portal/features/table_management/presentation/pages/table_management_page.dart';
 import 'package:sidebarx/sidebarx.dart';
 import 'package:manager_portal/features/sidebar/presentation/widgets/manager_sidebar_x.dart';
@@ -76,6 +77,7 @@ class _SidebarState extends State<Sidebar> {
                 const OverviewPage(),
 
                 const StaffListingScreen(),
+                const PayrollDashboardPage(),
                 const MenuManagementPage(),
                 const TableManagementPage(),
                 const ReportsPage(),
