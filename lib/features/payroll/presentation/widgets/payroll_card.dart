@@ -58,15 +58,23 @@ class PayrollCard extends StatelessWidget {
                       ),
                       const SizedBox(width: 8),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 2,
+                        ),
                         decoration: BoxDecoration(
                           color: NeutralColors.background,
                           borderRadius: BorderRadius.circular(4),
                           border: Border.all(color: NeutralColors.border),
                         ),
                         child: Text(
-                          staff.wageType == WageType.hourly ? 'Hourly' : 'Monthly',
-                          style: const TextStyle(color: TextColors.secondary, fontSize: 10),
+                          staff.wageType == WageType.hourly
+                              ? 'Hourly'
+                              : 'Monthly',
+                          style: const TextStyle(
+                            color: TextColors.secondary,
+                            fontSize: 10,
+                          ),
                         ),
                       ),
                     ],
@@ -74,7 +82,10 @@ class PayrollCard extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     '${(result.totalMinutesWorked / 60).toStringAsFixed(1)} Hours Worked',
-                    style: const TextStyle(color: TextColors.secondary, fontSize: 13),
+                    style: const TextStyle(
+                      color: TextColors.secondary,
+                      fontSize: 13,
+                    ),
                   ),
                 ],
               ),
@@ -92,7 +103,9 @@ class PayrollCard extends StatelessWidget {
                   Text(
                     '₹${result.totalDue.toStringAsFixed(2)}',
                     style: TextStyle(
-                      color: isCompleted ? StatusColors.ready : TextColors.primary,
+                      color: isCompleted
+                          ? StatusColors.ready
+                          : TextColors.primary,
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
@@ -105,16 +118,27 @@ class PayrollCard extends StatelessWidget {
                       children: const [
                         Icon(Icons.check_circle, color: StatusColors.ready),
                         SizedBox(width: 8),
-                        Text('Paid', style: TextStyle(color: StatusColors.ready, fontWeight: FontWeight.bold)),
+                        Text(
+                          'Paid',
+                          style: TextStyle(
+                            color: StatusColors.ready,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ],
                     )
                   : ElevatedButton(
                       onPressed: onPayTap,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: PrimaryColors.defaultColor,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                       ),
-                      child: const Text('Pay Now', style: TextStyle(color: Colors.white)),
+                      child: const Text(
+                        'Pay Now',
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
             ],
           ),

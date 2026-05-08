@@ -67,7 +67,10 @@ class StaffDailyEarningsTable extends StatelessWidget {
             const Padding(
               padding: EdgeInsets.all(24),
               child: Center(
-                child: Text('No earnings data available.', style: TextStyle(color: TextColors.secondary)),
+                child: Text(
+                  'No earnings data available.',
+                  style: TextStyle(color: TextColors.secondary),
+                ),
               ),
             ),
         ],
@@ -77,25 +80,44 @@ class StaffDailyEarningsTable extends StatelessWidget {
 
   Widget _buildRow(_EarningsRow row, bool isAlternate) {
     return Container(
-      color: isAlternate ? NeutralColors.surface : NeutralColors.background.withValues(alpha: 0.3),
+      color: isAlternate
+          ? NeutralColors.surface
+          : NeutralColors.background.withValues(alpha: 0.3),
       padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
       child: Row(
         children: [
           Expanded(
             flex: 2,
-            child: Text(row.date, style: const TextStyle(color: TextColors.primary, fontWeight: FontWeight.w600, fontSize: 13)),
+            child: Text(
+              row.date,
+              style: const TextStyle(
+                color: TextColors.primary,
+                fontWeight: FontWeight.w600,
+                fontSize: 13,
+              ),
+            ),
           ),
           Expanded(
-            child: Text(row.worked, style: const TextStyle(color: TextColors.secondary, fontSize: 13)),
+            child: Text(
+              row.worked,
+              style: const TextStyle(color: TextColors.secondary, fontSize: 13),
+            ),
           ),
           Expanded(
-            child: Text(row.rate, style: const TextStyle(color: TextColors.secondary, fontSize: 13)),
+            child: Text(
+              row.rate,
+              style: const TextStyle(color: TextColors.secondary, fontSize: 13),
+            ),
           ),
           Expanded(
             child: Text(
               row.total,
               textAlign: TextAlign.end,
-              style: const TextStyle(color: StatusColors.ready, fontWeight: FontWeight.bold, fontSize: 13),
+              style: const TextStyle(
+                color: StatusColors.ready,
+                fontWeight: FontWeight.bold,
+                fontSize: 13,
+              ),
             ),
           ),
         ],
@@ -119,7 +141,12 @@ class _HeaderCell extends StatelessWidget {
     return Text(
       label,
       textAlign: rightAlign ? TextAlign.end : TextAlign.start,
-      style: const TextStyle(color: TextColors.muted, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1.1),
+      style: const TextStyle(
+        color: TextColors.muted,
+        fontSize: 10,
+        fontWeight: FontWeight.bold,
+        letterSpacing: 1.1,
+      ),
     );
   }
 }

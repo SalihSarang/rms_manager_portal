@@ -35,10 +35,13 @@ class StaffDocumentsSection extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           if (staff.idProof.isEmpty)
-            const StaffDetailsEmptyImagePlaceholder(message: 'No ID proof uploaded')
+            const StaffDetailsEmptyImagePlaceholder(
+              message: 'No ID proof uploaded',
+            )
           else
             GestureDetector(
-              onTap: () => showStaffImageLightbox(context, staff.idProof, 'ID Proof'),
+              onTap: () =>
+                  showStaffImageLightbox(context, staff.idProof, 'ID Proof'),
               child: Stack(
                 children: [
                   ClipRRect(
@@ -60,16 +63,20 @@ class StaffDocumentsSection extends StatelessWidget {
                           ),
                         );
                       },
-                      errorBuilder: (_, _, _) => const StaffDetailsEmptyImagePlaceholder(
-                        message: 'Failed to load ID proof',
-                      ),
+                      errorBuilder: (_, _, _) =>
+                          const StaffDetailsEmptyImagePlaceholder(
+                            message: 'Failed to load ID proof',
+                          ),
                     ),
                   ),
                   Positioned(
                     bottom: 12,
                     right: 12,
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 6,
+                      ),
                       decoration: BoxDecoration(
                         color: NeutralColors.background.withValues(alpha: 0.75),
                         borderRadius: BorderRadius.circular(6),
@@ -77,11 +84,18 @@ class StaffDocumentsSection extends StatelessWidget {
                       child: const Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(Icons.zoom_in, size: 14, color: TextColors.secondary),
+                          Icon(
+                            Icons.zoom_in,
+                            size: 14,
+                            color: TextColors.secondary,
+                          ),
                           SizedBox(width: 4),
                           Text(
                             'Tap to expand',
-                            style: TextStyle(color: TextColors.secondary, fontSize: 11),
+                            style: TextStyle(
+                              color: TextColors.secondary,
+                              fontSize: 11,
+                            ),
                           ),
                         ],
                       ),

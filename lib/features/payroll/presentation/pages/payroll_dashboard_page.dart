@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:manager_portal/core/di/injector.dart';
 import 'package:manager_portal/features/payroll/presentation/bloc/payroll_dashboard/payroll_dashboard_cubit.dart';
 import 'package:manager_portal/features/payroll/presentation/widgets/payroll_dashboard_view.dart';
 
@@ -9,7 +10,7 @@ class PayrollDashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => PayrollDashboardCubit(),
+      create: (context) => getIt<PayrollDashboardCubit>()..loadPayrollData(),
       child: const PayrollDashboardView(),
     );
   }
