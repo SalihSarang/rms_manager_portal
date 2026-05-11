@@ -62,6 +62,10 @@ class AddStaffBloc extends Bloc<AddStaffEvent, AddStaffState> {
           wageType: null,
           avatar: '',
           idProof: '',
+          bankName: '',
+          accountNumber: '',
+          ifscCode: '',
+          upiId: '',
           pickedFile: null,
           pickedIdProof: null,
           errorMessage: null,
@@ -101,6 +105,18 @@ class AddStaffBloc extends Bloc<AddStaffEvent, AddStaffState> {
     on<WageTypeChanged>((event, emit) {
       emit(state.copyWith(wageType: event.wageType));
     });
+    on<BankNameChanged>((event, emit) {
+      emit(state.copyWith(bankName: event.bankName));
+    });
+    on<AccountNumberChanged>((event, emit) {
+      emit(state.copyWith(accountNumber: event.accountNumber));
+    });
+    on<IfscCodeChanged>((event, emit) {
+      emit(state.copyWith(ifscCode: event.ifscCode));
+    });
+    on<UpiIdChanged>((event, emit) {
+      emit(state.copyWith(upiId: event.upiId));
+    });
 
     on<AvatarChanged>(_onAvatarPicked);
     on<IdProofChanged>(_onIdProofPicked);
@@ -124,6 +140,10 @@ class AddStaffBloc extends Bloc<AddStaffEvent, AddStaffState> {
         wageType: event.staff.wageType,
         avatar: event.staff.avatar,
         idProof: event.staff.idProof,
+        bankName: event.staff.bankDetails?['bankName'] ?? '',
+        accountNumber: event.staff.bankDetails?['accountNumber'] ?? '',
+        ifscCode: event.staff.bankDetails?['ifscCode'] ?? '',
+        upiId: event.staff.bankDetails?['upiId'] ?? '',
         originalStaff: event.staff,
         password: '',
         pickedFile: null,
@@ -227,6 +247,12 @@ class AddStaffBloc extends Bloc<AddStaffEvent, AddStaffState> {
       wageType: state.wageType,
       avatar: avatarUrl ?? '',
       idProof: idProofUrl ?? '',
+      bankDetails: {
+        'bankName': state.bankName,
+        'accountNumber': state.accountNumber,
+        'ifscCode': state.ifscCode,
+        'upiId': state.upiId,
+      },
     );
 
     await updateStaff(updatedStaff);
@@ -265,6 +291,12 @@ class AddStaffBloc extends Bloc<AddStaffEvent, AddStaffState> {
       idProof: idProofUrl ?? '',
       isActive: true,
       lastActive: DateTime.now(),
+      bankDetails: {
+        'bankName': state.bankName,
+        'accountNumber': state.accountNumber,
+        'ifscCode': state.ifscCode,
+        'upiId': state.upiId,
+      },
     );
 
     log('Saving staff to Firestore...');

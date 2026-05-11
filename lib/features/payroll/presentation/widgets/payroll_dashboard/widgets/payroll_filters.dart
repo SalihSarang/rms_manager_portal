@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rms_design_system/app_colors/neutral_colors.dart';
 import 'package:rms_design_system/app_colors/text_colors.dart';
-import 'package:manager_portal/features/payroll/presentation/widgets/payroll_filter_chips.dart';
+import 'payroll_filter_chips.dart';
 
 class PayrollFilters extends StatelessWidget {
   const PayrollFilters({super.key});

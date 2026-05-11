@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:manager_portal/core/widgets/rms_detail_app_bar.dart';
 import 'package:rms_design_system/app_colors/neutral_colors.dart';
-import 'package:manager_portal/features/payroll/presentation/widgets/payroll_filters.dart';
-import 'package:manager_portal/features/payroll/presentation/widgets/payroll_header.dart';
-import 'package:manager_portal/features/payroll/presentation/widgets/payroll_dashboard_body.dart';
+import 'widgets/payroll_filters.dart';
+import 'widgets/payroll_header.dart';
+import 'payroll_dashboard_body.dart';
 
 class PayrollDashboardView extends StatelessWidget {
   const PayrollDashboardView({super.key});

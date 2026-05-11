@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:manager_portal/features/staff_management/presentation/bloc/add_staff/add_staff_bloc.dart';
+import 'package:manager_portal/features/staff_management/presentation/widgets/staff_listing/add_staff_sidebar/components/dialog_form/components/staff_bank_details_fields.dart';
 import 'package:manager_portal/features/staff_management/presentation/widgets/staff_listing/add_staff_sidebar/components/dialog_form/components/staff_id_proof_upload.dart';
 import 'package:manager_portal/features/staff_management/presentation/widgets/staff_listing/add_staff_sidebar/components/dialog_form/components/staff_info_fields.dart';
 import 'package:manager_portal/features/staff_management/presentation/widgets/staff_listing/add_staff_sidebar/components/dialog_form/components/staff_financial_fields.dart';
@@ -22,6 +23,10 @@ class _AddStaffDialogFieldsState extends State<AddStaffDialogFields> {
   late TextEditingController _phoneController;
   late TextEditingController _passwordController;
   late TextEditingController _baseWageController;
+  late TextEditingController _bankNameController;
+  late TextEditingController _accountNumberController;
+  late TextEditingController _ifscCodeController;
+  late TextEditingController _upiIdController;
 
   @override
   void initState() {
@@ -31,6 +36,10 @@ class _AddStaffDialogFieldsState extends State<AddStaffDialogFields> {
     _phoneController = TextEditingController();
     _passwordController = TextEditingController();
     _baseWageController = TextEditingController();
+    _bankNameController = TextEditingController();
+    _accountNumberController = TextEditingController();
+    _ifscCodeController = TextEditingController();
+    _upiIdController = TextEditingController();
   }
 
   @override
@@ -40,6 +49,10 @@ class _AddStaffDialogFieldsState extends State<AddStaffDialogFields> {
     _phoneController.dispose();
     _passwordController.dispose();
     _baseWageController.dispose();
+    _bankNameController.dispose();
+    _accountNumberController.dispose();
+    _ifscCodeController.dispose();
+    _upiIdController.dispose();
     super.dispose();
   }
 
@@ -59,6 +72,18 @@ class _AddStaffDialogFieldsState extends State<AddStaffDialogFields> {
           }
           if (_baseWageController.text != state.baseWage) {
             _baseWageController.text = state.baseWage;
+          }
+          if (_bankNameController.text != state.bankName) {
+            _bankNameController.text = state.bankName;
+          }
+          if (_accountNumberController.text != state.accountNumber) {
+            _accountNumberController.text = state.accountNumber;
+          }
+          if (_ifscCodeController.text != state.ifscCode) {
+            _ifscCodeController.text = state.ifscCode;
+          }
+          if (_upiIdController.text != state.upiId) {
+            _upiIdController.text = state.upiId;
           }
         }
       },
@@ -85,6 +110,13 @@ class _AddStaffDialogFieldsState extends State<AddStaffDialogFields> {
             StaffIdProofUpload(
               pickedIdProof: state.pickedIdProof,
               idProof: state.idProof,
+            ),
+            const SizedBox(height: 32),
+            StaffBankDetailsFields(
+              bankNameController: _bankNameController,
+              accountNumberController: _accountNumberController,
+              ifscCodeController: _ifscCodeController,
+              upiIdController: _upiIdController,
             ),
           ],
         );

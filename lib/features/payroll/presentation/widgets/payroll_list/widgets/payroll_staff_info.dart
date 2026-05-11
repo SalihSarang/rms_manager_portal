@@ -63,7 +63,9 @@ class PayrollStaffInfo extends StatelessWidget {
             ),
             const SizedBox(height: 4),
             Text(
-              '${(result.totalMinutesWorked / 60).toStringAsFixed(1)} Hours Worked',
+              result.totalDue <= 0 && result.lastPaidMinutesWorked > 0
+                  ? '${(result.lastPaidMinutesWorked / 60).toStringAsFixed(1)} Hours Paid'
+                  : '${(result.totalMinutesWorked / 60).toStringAsFixed(1)} Hours Worked',
               style: const TextStyle(color: TextColors.secondary, fontSize: 13),
             ),
           ],

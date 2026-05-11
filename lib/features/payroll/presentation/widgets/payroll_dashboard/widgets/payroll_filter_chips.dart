@@ -4,7 +4,7 @@ import 'package:rms_design_system/app_colors/neutral_colors.dart';
 import 'package:rms_shared_package/enums/enums.dart';
 import 'package:manager_portal/features/payroll/presentation/bloc/payroll_dashboard/payroll_dashboard_cubit.dart';
 import 'package:manager_portal/features/payroll/presentation/bloc/payroll_dashboard/payroll_dashboard_state.dart';
-import 'package:manager_portal/features/payroll/presentation/widgets/payroll_filter_chip.dart';
+import 'payroll_filter_chip.dart';
 
 class PayrollFilterChips extends StatelessWidget {
   const PayrollFilterChips({super.key});

@@ -16,6 +16,10 @@ class AddStaffState extends Equatable {
   final WageType? wageType;
   final String avatar;
   final String idProof;
+  final String bankName;
+  final String accountNumber;
+  final String ifscCode;
+  final String upiId;
   final XFile? pickedFile;
   final XFile? pickedIdProof;
   final String? errorMessage;
@@ -33,6 +37,10 @@ class AddStaffState extends Equatable {
     this.wageType,
     this.avatar = '',
     this.idProof = '',
+    this.bankName = '',
+    this.accountNumber = '',
+    this.ifscCode = '',
+    this.upiId = '',
     this.pickedFile,
     this.pickedIdProof,
     this.errorMessage,
@@ -51,6 +59,10 @@ class AddStaffState extends Equatable {
     WageType? wageType,
     String? avatar,
     String? idProof,
+    String? bankName,
+    String? accountNumber,
+    String? ifscCode,
+    String? upiId,
     XFile? pickedFile,
     XFile? pickedIdProof,
     String? errorMessage,
@@ -68,6 +80,10 @@ class AddStaffState extends Equatable {
       wageType: wageType ?? this.wageType,
       avatar: avatar ?? this.avatar,
       idProof: idProof ?? this.idProof,
+      bankName: bankName ?? this.bankName,
+      accountNumber: accountNumber ?? this.accountNumber,
+      ifscCode: ifscCode ?? this.ifscCode,
+      upiId: upiId ?? this.upiId,
       pickedFile: pickedFile ?? this.pickedFile,
       pickedIdProof: pickedIdProof ?? this.pickedIdProof,
       errorMessage: errorMessage ?? this.errorMessage,
@@ -88,6 +104,10 @@ class AddStaffState extends Equatable {
     wageType,
     avatar,
     idProof,
+    bankName,
+    accountNumber,
+    ifscCode,
+    upiId,
     pickedFile,
     pickedIdProof,
     errorMessage,

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:manager_portal/features/payroll/presentation/bloc/payroll_dashboard/payroll_dashboard_cubit.dart';
 import 'package:manager_portal/features/payroll/presentation/bloc/payroll_dashboard/payroll_dashboard_state.dart';
-import 'package:manager_portal/features/payroll/presentation/widgets/payroll_empty_view.dart';
-import 'package:manager_portal/features/payroll/presentation/widgets/payroll_error_view.dart';
-import 'package:manager_portal/features/payroll/presentation/widgets/payroll_list_view.dart';
+import 'widgets/payroll_empty_view.dart';
+import 'widgets/payroll_error_view.dart';
+import 'package:manager_portal/features/payroll/presentation/widgets/payroll_list/payroll_list_view.dart';
 import 'package:manager_portal/features/payroll/utils/payroll_utils.dart';
 
 class PayrollDashboardBody extends StatelessWidget {

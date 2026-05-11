@@ -16,19 +16,21 @@ class PayrollPaymentInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isCompleted = result.totalDue <= 0;
+    final bool isCompleted = result.processedShifts.isEmpty;
 
     return Row(
       children: [
         Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            const Text(
-              'Due Amount',
-              style: TextStyle(color: TextColors.secondary, fontSize: 12),
+            Text(
+              isCompleted ? 'Last Paid' : 'Due Amount',
+              style: const TextStyle(color: TextColors.secondary, fontSize: 12),
             ),
             Text(
-              '₹${result.totalDue.toStringAsFixed(2)}',
+              isCompleted
+                  ? '₹${result.lastPaidAmount.toStringAsFixed(2)}'
+                  : '₹${result.totalDue.toStringAsFixed(2)}',
               style: TextStyle(
                 color: isCompleted ? StatusColors.ready : TextColors.primary,
                 fontSize: 18,
@@ -62,7 +64,7 @@ class PayrollPaymentInfo extends StatelessWidget {
                 ),
                 child: const Text(
                   'Pay Now',
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: TextColors.primary),
                 ),
               ),
       ],
