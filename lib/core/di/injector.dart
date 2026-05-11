@@ -8,6 +8,7 @@ import 'package:manager_portal/core/di/table_management_di.dart';
 import 'package:manager_portal/core/di/overview_di.dart';
 import 'package:manager_portal/core/di/reports_di.dart';
 import 'package:manager_portal/core/di/payroll_di.dart';
+import 'package:manager_portal/core/di/settings_di.dart';
 
 final getIt = GetIt.instance;
 
@@ -43,4 +44,7 @@ void setupDI() {
 
   // Payroll DI
   setUpPayrollDI();
+
+  // Settings DI
+  setUpSettingsDI();
 }

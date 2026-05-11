@@ -12,10 +12,7 @@ class PayrollEmptyView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text(
-        message,
-        style: const TextStyle(color: TextColors.secondary),
-      ),
+      child: Text(message, style: const TextStyle(color: TextColors.secondary)),
     );
   }
 }

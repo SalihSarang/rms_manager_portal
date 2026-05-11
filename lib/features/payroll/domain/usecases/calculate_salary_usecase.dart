@@ -27,11 +27,15 @@ class CalculateSalaryUseCase {
       );
     }
 
-    // Filter shifts that were completed after the lastPaidDate
+    // Filter shifts that were completed after the lastPaidDate and are not yet marked as paid
     final unpaidShifts = allShifts.where((shift) {
       if (shift.status != ShiftStatus.ended || shift.actualEnd == null) {
         return false;
       }
+
+      // Explicitly check if already paid
+      if (shift.isPaid) return false;
+
       if (staff.lastPaidDate != null) {
         return shift.actualEnd!.isAfter(staff.lastPaidDate!);
       }
@@ -48,7 +52,7 @@ class CalculateSalaryUseCase {
       final hoursWorked = totalMinutes / 60.0;
       totalDue = hoursWorked * staff.baseWage!;
     } else if (staff.wageType == WageType.monthly) {
-      // Basic monthly wage processing (assumes full payout if triggered, 
+      // Basic monthly wage processing (assumes full payout if triggered,
       // though typically this would be prorated based on attendance)
       // For MVP, if there are any unpaid shifts, the monthly wage is due.
       totalDue = unpaidShifts.isNotEmpty ? staff.baseWage! : 0.0;

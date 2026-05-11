@@ -31,7 +31,9 @@ class PayrollDashboardState extends Equatable {
     bool clearError = false,
   }) {
     return PayrollDashboardState(
-      selectedWageType: clearWageType ? null : (selectedWageType ?? this.selectedWageType),
+      selectedWageType: clearWageType
+          ? null
+          : (selectedWageType ?? this.selectedWageType),
       selectedStatus: selectedStatus ?? this.selectedStatus,
       isLoading: isLoading ?? this.isLoading,
       staffList: staffList ?? this.staffList,
@@ -42,11 +44,11 @@ class PayrollDashboardState extends Equatable {
 
   @override
   List<Object?> get props => [
-        selectedWageType,
-        selectedStatus,
-        isLoading,
-        staffList,
-        calculationResults,
-        errorMessage,
-      ];
+    selectedWageType,
+    selectedStatus,
+    isLoading,
+    staffList,
+    calculationResults,
+    errorMessage,
+  ];
 }

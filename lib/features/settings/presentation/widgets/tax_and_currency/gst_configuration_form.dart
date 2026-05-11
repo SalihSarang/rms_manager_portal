@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:manager_portal/core/widgets/inputs/primary_text_field.dart';
+import 'package:rms_design_system/app_colors/primary_colors.dart';
 import 'package:rms_design_system/app_colors/text_colors.dart';
 
 class GstConfigurationForm extends StatelessWidget {
@@ -20,11 +21,12 @@ class GstConfigurationForm extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text(
-          'GST Configuration',
+          'GST CONFIGURATION',
           style: TextStyle(
-            color: TextColors.primary,
-            fontSize: 16,
+            color: PrimaryColors.defaultColor,
+            fontSize: 12,
             fontWeight: FontWeight.bold,
+            letterSpacing: 1.5,
           ),
         ),
         const SizedBox(height: 16),
@@ -61,13 +63,23 @@ class GstConfigurationForm extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 12),
-        const Text(
-          'Total GST: 5.0%',
-          style: TextStyle(
-            color: TextColors.secondary,
-            fontSize: 14,
-            fontStyle: FontStyle.italic,
-          ),
+        Row(
+          children: [
+            const Icon(
+              Icons.info_outline,
+              size: 14,
+              color: TextColors.secondary,
+            ),
+            const SizedBox(width: 4),
+            Text(
+              'Combined GST: ${(double.tryParse(cgstController.text) ?? 0) + (double.tryParse(sgstController.text) ?? 0)}%',
+              style: const TextStyle(
+                color: TextColors.secondary,
+                fontSize: 13,
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+          ],
         ),
       ],
     );

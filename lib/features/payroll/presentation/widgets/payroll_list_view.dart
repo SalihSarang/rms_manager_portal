@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:rms_design_system/app_colors/primary_colors.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rms_design_system/app_colors/status_colors.dart';
 import 'package:rms_shared_package/models/staff_model/staff_model.dart';
 import 'package:manager_portal/features/payroll/domain/usecases/calculate_salary_usecase.dart';
 import 'package:manager_portal/features/payroll/presentation/widgets/payroll_card.dart';
-import 'package:manager_portal/features/payroll/presentation/widgets/payout_confirmation_dialog.dart';
+import 'package:manager_portal/features/payroll/presentation/widgets/manual_payout_dialog.dart';
+import 'package:manager_portal/features/payroll/presentation/bloc/payroll_dashboard/payroll_dashboard_cubit.dart';
 
 class PayrollListView extends StatelessWidget {
   final List<StaffModel> staffList;
@@ -29,18 +31,29 @@ class PayrollListView extends StatelessWidget {
           onPayTap: () {
             showDialog(
               context: context,
-              builder: (context) => PayoutConfirmationDialog(
+              builder: (dialogContext) => ManualPayoutDialog(
                 staff: staff,
-                calculationResult: result,
-                onConfirm: (amount) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        'Processing ₹$amount for ${staff.name} via RazorpayX...',
+                amount: result.totalDue,
+                onConfirm: (method, notes) async {
+                  await context
+                      .read<PayrollDashboardCubit>()
+                      .processManualPayout(
+                        staffId: staff.id,
+                        amount: result.totalDue,
+                        paymentMethod: method,
+                        notes: notes,
+                      );
+
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          'Payment of ₹${result.totalDue.toStringAsFixed(2)} recorded for ${staff.name}',
+                        ),
+                        backgroundColor: StatusColors.ready,
                       ),
-                      backgroundColor: PrimaryColors.defaultColor,
-                    ),
-                  );
+                    );
+                  }
                 },
               ),
             );

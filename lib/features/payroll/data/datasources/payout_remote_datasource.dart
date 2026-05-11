@@ -3,12 +3,14 @@ import 'package:rms_shared_package/enums/enums.dart';
 import 'package:rms_shared_package/models/payout_model/payout_model.dart';
 
 abstract class PayoutRemoteDataSource {
-  /// Initiates a salary payout via the payment gateway.
+  /// Processes a salary payout.
   Future<PayoutModel> processPayout({
     required String staffId,
     required double amount,
     required DateTime periodStart,
     required DateTime periodEnd,
+    required PaymentMethod paymentMethod,
+    String? notes,
   });
 }
 
@@ -19,17 +21,21 @@ class PayoutRemoteDataSourceImpl implements PayoutRemoteDataSource {
     required double amount,
     required DateTime periodStart,
     required DateTime periodEnd,
+    required PaymentMethod paymentMethod,
+    String? notes,
   }) async {
-    log('Initiating RazorpayX payout for staff $staffId...');
-    
-    // Simulate network delay for API call
-    await Future.delayed(const Duration(seconds: 2));
+    log('Processing payout for staff $staffId via ${paymentMethod.name}...');
 
-    // Mock successful response
+    // Simulate network delay or Firestore write delay
+    await Future.delayed(const Duration(seconds: 1));
+
+    // Mock successful response or Firestore document creation logic
     final mockId = DateTime.now().millisecondsSinceEpoch.toString();
-    final mockTransactionId = 'pout_$mockId';
-    
-    log('RazorpayX payout successful. Transaction ID: $mockTransactionId');
+    final mockTransactionId = paymentMethod == PaymentMethod.cash
+        ? 'cash_${DateTime.now().millisecondsSinceEpoch}'
+        : 'manual_${DateTime.now().millisecondsSinceEpoch}';
+
+    log('Payout recorded successfully. ID: $mockId');
 
     return PayoutModel(
       id: mockId,
@@ -37,6 +43,8 @@ class PayoutRemoteDataSourceImpl implements PayoutRemoteDataSource {
       amount: amount,
       currency: 'INR',
       gatewayTransactionId: mockTransactionId,
+      paymentMethod: paymentMethod,
+      notes: notes,
       status: PayoutStatus.success,
       timestamp: DateTime.now(),
       periodStart: periodStart,
