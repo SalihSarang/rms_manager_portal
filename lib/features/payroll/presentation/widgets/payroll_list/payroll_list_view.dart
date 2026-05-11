@@ -34,12 +34,12 @@ class PayrollListView extends StatelessWidget {
               builder: (dialogContext) => ManualPayoutDialog(
                 staff: staff,
                 amount: result.totalDue,
-                onConfirm: (method, notes) async {
+                onConfirm: (method, notes, finalAmount) async {
                   await context
                       .read<PayrollDashboardCubit>()
                       .processManualPayout(
                         staffId: staff.id,
-                        amount: result.totalDue,
+                        amount: finalAmount,
                         paymentMethod: method,
                         notes: notes,
                       );
@@ -48,7 +48,7 @@ class PayrollListView extends StatelessWidget {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(
-                          'Payment of ₹${result.totalDue.toStringAsFixed(2)} recorded for ${staff.name}',
+                          'Payment of ₹${finalAmount.toStringAsFixed(2)} recorded for ${staff.name}',
                         ),
                         backgroundColor: StatusColors.ready,
                       ),
