@@ -31,10 +31,7 @@ class PayoutDialogHeader extends StatelessWidget {
             const SizedBox(height: 4),
             Text(
               subtitle,
-              style: const TextStyle(
-                color: TextColors.secondary,
-                fontSize: 14,
-              ),
+              style: const TextStyle(color: TextColors.secondary, fontSize: 14),
             ),
           ],
         ),

@@ -73,9 +73,7 @@ class LoginBody extends StatelessWidget {
               child: MouseRegion(
                 cursor: SystemMouseCursors.click,
                 child: GestureDetector(
-                  onTap: () {
-                    //Implement forgot password
-                  },
+                  onTap: () {},
                   child: const Text(
                     'Forgot password?',
                     style: TextStyle(

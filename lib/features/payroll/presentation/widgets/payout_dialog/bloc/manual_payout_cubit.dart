@@ -47,7 +47,7 @@ class ManualPayoutState extends Equatable {
 
 class ManualPayoutCubit extends Cubit<ManualPayoutState> {
   ManualPayoutCubit(double baseAmount)
-      : super(ManualPayoutState.initial(baseAmount));
+    : super(ManualPayoutState.initial(baseAmount));
 
   void updateMethod(PaymentMethod method) {
     emit(state.copyWith(selectedMethod: method));

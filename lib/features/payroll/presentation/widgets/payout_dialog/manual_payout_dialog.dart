@@ -17,7 +17,7 @@ class ManualPayoutDialog extends StatelessWidget {
   final StaffModel staff;
   final double amount;
   final Function(PaymentMethod method, String notes, double finalAmount)
-      onConfirm;
+  onConfirm;
 
   const ManualPayoutDialog({
     super.key,
@@ -38,7 +38,10 @@ class ManualPayoutDialog extends StatelessWidget {
             filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
             child: Dialog(
               backgroundColor: Colors.transparent,
-              insetPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
+              insetPadding: const EdgeInsets.symmetric(
+                horizontal: 24,
+                vertical: 40,
+              ),
               child: Container(
                 decoration: BoxDecoration(
                   color: NeutralColors.surface.withValues(alpha: 0.7),

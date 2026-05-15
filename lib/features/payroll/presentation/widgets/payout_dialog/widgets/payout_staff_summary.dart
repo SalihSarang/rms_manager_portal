@@ -19,7 +19,8 @@ class PayoutStaffSummary extends StatelessWidget {
     this.deduction = 0.0,
   });
 
-  double get totalAmount => (baseAmount + incentive - deduction).clamp(0.0, double.infinity);
+  double get totalAmount =>
+      (baseAmount + incentive - deduction).clamp(0.0, double.infinity);
 
   @override
   Widget build(BuildContext context) {
@@ -132,9 +133,19 @@ class PayoutStaffSummary extends StatelessWidget {
               children: [
                 _buildSmallRow('Base Amount', baseAmount),
                 if (incentive > 0)
-                  _buildSmallRow('Incentive', incentive, color: StatusColors.ready, prefix: '+'),
+                  _buildSmallRow(
+                    'Incentive',
+                    incentive,
+                    color: StatusColors.ready,
+                    prefix: '+',
+                  ),
                 if (deduction > 0)
-                  _buildSmallRow('Deduction', deduction, color: StatusColors.cancelled, prefix: '-'),
+                  _buildSmallRow(
+                    'Deduction',
+                    deduction,
+                    color: StatusColors.cancelled,
+                    prefix: '-',
+                  ),
               ],
             ),
           ),
@@ -143,7 +154,12 @@ class PayoutStaffSummary extends StatelessWidget {
     );
   }
 
-  Widget _buildSmallRow(String label, double value, {Color? color, String? prefix}) {
+  Widget _buildSmallRow(
+    String label,
+    double value, {
+    Color? color,
+    String? prefix,
+  }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 2),
       child: Row(
