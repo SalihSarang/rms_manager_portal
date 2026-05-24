@@ -9,6 +9,8 @@ class TableWidgetUtils {
     required bool isSelected,
     required bool isPreview,
   }) {
+    final statusName = table.status.name;
+
     if (isPreview) {
       return (
         NeutralColors.surface,
@@ -25,43 +27,44 @@ class TableWidgetUtils {
         NeutralColors.white.withValues(alpha: 0.2),
       );
     }
-    switch (table.status) {
-      case TableStatus.occupied:
+    if (statusName == 'occupied') {
         return (
           TableColors.occupiedFill,
           SemanticColors.error,
           TableColors.occupiedText,
           SemanticColors.error.withValues(alpha: 0.2),
         );
-      case TableStatus.reserved:
+    }
+    if (statusName == 'reserved') {
         return (
           TableColors.reservedFill,
           SemanticColors.info,
           TableColors.reservedText,
           SemanticColors.info.withValues(alpha: 0.2),
         );
-      case TableStatus.billRequested:
+    }
+    if (statusName == 'billRequested' || statusName == 'bill_requested') {
         return (
           TableColors.billRequestedFill,
           SemanticColors.warning,
           TableColors.billRequestedText,
           SemanticColors.warning.withValues(alpha: 0.2),
         );
-      case TableStatus.cleaning:
+    }
+    if (statusName == 'cleaning') {
         return (
           TableColors.cleaningFill,
           SemanticColors.success,
           TableColors.cleaningText,
           SemanticColors.success.withValues(alpha: 0.2),
         );
-      default:
-        return (
-          NeutralColors.card,
-          NeutralColors.border,
-          NeutralColors.white,
-          NeutralColors.border.withValues(alpha: 0.5),
-        );
     }
+    return (
+      NeutralColors.card,
+      NeutralColors.border,
+      NeutralColors.white,
+      NeutralColors.border.withValues(alpha: 0.5),
+    );
   }
 
   /// Resolves the gradient for a table based on its status.
@@ -69,21 +72,23 @@ class TableWidgetUtils {
     required TableModel table,
     required bool isSelected,
   }) {
+    final statusName = table.status.name;
     if (isSelected) return null;
-    switch (table.status) {
-      case TableStatus.occupied:
+    if (statusName == 'occupied') {
         return const LinearGradient(
           colors: [TableColors.occupiedGradientStart, TableColors.occupiedFill],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         );
-      case TableStatus.reserved:
+    }
+    if (statusName == 'reserved') {
         return const LinearGradient(
           colors: [TableColors.reservedGradientStart, TableColors.reservedFill],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         );
-      case TableStatus.billRequested:
+    }
+    if (statusName == 'billRequested' || statusName == 'bill_requested') {
         return const LinearGradient(
           colors: [
             TableColors.billRequestedGradientStart,
@@ -92,15 +97,11 @@ class TableWidgetUtils {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         );
-      default:
-        return const LinearGradient(
-          colors: [
-            NeutralColors.cardGradientStart,
-            NeutralColors.cardGradientEnd
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        );
     }
+    return const LinearGradient(
+      colors: [NeutralColors.cardGradientStart, NeutralColors.cardGradientEnd],
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+    );
   }
 }

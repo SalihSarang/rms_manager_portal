@@ -1,10 +1,11 @@
 import 'package:manager_portal/features/menu_management/data/datasources/menu_remote_datasource.dart';
 import 'package:manager_portal/features/menu_management/domain/repository/category_repository.dart';
+import 'package:manager_portal/features/menu_management/domain/repository/food_repository.dart';
 import 'package:rms_shared_package/models/menu_models/category_model/category_model.dart';
 import 'package:rms_shared_package/models/menu_models/food_model/food_model.dart';
 
-/// Implementation of [MenuRepository] that uses [MenuRemoteDatasource] for data operations.
-class MenuRepositoryImpl implements MenuRepository {
+/// Legacy repository implementation that supports both category and food APIs.
+class MenuRepositoryImpl implements ICategoryRepository, IFoodRepository {
   final MenuRemoteDatasource remoteDatasource;
 
   MenuRepositoryImpl(this.remoteDatasource);

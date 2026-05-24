@@ -42,19 +42,11 @@ void setUpMenuManagementDI() {
   getIt.registerLazySingleton<UpdateCategoryUseCase>(
     () => UpdateCategoryUseCase(getIt()),
   );
-<<<<<<< HEAD
   getIt.registerLazySingleton<AddFoodItemUsecase>(
     () => AddFoodItemUsecase(getIt()),
   );
   getIt.registerLazySingleton<UpdateFoodItemUsecase>(
     () => UpdateFoodItemUsecase(getIt()),
-=======
-  getIt.registerLazySingleton<AddFoodItemUseCase>(
-    () => AddFoodItemUseCase(getIt()),
-  );
-  getIt.registerLazySingleton<UpdateFoodItemUseCase>(
-    () => UpdateFoodItemUseCase(getIt()),
->>>>>>> main
   );
   getIt.registerLazySingleton<GetFoodItemsByCategoryUseCase>(
     () => GetFoodItemsByCategoryUseCase(getIt()),
@@ -77,13 +69,8 @@ void setUpMenuManagementDI() {
   getIt.registerFactory(
     () => AddMenuItemBloc(
       foodImgPickerUsecase: getIt(),
-<<<<<<< HEAD
       addFoodItemUsecase: getIt(),
       updateFoodItemUsecase: getIt(),
-=======
-      addFoodItemUseCase: getIt(),
-      updateFoodItemUseCase: getIt(),
->>>>>>> main
     ),
   );
 }

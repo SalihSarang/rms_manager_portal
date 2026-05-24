@@ -2,17 +2,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:manager_portal/core/utils/error_handler.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/add_category_usecase.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/get_all_food_items_usecase.dart';
-import 'package:manager_portal/features/menu_management/domain/usecases/get_all_food_items_usecase.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/get_categories_usecase.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/get_food_items_by_category_usecase.dart';
-import 'package:manager_portal/features/menu_management/domain/usecases/get_food_items_by_category_usecase.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/update_category_usecase.dart';
-import 'package:manager_portal/features/menu_management/domain/usecases/update_food_item_usecase.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/update_food_item_usecase.dart';
 import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_event.dart';
 import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_state.dart';
 import 'package:rms_shared_package/models/menu_models/category_model/category_model.dart';
-import 'package:rms_shared_package/models/menu_models/food_model/food_model.dart';
 import 'package:rms_shared_package/models/menu_models/food_model/food_model.dart';
 
 /// Business logic component for managing menu categories and their associated food items.

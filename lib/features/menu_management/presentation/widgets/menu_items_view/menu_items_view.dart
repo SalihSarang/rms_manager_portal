@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:manager_portal/core/widgets/containers/surface_container.dart';
 import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_bloc.dart';
 import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_event.dart';
-import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_event.dart';
 import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_state.dart';
 import 'package:manager_portal/features/menu_management/presentation/widgets/menu_items_table/menu_items_table.dart';
 import 'package:manager_portal/features/menu_management/presentation/widgets/menu_items_view/components/menu_items_header.dart';

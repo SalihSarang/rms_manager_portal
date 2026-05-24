@@ -1,9 +1,7 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
-import 'package:manager_portal/features/menu_management/presentation/widgets/menu_items_table/components/menu_item_action_buttons.dart';
 import 'package:manager_portal/features/menu_management/presentation/widgets/menu_items_table/components/menu_item_display_cell.dart';
 import 'package:manager_portal/features/menu_management/presentation/widgets/menu_items_table/components/menu_item_status_badge.dart';
-import 'package:rms_design_system/app_colors/neutral_colors.dart';
 import 'package:rms_design_system/app_colors/semantic_colors.dart';
 import 'package:rms_shared_package/models/menu_models/food_model/food_model.dart';
 import 'package:rms_design_system/app_colors/text_colors.dart';
@@ -140,26 +138,6 @@ class MenuItemsTableRow extends DataRow2 {
            ),
          ],
        );
-}
-
-class _ItemPlaceholder extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 32,
-      height: 32,
-      decoration: BoxDecoration(
-        color: NeutralColors.surface,
-        borderRadius: BorderRadius.circular(6),
-        border: Border.all(color: NeutralColors.border),
-      ),
-      child: const Icon(
-        Icons.image_outlined,
-        size: 16,
-        color: TextColors.secondary,
-      ),
-    );
-  }
 }
 
 class _ActionIconButton extends StatelessWidget {
