@@ -20,8 +20,12 @@ class TableWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool isCircle = table.shape == TableShape.circle;
-    final (Color fill, Color border, Color textColor, Color badgeBg) =
-        TableWidgetUtils.resolveColors(
+    final (
+      Color fill,
+      Color border,
+      Color textColor,
+      Color badgeBg,
+    ) = TableWidgetUtils.resolveColors(
       table: table,
       isSelected: isSelected,
       isPreview: isPreview,
@@ -38,20 +42,20 @@ class TableWidget extends StatelessWidget {
         boxShadow: isPreview
             ? []
             : isSelected
-                ? [
-                    BoxShadow(
-                      color: PrimaryColors.defaultColor.withValues(alpha: 0.5),
-                      blurRadius: 16,
-                      spreadRadius: 2,
-                    ),
-                  ]
-                : [
-                    BoxShadow(
-                      color: NeutralColors.shadow.withValues(alpha: 0.4),
-                      blurRadius: 8,
-                      offset: const Offset(0, 3),
-                    ),
-                  ],
+            ? [
+                BoxShadow(
+                  color: PrimaryColors.defaultColor.withValues(alpha: 0.5),
+                  blurRadius: 16,
+                  spreadRadius: 2,
+                ),
+              ]
+            : [
+                BoxShadow(
+                  color: NeutralColors.shadow.withValues(alpha: 0.4),
+                  blurRadius: 8,
+                  offset: const Offset(0, 3),
+                ),
+              ],
         gradient: isPreview
             ? null
             : TableWidgetUtils.resolveGradient(

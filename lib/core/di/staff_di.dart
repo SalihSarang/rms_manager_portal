@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:manager_portal/core/di/injector.dart';
 import 'package:manager_portal/features/staff_management/data/datasources/staff_datasource.dart';
+import 'package:manager_portal/features/staff_management/data/datasources/staff_auth_datasource.dart';
 import 'package:manager_portal/features/staff_management/data/repository/staff_repo_impl.dart';
 import 'package:manager_portal/features/staff_management/domain/repository/staff_repository.dart';
 import 'package:manager_portal/features/staff_management/domain/usecases/add_new_staff.dart';
@@ -16,16 +17,24 @@ import 'package:manager_portal/features/staff_management/presentation/bloc/staff
 
 void setUpStaffDI() {
   // Datasource
-  getIt.registerLazySingleton<StaffDatasource>(
-    () => StaffDatasourceImpl(
-      auth: getIt<FirebaseAuth>(),
+  getIt.registerLazySingleton<IStaffRemoteDataSource>(
+    () => StaffRemoteDataSourceImpl(
       firestore: getIt<FirebaseFirestore>(),
+    ),
+  );
+
+  getIt.registerLazySingleton<IStaffAuthRemoteDataSource>(
+    () => StaffAuthRemoteDataSourceImpl(
+      auth: getIt<FirebaseAuth>(),
     ),
   );
 
   // Repository
   getIt.registerLazySingleton<StaffRepository>(
-    () => StaffRepositoryImpl(staffDatasource: getIt<StaffDatasource>()),
+    () => StaffRepositoryImpl(
+      remoteDataSource: getIt<IStaffRemoteDataSource>(),
+      authRemoteDataSource: getIt<IStaffAuthRemoteDataSource>(),
+    ),
   );
 
   // Use Cases

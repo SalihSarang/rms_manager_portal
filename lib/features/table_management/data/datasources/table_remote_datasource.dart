@@ -21,15 +21,23 @@ class TableRemoteDataSourceImpl implements ITableRemoteDataSource {
   Future<List<TableModel>> getAllTables() async {
     final snapshot = await _tablesCollection.get();
     return snapshot.docs
-        .map((doc) => TableModel.fromMap(doc.data() as Map<String, dynamic>, doc.id))
+        .map(
+          (doc) =>
+              TableModel.fromMap(doc.data() as Map<String, dynamic>, doc.id),
+        )
         .toList();
   }
 
   @override
   Future<List<TableModel>> getTables(String hallId) async {
-    final snapshot = await _tablesCollection.where('hallId', isEqualTo: hallId).get();
+    final snapshot = await _tablesCollection
+        .where('hallId', isEqualTo: hallId)
+        .get();
     return snapshot.docs
-        .map((doc) => TableModel.fromMap(doc.data() as Map<String, dynamic>, doc.id))
+        .map(
+          (doc) =>
+              TableModel.fromMap(doc.data() as Map<String, dynamic>, doc.id),
+        )
         .toList();
   }
 

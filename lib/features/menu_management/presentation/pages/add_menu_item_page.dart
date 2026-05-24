@@ -18,6 +18,10 @@ import 'package:rms_shared_package/models/menu_models/food_model/food_model.dart
 ///
 /// If [foodItemToEdit] is provided, the page initializes in edit mode;
 /// otherwise, it opens as a blank "Add New Item" form.
+/// A page for creating or editing a food item.
+///
+/// If [foodItemToEdit] is provided, the page initializes in edit mode;
+/// otherwise, it opens as a blank "Add New Item" form.
 class AddMenuItemPage extends StatelessWidget {
   /// The food item to be edited, or `null` if creating a new item.
   final FoodModel? foodItemToEdit;

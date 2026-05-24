@@ -1,4 +1,4 @@
-import 'package:manager_portal/features/menu_management/domain/repository/menu_repository.dart';
+import 'package:manager_portal/features/menu_management/domain/repository/category_repository.dart';
 import 'package:rms_shared_package/models/menu_models/food_model/food_model.dart';
 
 class GetAllFoodItemsUseCase {

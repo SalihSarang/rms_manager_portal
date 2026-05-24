@@ -15,7 +15,12 @@ import 'package:manager_portal/features/menu_management/presentation/pages/add_m
 ///
 /// This page provides a dual-pane layout with a category sidebar on the left
 /// and the selected category's food items on the right.
+/// Main dashboard for managing menu categories and food items.
+///
+/// This page provides a dual-pane layout with a category sidebar on the left
+/// and the selected category's food items on the right.
 class MenuManagementPage extends StatelessWidget {
+  /// Creates a [MenuManagementPage].
   /// Creates a [MenuManagementPage].
   const MenuManagementPage({super.key});
 
@@ -38,6 +43,7 @@ class MenuManagementPage extends StatelessWidget {
                   ),
                 );
               },
+
               onAddItemPressed: () async {
                 final bloc = context.read<AddCategoryBloc>();
                 await Navigator.of(context).push(
@@ -45,7 +51,11 @@ class MenuManagementPage extends StatelessWidget {
                 );
                 if (bloc.state is CategoriesLoaded) {
                   final state = bloc.state as CategoriesLoaded;
-                  bloc.add(LoadCategories(selectedCategoryId: state.selectedCategoryId));
+                  bloc.add(
+                    LoadCategories(
+                      selectedCategoryId: state.selectedCategoryId,
+                    ),
+                  );
                 }
               },
             ),

@@ -130,9 +130,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(Unauthenticated());
       }
     } catch (e) {
-      emit(
-        StatusCheckingFailure(ErrorHandler.getFriendlyMessage(e)),
-      );
+      emit(StatusCheckingFailure(ErrorHandler.getFriendlyMessage(e)));
     }
   }
 

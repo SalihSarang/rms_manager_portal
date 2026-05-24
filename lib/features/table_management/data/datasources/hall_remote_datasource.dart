@@ -20,7 +20,10 @@ class HallRemoteDataSourceImpl implements IHallRemoteDataSource {
   Future<List<HallModel>> getHalls() async {
     final snapshot = await _hallsCollection.orderBy('createdAt').get();
     return snapshot.docs
-        .map((doc) => HallModel.fromMap(doc.data() as Map<String, dynamic>, doc.id))
+        .map(
+          (doc) =>
+              HallModel.fromMap(doc.data() as Map<String, dynamic>, doc.id),
+        )
         .toList();
   }
 

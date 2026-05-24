@@ -4,28 +4,33 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:manager_portal/firebase_options.dart';
+import 'package:rms_shared_package/utils/base_remote_datasource.dart';
 
 import 'package:rms_shared_package/models/staff_model/staff_model.dart';
-
 import 'package:rms_shared_package/constants/db_constants.dart';
 
-abstract class StaffDatasource {
+abstract class IStaffRemoteDataSource {
   Future<List<StaffModel?>> getAllStaffs();
   Future<StaffModel> getStaffDetails(String staffId);
   Future<void> addNewStaff(StaffModel staff);
   Future<void> updateStaff(StaffModel staff);
   Future<void> deleteStaff(String staffId);
-  Future<String> createNewUserWithEmailAndPassword({
-    required String email,
-    required String password,
-  });
 }
 
-class StaffDatasourceImpl implements StaffDatasource {
-  final FirebaseAuth auth;
+class StaffRemoteDataSourceImpl
+    with BaseRemoteDataSource
+    implements IStaffRemoteDataSource {
   final FirebaseFirestore firestore;
 
-  const StaffDatasourceImpl({required this.auth, required this.firestore});
+  StaffRemoteDataSourceImpl({required this.firestore});
+
+  CollectionReference<StaffModel> get _staffCollection => firestore
+      .collection(StaffDbConstants.staff)
+      .withConverter<StaffModel>(
+        fromFirestore: (snapshot, _) =>
+            StaffModel.fromMap(snapshot.data()!, snapshot.id),
+        toFirestore: (staff, _) => staff.toMap(),
+      );
 
   @override
   Future<void> addNewStaff(StaffModel staff) async {

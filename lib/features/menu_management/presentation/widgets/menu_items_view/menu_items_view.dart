@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:manager_portal/core/widgets/containers/surface_container.dart';
 import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_bloc.dart';
 import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_event.dart';
+import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_event.dart';
 import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_state.dart';
 import 'package:manager_portal/features/menu_management/presentation/widgets/menu_items_table/menu_items_table.dart';
 import 'package:manager_portal/features/menu_management/presentation/widgets/menu_items_view/components/menu_items_header.dart';
@@ -21,6 +22,7 @@ class MenuItemsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AddCategoryBloc, AddCategoryState>(
       builder: (context, state) {
+        // --- State: Loading ---
         if (state is MenuLoading) {
           return const Center(
             child: CircularProgressIndicator(color: TextColors.inverse),
@@ -52,10 +54,15 @@ class MenuItemsView extends StatelessWidget {
                   icon: const Icon(Icons.refresh_rounded, size: 20),
                   label: const Text('Retry'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: SemanticColors.error.withValues(alpha: 0.1),
+                    backgroundColor: SemanticColors.error.withValues(
+                      alpha: 0.1,
+                    ),
                     foregroundColor: SemanticColors.error,
                     elevation: 0,
-                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 12,
+                    ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -95,27 +102,31 @@ class MenuItemsView extends StatelessWidget {
                             ),
                           )
                         : items.isEmpty
-                            ? Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.restaurant_menu_rounded,
-                                      color: TextColors.secondary.withValues(alpha: 0.3),
-                                      size: 64,
-                                    ),
-                                    const SizedBox(height: 16),
-                                    Text(
-                                      'No items found in this category',
-                                      style: TextStyle(
-                                        color: TextColors.secondary.withValues(alpha: 0.7),
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                  ],
+                        ? Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.restaurant_menu_rounded,
+                                  color: TextColors.secondary.withValues(
+                                    alpha: 0.3,
+                                  ),
+                                  size: 64,
                                 ),
-                              )
-                            : MenuItemsTable(items: items),
+                                const SizedBox(height: 16),
+                                Text(
+                                  'No items found in this category',
+                                  style: TextStyle(
+                                    color: TextColors.secondary.withValues(
+                                      alpha: 0.7,
+                                    ),
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        : MenuItemsTable(items: items),
                   ),
                 ),
               ),

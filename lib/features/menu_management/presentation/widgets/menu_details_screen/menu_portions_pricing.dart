@@ -31,7 +31,9 @@ class MenuPortionsPricing extends StatelessWidget {
           decoration: BoxDecoration(
             color: NeutralColors.surface,
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: NeutralColors.border.withValues(alpha: 0.5)),
+            border: Border.all(
+              color: NeutralColors.border.withValues(alpha: 0.5),
+            ),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.05),
@@ -51,7 +53,10 @@ class MenuPortionsPricing extends StatelessWidget {
             itemBuilder: (context, index) {
               final p = portions[index];
               return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 20,
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

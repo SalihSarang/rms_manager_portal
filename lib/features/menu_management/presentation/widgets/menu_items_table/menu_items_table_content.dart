@@ -28,27 +28,25 @@ class MenuItemsTableContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<MenuItemsPaginationCubit, int>(
       builder: (context, currentPage) {
-        final List<FoodModel> sourceList = items;
-        final int totalItems = sourceList.length;
-        final int totalPages = totalItems == 0
+        final totalItems = items.length;
+        final totalPages = totalItems == 0
             ? 1
             : (totalItems / itemsPerPage).ceil();
 
         final cubit = context.read<MenuItemsPaginationCubit>();
         cubit.clampPage(totalPages);
 
-        final int safePage = (totalPages > 0 && currentPage > totalPages)
+        final safePage = (totalPages > 0 && currentPage > totalPages)
             ? totalPages
             : currentPage;
-
-        final int startIndex = (safePage - 1) * itemsPerPage;
-        final int endIndex = (startIndex + itemsPerPage < totalItems)
+        final startIndex = (safePage - 1) * itemsPerPage;
+        final endIndex = (startIndex + itemsPerPage < totalItems)
             ? startIndex + itemsPerPage
             : totalItems;
 
-        final List<FoodModel> currentData = sourceList.isEmpty
+        final List<FoodModel> currentData = items.isEmpty
             ? []
-            : sourceList.sublist(startIndex, endIndex);
+            : items.sublist(startIndex, endIndex);
 
         return Column(
           children: [
@@ -70,8 +68,7 @@ class MenuItemsTableContent extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                            MenuDetailsScreen(foodItem: item),
+                        builder: (context) => MenuDetailsScreen(foodItem: item),
                       ),
                     );
                   },
@@ -86,7 +83,11 @@ class MenuItemsTableContent extends StatelessWidget {
                     );
                     if (bloc.state is CategoriesLoaded) {
                       final state = bloc.state as CategoriesLoaded;
-                      bloc.add(LoadCategories(selectedCategoryId: state.selectedCategoryId));
+                      bloc.add(
+                        LoadCategories(
+                          selectedCategoryId: state.selectedCategoryId,
+                        ),
+                      );
                     }
                   },
                   onToggleStatus: () {

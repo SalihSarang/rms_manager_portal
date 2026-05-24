@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:rms_shared_package/utils/base_remote_datasource.dart';
 import 'package:rms_shared_package/constants/db_constants.dart';
 import 'package:rms_shared_package/models/manager_model/manager_model.dart';
 
@@ -11,7 +12,9 @@ abstract class ManagerAuthRemoteDataSource {
   Future<ManagerModel?> getCurrentManager();
 }
 
-class ManagerAuthRemoteDataSourceImpl implements ManagerAuthRemoteDataSource {
+class ManagerAuthRemoteDataSourceImpl
+    with BaseRemoteDataSource
+    implements ManagerAuthRemoteDataSource {
   final FirebaseAuth auth;
   final FirebaseFirestore firestore;
 
