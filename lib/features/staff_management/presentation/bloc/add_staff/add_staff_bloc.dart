@@ -1,11 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-<<<<<<< HEAD
-import 'package:manager_portal/core/utils/error_handler.dart';
-=======
 import 'package:rms_shared_package/utils/error_handler.dart';
->>>>>>> main
 import 'package:equatable/equatable.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:manager_portal/core/utils/image_picker_service/cloudinary_service/cloudinary_service.dart';
@@ -62,8 +58,14 @@ class AddStaffBloc extends Bloc<AddStaffEvent, AddStaffState> {
           phoneNumber: '',
           password: '',
           role: null,
+          baseWage: '',
+          wageType: null,
           avatar: '',
           idProof: '',
+          bankName: '',
+          accountNumber: '',
+          ifscCode: '',
+          upiId: '',
           pickedFile: null,
           pickedIdProof: null,
           errorMessage: null,
@@ -96,6 +98,26 @@ class AddStaffBloc extends Bloc<AddStaffEvent, AddStaffState> {
       emit(state.copyWith(role: event.role));
     });
 
+    on<BaseWageChanged>((event, emit) {
+      emit(state.copyWith(baseWage: event.baseWage));
+    });
+
+    on<WageTypeChanged>((event, emit) {
+      emit(state.copyWith(wageType: event.wageType));
+    });
+    on<BankNameChanged>((event, emit) {
+      emit(state.copyWith(bankName: event.bankName));
+    });
+    on<AccountNumberChanged>((event, emit) {
+      emit(state.copyWith(accountNumber: event.accountNumber));
+    });
+    on<IfscCodeChanged>((event, emit) {
+      emit(state.copyWith(ifscCode: event.ifscCode));
+    });
+    on<UpiIdChanged>((event, emit) {
+      emit(state.copyWith(upiId: event.upiId));
+    });
+
     on<AvatarChanged>(_onAvatarPicked);
     on<IdProofChanged>(_onIdProofPicked);
     on<InitializeEditMode>(_onInitializeEditMode);
@@ -114,8 +136,14 @@ class AddStaffBloc extends Bloc<AddStaffEvent, AddStaffState> {
         email: event.staff.email,
         phoneNumber: event.staff.phoneNumber,
         role: event.staff.role,
+        baseWage: event.staff.baseWage?.toString() ?? '',
+        wageType: event.staff.wageType,
         avatar: event.staff.avatar,
         idProof: event.staff.idProof,
+        bankName: event.staff.bankDetails?['bankName'] ?? '',
+        accountNumber: event.staff.bankDetails?['accountNumber'] ?? '',
+        ifscCode: event.staff.bankDetails?['ifscCode'] ?? '',
+        upiId: event.staff.bankDetails?['upiId'] ?? '',
         originalStaff: event.staff,
         password: '',
         pickedFile: null,
@@ -215,8 +243,16 @@ class AddStaffBloc extends Bloc<AddStaffEvent, AddStaffState> {
       email: state.email,
       phoneNumber: state.phoneNumber,
       role: state.role!,
+      baseWage: double.tryParse(state.baseWage),
+      wageType: state.wageType,
       avatar: avatarUrl ?? '',
       idProof: idProofUrl ?? '',
+      bankDetails: {
+        'bankName': state.bankName,
+        'accountNumber': state.accountNumber,
+        'ifscCode': state.ifscCode,
+        'upiId': state.upiId,
+      },
     );
 
     await updateStaff(updatedStaff);
@@ -249,10 +285,18 @@ class AddStaffBloc extends Bloc<AddStaffEvent, AddStaffState> {
       email: state.email,
       phoneNumber: state.phoneNumber,
       role: state.role!,
+      baseWage: double.tryParse(state.baseWage),
+      wageType: state.wageType,
       avatar: avatarUrl ?? '',
       idProof: idProofUrl ?? '',
       isActive: true,
       lastActive: DateTime.now(),
+      bankDetails: {
+        'bankName': state.bankName,
+        'accountNumber': state.accountNumber,
+        'ifscCode': state.ifscCode,
+        'upiId': state.upiId,
+      },
     );
 
     log('Saving staff to Firestore...');

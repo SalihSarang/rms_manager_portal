@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rms_design_system/app_colors/neutral_colors.dart';
+import 'package:rms_design_system/app_colors/text_colors.dart';
 
 class PrimarySearchBar extends StatelessWidget {
   final String hintText;
@@ -36,7 +36,7 @@ class PrimarySearchBar extends StatelessWidget {
         decoration: InputDecoration(
           hintText: hintText,
           filled: true,
-          fillColor: backgroundColor ?? NeutralColors.white,
+          fillColor: backgroundColor ?? TextColors.primary,
           prefixIcon: Icon(Icons.search, color: iconColor),
           contentPadding: padding,
           border: OutlineInputBorder(

@@ -11,7 +11,9 @@ import 'package:rms_design_system/app_colors/neutral_colors.dart';
 ///
 /// This widget acts as a container for secondary action components.
 class AddItemBottomActionBar extends StatelessWidget {
-  const AddItemBottomActionBar({super.key});
+  final GlobalKey<FormState> formKey;
+
+  const AddItemBottomActionBar({super.key, required this.formKey});
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +44,10 @@ class AddItemBottomActionBar extends StatelessWidget {
                   const SizedBox(width: 12),
 
                   // --- Save Button Component ---
-                  SaveActionButton(isSubmitting: state.isSubmitting),
+                  SaveActionButton(
+                    isSubmitting: state.isSubmitting,
+                    formKey: formKey,
+                  ),
                 ],
               ),
             ],

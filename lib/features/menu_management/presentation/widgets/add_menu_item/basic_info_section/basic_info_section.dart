@@ -4,6 +4,7 @@ import 'package:manager_portal/features/menu_management/presentation/widgets/add
 import 'package:manager_portal/features/menu_management/presentation/widgets/add_menu_item/basic_info_section/components/food_image_picker.dart';
 import 'package:manager_portal/features/menu_management/presentation/widgets/add_menu_item/basic_info_section/components/food_name_input.dart';
 import 'package:rms_design_system/app_colors/neutral_colors.dart';
+import 'package:rms_design_system/app_colors/text_colors.dart';
 
 /// [BasicInfoSection] is the core data entry area for a food item.
 /// It collects essential details like name, category, description, and preview image.
@@ -25,7 +26,7 @@ class BasicInfoSection extends StatelessWidget {
           Text(
             'Basic Information',
             style: TextStyle(
-              color: NeutralColors.white,
+              color: TextColors.primary,
               fontSize: 18,
               fontWeight: FontWeight.w600,
             ),

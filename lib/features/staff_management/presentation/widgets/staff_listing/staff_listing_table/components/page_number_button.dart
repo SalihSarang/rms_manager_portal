@@ -42,7 +42,7 @@ class PageNumberButton extends StatelessWidget {
             child: Text(
               '$pageNumber',
               style: TextStyle(
-                color: isSelected ? Colors.white : TextColors.secondary,
+                color: isSelected ? TextColors.primary : TextColors.secondary,
                 fontSize: 12,
                 fontWeight: FontWeight.bold,
               ),

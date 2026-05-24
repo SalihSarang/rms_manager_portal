@@ -11,7 +11,7 @@ class CategorySidebarHeader extends StatelessWidget {
       child: Text(
         'Categories',
         style: TextStyle(
-          color: TextColors.inverse,
+          color: TextColors.primary,
           fontSize: 18,
           fontWeight: FontWeight.w600,
         ),

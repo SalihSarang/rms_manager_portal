@@ -59,7 +59,7 @@ class AddOnsAndPricingSection extends StatelessWidget {
                     const Text(
                       'Add-ons & Pricing',
                       style: TextStyle(
-                        color: NeutralColors.white,
+                        color: TextColors.primary,
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
                       ),

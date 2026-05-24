@@ -4,6 +4,7 @@ import 'package:manager_portal/features/staff_management/presentation/bloc/staff
 import 'package:manager_portal/features/staff_management/presentation/widgets/staff_listing/staff_listing_table/staff_listing_table.dart';
 
 import 'package:rms_design_system/app_colors/neutral_colors.dart';
+import 'package:rms_design_system/app_colors/semantic_colors.dart';
 
 /// A container widget that observes the [StaffListingBloc] and displays the staff list.
 ///
@@ -62,7 +63,7 @@ class StaffListContainer extends StatelessWidget {
                   children: [
                     const Icon(
                       Icons.error_outline_rounded,
-                      color: Color(0xFFE53935),
+                      color: SemanticColors.error,
                       size: 48,
                     ),
                     const SizedBox(height: 16),
@@ -72,7 +73,7 @@ class StaffListContainer extends StatelessWidget {
                         state.message,
                         textAlign: TextAlign.center,
                         style: const TextStyle(
-                          color: Color(0xFFE53935),
+                          color: SemanticColors.error,
                           fontSize: 14,
                         ),
                       ),
@@ -85,8 +86,10 @@ class StaffListContainer extends StatelessWidget {
                       icon: const Icon(Icons.refresh_rounded, size: 20),
                       label: const Text('Retry'),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFE53935).withValues(alpha: 0.1),
-                        foregroundColor: const Color(0xFFE53935),
+                        backgroundColor: SemanticColors.error.withValues(
+                          alpha: 0.1,
+                        ),
+                        foregroundColor: SemanticColors.error,
                         elevation: 0,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),

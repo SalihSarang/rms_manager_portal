@@ -8,7 +8,7 @@ class MenuItemsLoadingView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Center(
-      child: CircularProgressIndicator(color: TextColors.inverse),
+      child: CircularProgressIndicator(color: TextColors.primary),
     );
   }
 }

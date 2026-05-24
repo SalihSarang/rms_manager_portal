@@ -21,8 +21,8 @@ class TableWidgetUtils {
       return (
         PrimaryColors.defaultColor,
         PrimaryColors.hoverColor,
-        NeutralColors.white,
-        NeutralColors.white.withValues(alpha: 0.2),
+        TextColors.primary,
+        TextColors.primary.withValues(alpha: 0.2),
       );
     }
     switch (table.status) {
@@ -40,7 +40,7 @@ class TableWidgetUtils {
           TableColors.reservedText,
           SemanticColors.info.withValues(alpha: 0.2),
         );
-      case TableStatus.billRequested:
+      case TableStatus.served:
         return (
           TableColors.billRequestedFill,
           SemanticColors.warning,
@@ -58,7 +58,7 @@ class TableWidgetUtils {
         return (
           NeutralColors.card,
           NeutralColors.border,
-          NeutralColors.white,
+          TextColors.primary,
           NeutralColors.border.withValues(alpha: 0.5),
         );
     }
@@ -83,11 +83,11 @@ class TableWidgetUtils {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         );
-      case TableStatus.billRequested:
+      case TableStatus.served:
         return const LinearGradient(
           colors: [
             TableColors.billRequestedGradientStart,
-            TableColors.billRequestedFill
+            TableColors.billRequestedFill,
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -96,7 +96,7 @@ class TableWidgetUtils {
         return const LinearGradient(
           colors: [
             NeutralColors.cardGradientStart,
-            NeutralColors.cardGradientEnd
+            NeutralColors.cardGradientEnd,
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,

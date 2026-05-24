@@ -3,24 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:manager_portal/core/di/injector.dart';
 import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_bloc.dart';
 import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_event.dart';
-import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_state.dart';
-import 'package:manager_portal/features/menu_management/presentation/widgets/appbar/menu_appbar.dart';
-import 'package:manager_portal/features/menu_management/presentation/widgets/dialogs/add_category_dialog.dart';
-import 'package:manager_portal/features/menu_management/presentation/widgets/sidebar/categories_sidebar.dart';
-import 'package:manager_portal/features/menu_management/presentation/widgets/menu_items_view/menu_items_view.dart';
+import 'package:manager_portal/features/menu_management/presentation/widgets/menu_management_appbar.dart';
+import 'package:manager_portal/features/menu_management/presentation/widgets/menu_management_body.dart';
 import 'package:rms_design_system/app_colors/neutral_colors.dart';
-import 'package:manager_portal/features/menu_management/presentation/pages/add_menu_item_page.dart';
 
 /// Main dashboard for managing menu categories and food items.
 ///
 /// This page provides a dual-pane layout with a category sidebar on the left
 /// and the selected category's food items on the right.
-/// Main dashboard for managing menu categories and food items.
-///
-/// This page provides a dual-pane layout with a category sidebar on the left
-/// and the selected category's food items on the right.
 class MenuManagementPage extends StatelessWidget {
-  /// Creates a [MenuManagementPage].
   /// Creates a [MenuManagementPage].
   const MenuManagementPage({super.key});
 
@@ -28,51 +19,10 @@ class MenuManagementPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => getIt<AddCategoryBloc>()..add(LoadCategories()),
-      child: Builder(
-        builder: (context) {
-          return Scaffold(
-            backgroundColor: NeutralColors.background,
-            appBar: MenuAppbar(
-              onAddCategoryPressed: () {
-                final bloc = context.read<AddCategoryBloc>();
-                showDialog(
-                  context: context,
-                  builder: (context) => BlocProvider.value(
-                    value: bloc,
-                    child: const AddCategoryDialog(),
-                  ),
-                );
-              },
-
-              onAddItemPressed: () async {
-                final bloc = context.read<AddCategoryBloc>();
-                await Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => const AddMenuItemPage()),
-                );
-                if (bloc.state is CategoriesLoaded) {
-                  final state = bloc.state as CategoriesLoaded;
-                  bloc.add(
-                    LoadCategories(
-                      selectedCategoryId: state.selectedCategoryId,
-                    ),
-                  );
-                }
-              },
-            ),
-            body: Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const CategoriesSidebar(),
-                const Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.all(20),
-                    child: MenuItemsView(),
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
+      child: const Scaffold(
+        backgroundColor: NeutralColors.background,
+        appBar: MenuManagementAppBar(),
+        body: MenuManagementBody(),
       ),
     );
   }

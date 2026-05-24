@@ -33,12 +33,12 @@ class AppBarActionButton extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Row(
             children: [
-              Icon(icon, color: NeutralColors.white, size: 18),
+              Icon(icon, color: TextColors.primary, size: 18),
               const SizedBox(width: 8),
               Text(
                 label,
                 style: const TextStyle(
-                  color: NeutralColors.white,
+                  color: TextColors.primary,
                   fontWeight: FontWeight.w700,
                   fontSize: 14,
                 ),

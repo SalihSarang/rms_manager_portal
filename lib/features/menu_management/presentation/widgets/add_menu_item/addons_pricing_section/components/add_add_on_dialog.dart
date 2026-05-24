@@ -55,7 +55,7 @@ class _AddAddOnDialogState extends State<AddAddOnDialog> {
       backgroundColor: NeutralColors.surface,
       title: const Text(
         'Add Add-on',
-        style: TextStyle(color: TextColors.inverse),
+        style: TextStyle(color: TextColors.primary),
       ),
       content: SingleChildScrollView(
         child: Form(
@@ -222,7 +222,7 @@ class _AddAddOnDialogState extends State<AddAddOnDialog> {
           },
           child: const Text(
             'Add',
-            style: TextStyle(color: NeutralColors.white),
+            style: TextStyle(color: TextColors.primary),
           ),
         ),
       ],

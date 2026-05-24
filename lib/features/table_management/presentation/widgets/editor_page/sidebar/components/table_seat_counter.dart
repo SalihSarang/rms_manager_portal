@@ -49,7 +49,7 @@ class TableSeatCounter extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w800,
-                color: NeutralColors.white,
+                color: TextColors.primary,
               ),
             ),
             const SizedBox(width: 12),

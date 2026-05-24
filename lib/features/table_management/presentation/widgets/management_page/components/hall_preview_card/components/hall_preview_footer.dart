@@ -53,7 +53,7 @@ class HallPreviewFooter extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w700,
-                    color: NeutralColors.white,
+                    color: TextColors.primary,
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -89,7 +89,7 @@ class HallPreviewFooter extends StatelessWidget {
             child: Icon(
               Icons.arrow_forward_rounded,
               color: isHovered
-                  ? NeutralColors.white
+                  ? TextColors.primary
                   : PrimaryColors.defaultColor,
               size: 16,
             ),

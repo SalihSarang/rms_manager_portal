@@ -35,7 +35,7 @@ class StaffRoleDropdown extends StatelessWidget {
             'Select Role',
             style: TextStyle(color: TextColors.secondary),
           ),
-          style: const TextStyle(color: TextColors.inverse),
+          style: const TextStyle(color: TextColors.primary),
           dropdownColor: NeutralColors.surface,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           items: UserRole.values

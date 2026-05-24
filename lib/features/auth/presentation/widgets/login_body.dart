@@ -7,6 +7,7 @@ import 'package:manager_portal/features/auth/presentation/widgets/auth_button.da
 import 'package:manager_portal/features/auth/presentation/widgets/auth_text_field.dart';
 import 'package:rms_design_system/app_colors/primary_colors.dart';
 import 'package:rms_design_system/app_colors/text_colors.dart';
+import 'package:rms_design_system/app_colors/semantic_colors.dart';
 
 /// The main form area of the login screen.
 ///
@@ -24,7 +25,7 @@ class LoginBody extends StatelessWidget {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(state.error),
-              backgroundColor: const Color(0xFFE53935),
+              backgroundColor: SemanticColors.error,
             ),
           );
         }
@@ -61,8 +62,8 @@ class LoginBody extends StatelessWidget {
                 ),
                 onPressed: () {
                   context.read<AuthBloc>().add(
-                        const LoginPasswordVisibilityChanged(),
-                      );
+                    const LoginPasswordVisibilityChanged(),
+                  );
                 },
               ),
             ),
@@ -72,9 +73,7 @@ class LoginBody extends StatelessWidget {
               child: MouseRegion(
                 cursor: SystemMouseCursors.click,
                 child: GestureDetector(
-                  onTap: () {
-                    //Implement forgot password
-                  },
+                  onTap: () {},
                   child: const Text(
                     'Forgot password?',
                     style: TextStyle(

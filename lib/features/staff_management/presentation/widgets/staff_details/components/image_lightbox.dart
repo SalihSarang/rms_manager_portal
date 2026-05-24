@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rms_design_system/app_colors/text_colors.dart';
 
 void showStaffImageLightbox(BuildContext context, String url, String title) {
   final maxH = MediaQuery.of(context).size.height * 0.65;
@@ -20,7 +21,7 @@ void showStaffImageLightbox(BuildContext context, String url, String title) {
                 Text(
                   title,
                   style: const TextStyle(
-                    color: Colors.white,
+                    color: TextColors.primary,
                     fontSize: 15,
                     fontWeight: FontWeight.w600,
                   ),
@@ -35,7 +36,7 @@ void showStaffImageLightbox(BuildContext context, String url, String title) {
                     ),
                     child: const Icon(
                       Icons.close,
-                      color: Colors.white,
+                      color: TextColors.primary,
                       size: 18,
                     ),
                   ),
@@ -57,7 +58,9 @@ void showStaffImageLightbox(BuildContext context, String url, String title) {
                       return SizedBox(
                         height: 180,
                         child: const Center(
-                          child: CircularProgressIndicator(color: Colors.white),
+                          child: CircularProgressIndicator(
+                            color: TextColors.primary,
+                          ),
                         ),
                       );
                     },

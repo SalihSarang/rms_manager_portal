@@ -27,7 +27,7 @@ class DialogUtils {
         title: Text(
           title,
           style: const TextStyle(
-            color: TextColors.inverse,
+            color: TextColors.primary,
             fontSize: 20,
             fontWeight: FontWeight.w600,
           ),
@@ -57,7 +57,7 @@ class DialogUtils {
             onPressed: () => Navigator.pop(context, true),
             style: ElevatedButton.styleFrom(
               backgroundColor: SemanticColors.error,
-              foregroundColor: TextColors.inverse,
+              foregroundColor: TextColors.primary,
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               elevation: 0,
               shape: RoundedRectangleBorder(

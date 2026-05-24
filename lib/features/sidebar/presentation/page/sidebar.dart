@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:manager_portal/features/menu_management/presentation/pages/menu_management_page.dart';
+import 'package:manager_portal/features/reports/presentation/pages/reports_page.dart';
 import 'package:manager_portal/features/staff_management/presentation/pages/staff_listing_page.dart';
 import 'package:manager_portal/features/table_management/presentation/pages/table_management_page.dart';
 import 'package:sidebarx/sidebarx.dart';
 import 'package:manager_portal/features/sidebar/presentation/widgets/manager_sidebar_x.dart';
+import 'package:manager_portal/features/overview/presentation/page/overview_page.dart';
+import 'package:manager_portal/features/settings/presentation/pages/settings_page.dart';
 
 /// The primary navigation shell for the manager portal.
 ///
@@ -70,12 +73,13 @@ class _SidebarState extends State<Sidebar> {
               controller: _pageController,
               physics: const NeverScrollableScrollPhysics(),
               children: [
-                const Center(child: Text('Overview Page')),
+                const OverviewPage(),
+
                 const StaffListingScreen(),
                 const MenuManagementPage(),
                 const TableManagementPage(),
-                const Center(child: Text('Reports Page')),
-                const Center(child: Text('Settings Page')),
+                const ReportsPage(),
+                const SettingsPage(),
                 const Center(child: Text('Logout Page')),
               ],
             ),

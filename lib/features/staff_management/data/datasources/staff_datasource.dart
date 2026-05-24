@@ -1,9 +1,4 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:manager_portal/firebase_options.dart';
 import 'package:rms_shared_package/utils/base_remote_datasource.dart';
 
 import 'package:rms_shared_package/models/staff_model/staff_model.dart';
@@ -11,6 +6,7 @@ import 'package:rms_shared_package/constants/db_constants.dart';
 
 abstract class IStaffRemoteDataSource {
   Future<List<StaffModel?>> getAllStaffs();
+  Stream<List<StaffModel>> watchAllStaffs();
   Future<StaffModel> getStaffDetails(String staffId);
   Future<void> addNewStaff(StaffModel staff);
   Future<void> updateStaff(StaffModel staff);
@@ -33,130 +29,67 @@ class StaffRemoteDataSourceImpl
       );
 
   @override
-  Future<void> addNewStaff(StaffModel staff) async {
-    log(
-      '[StaffDatasource] addNewStaff -> id: ${staff.id}, payload: ${staff.toMap()}',
-      name: 'StaffDatasource',
-    );
-    await firestore
-        .collection(StaffDbConstants.staff)
-        .doc(staff.id)
-        .set(staff.toMap());
-    log(
-      '[StaffDatasource] addNewStaff <- success for id: ${staff.id}',
-      name: 'StaffDatasource',
+  Future<List<StaffModel?>> getAllStaffs() {
+    return performSafeCall(() async {
+      final snapshot = await _staffCollection.get();
+      return snapshot.docs.map((doc) => doc.data()).toList();
+    }, taskName: 'StaffRemoteDataSource.getAllStaffs');
+  }
+
+  @override
+  Stream<List<StaffModel>> watchAllStaffs() {
+    return _staffCollection.snapshots().map((snapshot) {
+      return snapshot.docs.map((doc) => doc.data()).toList();
+    });
+  }
+
+  @override
+  Future<StaffModel> getStaffDetails(String staffId) {
+    return performSafeCall(() async {
+      final doc = await _staffCollection.doc(staffId).get();
+      if (doc.exists) {
+        return doc.data()!;
+      } else {
+        throw FirebaseException(
+          plugin: 'cloud_firestore',
+          code: 'not-found',
+          message: 'Staff with ID $staffId does not exist.',
+        );
+      }
+    }, taskName: 'StaffRemoteDataSource.getStaffDetails');
+  }
+
+  @override
+  Future<void> addNewStaff(StaffModel staff) {
+    return performSafeCall(
+      () => _staffCollection.doc(staff.id).set(staff),
+      taskName: 'StaffRemoteDataSource.addNewStaff',
     );
   }
 
   @override
-  Future<void> updateStaff(StaffModel staff) async {
-    log(
-      '[StaffDatasource] updateStaff -> id: ${staff.id}, payload: ${staff.toMap()}',
-      name: 'StaffDatasource',
-    );
-    await firestore
-        .collection(StaffDbConstants.staff)
-        .doc(staff.id)
-        .update(staff.toMap());
-    log(
-      '[StaffDatasource] updateStaff <- success for id: ${staff.id}',
-      name: 'StaffDatasource',
-    );
+  Future<void> updateStaff(StaffModel staff) {
+    return performSafeCall(() async {
+      final docRef = _staffCollection.doc(staff.id);
+      final doc = await docRef.get();
+
+      if (!doc.exists) {
+        throw FirebaseException(
+          plugin: 'cloud_firestore',
+          code: 'not-found',
+          message: 'Staff with ID ${staff.id} does not exist.',
+        );
+      }
+
+      return docRef.update(staff.toMap());
+    }, taskName: 'StaffRemoteDataSource.updateStaff');
   }
 
   @override
-  Future<void> deleteStaff(String staffId) async {
-    log(
-      '[StaffDatasource] deleteStaff -> staffId: $staffId',
-      name: 'StaffDatasource',
+  Future<void> deleteStaff(String staffId) {
+    return performSafeCall(
+      () => _staffCollection.doc(staffId).delete(),
+      taskName: 'StaffRemoteDataSource.deleteStaff',
     );
-    await firestore.collection(StaffDbConstants.staff).doc(staffId).delete();
-    log(
-      '[StaffDatasource] deleteStaff <- success for staffId: $staffId',
-      name: 'StaffDatasource',
-    );
-  }
-
-  @override
-  Future<String> createNewUserWithEmailAndPassword({
-    required String email,
-    required String password,
-  }) async {
-    log(
-      '[StaffDatasource] createNewUserWithEmailAndPassword -> email: $email',
-      name: 'StaffDatasource',
-    );
-    FirebaseApp? secondaryApp;
-    try {
-      secondaryApp = await Firebase.initializeApp(
-        name: 'SecondaryApp-${DateTime.now().millisecondsSinceEpoch}',
-        options: DefaultFirebaseOptions.currentPlatform,
-      );
-
-      final secondaryAuth = FirebaseAuth.instanceFor(app: secondaryApp);
-
-      final credential = await secondaryAuth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-
-      final uid = credential.user!.uid;
-      log(
-        '[StaffDatasource] createNewUserWithEmailAndPassword <- success, uid: $uid',
-        name: 'StaffDatasource',
-      );
-      return uid;
-    } catch (e) {
-      log(
-        '[StaffDatasource] createNewUserWithEmailAndPassword <- error: $e',
-        name: 'StaffDatasource',
-      );
-      rethrow;
-    } finally {
-      await secondaryApp?.delete();
-    }
-  }
-
-  @override
-  Future<List<StaffModel?>> getAllStaffs() async {
-    log(
-      '[StaffDatasource] getAllStaffs -> calling Firestore',
-      name: 'StaffDatasource',
-    );
-    final snapshot = await firestore.collection(StaffDbConstants.staff).get();
-    final staffs = snapshot.docs
-        .map((doc) => StaffModel.fromMap(doc.data(), doc.id))
-        .toList();
-    log(
-      '[StaffDatasource] getAllStaffs <- received ${staffs.length} staff records: ${staffs.map((s) => s.toMap()).toList()}',
-      name: 'StaffDatasource',
-    );
-    return staffs;
-  }
-
-  @override
-  Future<StaffModel> getStaffDetails(String staffId) async {
-    log(
-      '[StaffDatasource] getStaffDetails -> staffId: $staffId',
-      name: 'StaffDatasource',
-    );
-    final doc = await firestore
-        .collection(StaffDbConstants.staff)
-        .doc(staffId)
-        .get();
-    if (doc.exists) {
-      final staff = StaffModel.fromMap(doc.data()!, doc.id);
-      log(
-        '[StaffDatasource] getStaffDetails <- received: ${doc.data()}',
-        name: 'StaffDatasource',
-      );
-      return staff;
-    } else {
-      log(
-        '[StaffDatasource] getStaffDetails <- staff not found for id: $staffId',
-        name: 'StaffDatasource',
-      );
-      throw Exception('Staff not found');
-    }
   }
 }

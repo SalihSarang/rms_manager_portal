@@ -56,7 +56,7 @@ class AddUserAvatar extends StatelessWidget {
                         child: Center(
                           child: Icon(
                             Icons.person,
-                            color: TextColors.inverse.withValues(alpha: 0.7),
+                            color: TextColors.primary.withValues(alpha: 0.7),
                             size: size * 0.5,
                           ),
                         ),
@@ -75,7 +75,7 @@ class AddUserAvatar extends StatelessWidget {
                 ),
                 child: Icon(
                   Icons.camera_alt,
-                  color: Colors.white,
+                  color: TextColors.primary,
                   size: size * 0.18,
                 ),
               ),

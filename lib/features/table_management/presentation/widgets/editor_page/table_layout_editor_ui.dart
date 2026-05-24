@@ -1,22 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:manager_portal/features/table_management/presentation/bloc/table_editor_bloc/table_editor_bloc.dart';
-import 'package:manager_portal/features/table_management/presentation/bloc/table_editor_bloc/table_editor_event.dart';
 import 'package:manager_portal/features/table_management/presentation/bloc/table_editor_bloc/table_editor_state.dart';
 import 'package:rms_design_system/rms_design_system.dart';
 import 'components/editor_app_bar.dart';
-import 'sidebar/sidebar.dart';
-import 'components/editor_canvas.dart';
-import 'utils/transformation_manager.dart';
+import 'components/editor_main_layout.dart';
+import 'utils/editor_ui_utils.dart';
 
 /// The user interface for the Table Layout Editor.
 ///
 /// This widget coordinates the [EditorAppBar], [Sidebar], and [EditorCanvas].
-/// It also handles keyboard shortcuts for moving tables and manages the
-/// [TransformationController] for zooming and panning.
-class TableLayoutEditorUI extends StatefulWidget {
+/// It is now stateless, with state managed by [TableEditorBloc] and
+/// controllers provided by the parent.
+class TableLayoutEditorUI extends StatelessWidget {
   /// Callback when the back button is pressed.
   final VoidCallback onBack;
 
@@ -26,167 +23,59 @@ class TableLayoutEditorUI extends StatefulWidget {
   /// Optional callback to switch to editing mode.
   final VoidCallback? onEdit;
 
+  /// Controller for zooming and panning the canvas.
+  final TransformationController transformationController;
+
+  /// Focus node for handling keyboard shortcuts.
+  final FocusNode focusNode;
+
   /// Creates a [TableLayoutEditorUI].
   const TableLayoutEditorUI({
     super.key,
     required this.onBack,
+    required this.transformationController,
+    required this.focusNode,
     this.readOnly = false,
     this.onEdit,
   });
 
   @override
-  State<TableLayoutEditorUI> createState() => _TableLayoutEditorUIState();
-}
-
-class _TableLayoutEditorUIState extends State<TableLayoutEditorUI> {
-  final TransformationController _transformationController =
-      TransformationController();
-  final FocusNode _focusNode = FocusNode();
-  double _currentScale = 1.0;
-  Size? _canvasViewportSize;
-
-  @override
-  void initState() {
-    super.initState();
-    _transformationController.addListener(_handleTransformationChanged);
-    // Center the canvas on first frame
-    WidgetsBinding.instance.addPostFrameCallback((_) => _centerCanvas());
-  }
-
-  void _centerCanvas() {
-    final size = _canvasViewportSize;
-    if (size == null) return;
-    
-    TransformationManager.centerCanvas(
-      controller: _transformationController,
-      viewportSize: size,
-    );
-  }
-
-  @override
-  void dispose() {
-    _transformationController.removeListener(_handleTransformationChanged);
-    _transformationController.dispose();
-    _focusNode.dispose();
-    super.dispose();
-  }
-
-  void _handleTransformationChanged() {
-    final scale = TransformationManager.getScale(_transformationController);
-    if (scale != _currentScale) {
-      setState(() {
-        _currentScale = scale;
-      });
-    }
-  }
-
-  void _zoomIn() => TransformationManager.zoomIn(_transformationController);
-
-  void _zoomOut() => TransformationManager.zoomOut(_transformationController);
-
-  @override
   Widget build(BuildContext context) {
     return BlocListener<TableEditorBloc, TableEditorState>(
-      listenWhen: (prev, curr) => curr.error != null && prev.error != curr.error,
+      listenWhen: (prev, curr) =>
+          curr.error != null && prev.error != curr.error,
       listener: (context, state) {
         if (state.error != null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.error!),
-              backgroundColor: SemanticColors.error,
-            ),
+          RmsSnackbar.show(
+            context,
+            message: state.error!,
+            type: RmsSnackbarType.error,
           );
         }
       },
-      child: Column(
-        children: [
-          EditorAppBar(
-            onZoomIn: _zoomIn,
-            onZoomOut: _zoomOut,
-            isZoomOutEnabled: _currentScale > 1.0,
-            zoomPercent: (_currentScale * 100).round(),
-            onBack: widget.onBack,
-            readOnly: widget.readOnly,
-            onEdit: widget.onEdit,
-          ),
-          Expanded(
-            child: Row(
-              children: [
-                if (!widget.readOnly) const Sidebar(),
-                Expanded(
-                  child: Stack(
-                    children: [
-                      ClipRect(
-                        child: CallbackShortcuts(
-                          bindings: widget.readOnly
-                              ? {}
-                              : {
-                                  const SingleActivator(LogicalKeyboardKey.arrowUp): () =>
-                                      context
-                                          .read<TableEditorBloc>()
-                                          .add(const TableEditorTablePositionUpdated(dx: 0, dy: -10)),
-                                  const SingleActivator(LogicalKeyboardKey.arrowDown): () =>
-                                      context
-                                          .read<TableEditorBloc>()
-                                          .add(const TableEditorTablePositionUpdated(dx: 0, dy: 10)),
-                                  const SingleActivator(LogicalKeyboardKey.arrowLeft): () =>
-                                      context
-                                          .read<TableEditorBloc>()
-                                          .add(const TableEditorTablePositionUpdated(dx: -10, dy: 0)),
-                                  const SingleActivator(LogicalKeyboardKey.arrowRight):
-                                      () => context
-                                          .read<TableEditorBloc>()
-                                          .add(const TableEditorTablePositionUpdated(dx: 10, dy: 0)),
-                                  const SingleActivator(LogicalKeyboardKey.delete): () {
-                                    final bloc = context.read<TableEditorBloc>();
-                                    final selected = bloc.state.selectedTable;
-                                    if (selected != null) bloc.add(TableEditorTableDeleted(selected.id));
-                                  },
-                                  const SingleActivator(LogicalKeyboardKey.backspace): () {
-                                    final bloc = context.read<TableEditorBloc>();
-                                    final selected = bloc.state.selectedTable;
-                                    if (selected != null) bloc.add(TableEditorTableDeleted(selected.id));
-                                  },
-                                },
-                          child: Focus(
-                            autofocus: !widget.readOnly,
-                            focusNode: _focusNode,
-                            child: LayoutBuilder(
-                              builder: (context, constraints) {
-                                _canvasViewportSize = Size(
-                                  constraints.maxWidth,
-                                  constraints.maxHeight,
-                                );
-                                return EditorCanvas(
-                                  transformationController:
-                                      _transformationController,
-                                  focusNode: _focusNode,
-                                  readOnly: widget.readOnly,
-                                );
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
-                      BlocBuilder<TableEditorBloc, TableEditorState>(
-                        builder: (context, state) {
-                          if (state.isLoading) {
-                            return const Center(
-                              child: CircularProgressIndicator(
-                                color: PrimaryColors.defaultColor,
-                              ),
-                            );
-                          }
-                          return const SizedBox.shrink();
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
+      child: BlocBuilder<TableEditorBloc, TableEditorState>(
+        buildWhen: (prev, curr) => prev.zoomScale != curr.zoomScale,
+        builder: (context, state) {
+          return Column(
+            children: [
+              EditorAppBar(
+                onZoomIn: () => EditorUiUtils.zoomIn(transformationController),
+                onZoomOut: () =>
+                    EditorUiUtils.zoomOut(transformationController),
+                isZoomOutEnabled: state.zoomScale > 1.0,
+                zoomPercent: (state.zoomScale * 100).round(),
+                onBack: onBack,
+                readOnly: readOnly,
+                onEdit: onEdit,
+              ),
+              EditorMainLayout(
+                readOnly: readOnly,
+                transformationController: transformationController,
+                focusNode: focusNode,
+              ),
+            ],
+          );
+        },
       ),
     );
   }

@@ -1,18 +1,14 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:manager_portal/core/utils/error_handler.dart';
+import 'package:rms_shared_package/utils/error_handler.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/add_category_usecase.dart';
-import 'package:manager_portal/features/menu_management/domain/usecases/get_all_food_items_usecase.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/get_all_food_items_usecase.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/get_categories_usecase.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/get_food_items_by_category_usecase.dart';
-import 'package:manager_portal/features/menu_management/domain/usecases/get_food_items_by_category_usecase.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/update_category_usecase.dart';
-import 'package:manager_portal/features/menu_management/domain/usecases/update_food_item_usecase.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/update_food_item_usecase.dart';
 import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_event.dart';
 import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_state.dart';
 import 'package:rms_shared_package/models/menu_models/category_model/category_model.dart';
-import 'package:rms_shared_package/models/menu_models/food_model/food_model.dart';
 import 'package:rms_shared_package/models/menu_models/food_model/food_model.dart';
 
 /// Business logic component for managing menu categories and their associated food items.
@@ -45,7 +41,7 @@ class AddCategoryBloc extends Bloc<AddCategoryEvent, AddCategoryState> {
   final GetAllFoodItemsUseCase getAllFoodItemsUseCase;
 
   /// Use case for updating food item details.
-  final UpdateFoodItemUsecase updateFoodItemUsecase;
+  final UpdateFoodItemUseCase updateFoodItemUseCase;
 
   /// Creates an [AddCategoryBloc] with the required use cases.
   AddCategoryBloc(
@@ -54,14 +50,9 @@ class AddCategoryBloc extends Bloc<AddCategoryEvent, AddCategoryState> {
     this.updateCategoryUseCase,
     this.getFoodItemsByCategoryUseCase,
     this.getAllFoodItemsUseCase,
-    this.updateFoodItemUsecase,
+    this.updateFoodItemUseCase,
   ) : super(MenuInitial()) {
     on<LoadCategories>((event, emit) async {
-      if (state is CategoriesLoaded) {
-        emit((state as CategoriesLoaded).copyWith(isLoading: true));
-      } else {
-        emit(MenuLoading());
-      }
       if (state is CategoriesLoaded) {
         emit((state as CategoriesLoaded).copyWith(isLoading: true));
       } else {
@@ -74,7 +65,6 @@ class AddCategoryBloc extends Bloc<AddCategoryEvent, AddCategoryState> {
         );
       } catch (e) {
         emit(MenuError(ErrorHandler.getFriendlyMessage(e)));
-        emit(MenuError(ErrorHandler.getFriendlyMessage(e)));
       }
     });
 
@@ -82,30 +72,6 @@ class AddCategoryBloc extends Bloc<AddCategoryEvent, AddCategoryState> {
       if (state is CategoriesLoaded) {
         final currentState = state as CategoriesLoaded;
         emit(currentState.copyWith(selectedCategoryId: event.categoryId));
-        add(LoadFoodItems(event.categoryId));
-      }
-    });
-
-    on<LoadFoodItems>((event, emit) async {
-      if (state is CategoriesLoaded) {
-        final currentState = state as CategoriesLoaded;
-        emit(
-          currentState.copyWith(isFoodLoading: true),
-        ); // Only flag food as loading
-        try {
-          final foodItems = await getFoodItemsByCategoryUseCase(
-            event.categoryId,
-          );
-          emit(
-            currentState.copyWith(
-              foodItems: foodItems,
-              selectedCategoryId: event.categoryId,
-              isFoodLoading: false,
-            ),
-          );
-        } catch (e) {
-          emit(MenuError(ErrorHandler.getFriendlyMessage(e)));
-        }
         add(LoadFoodItems(event.categoryId));
       }
     });
@@ -157,11 +123,6 @@ class AddCategoryBloc extends Bloc<AddCategoryEvent, AddCategoryState> {
             emit,
             selectedId: currentState.selectedCategoryId,
           );
-          // Refresh categories and items to ensure sync and update counts
-          await _loadCategoriesAndItems(
-            emit,
-            selectedId: currentState.selectedCategoryId,
-          );
         } catch (e) {
           emit(
             currentState.copyWith(
@@ -181,11 +142,6 @@ class AddCategoryBloc extends Bloc<AddCategoryEvent, AddCategoryState> {
         try {
           await updateCategoryUseCase(event.category);
 
-          // Refresh categories and items
-          await _loadCategoriesAndItems(
-            emit,
-            selectedId: currentState.selectedCategoryId,
-          );
           // Refresh categories and items
           await _loadCategoriesAndItems(
             emit,
@@ -220,7 +176,7 @@ class AddCategoryBloc extends Bloc<AddCategoryEvent, AddCategoryState> {
             isCustomNotes: event.food.isCustomNotes,
           );
 
-          await updateFoodItemUsecase.execute(updatedFood);
+          await updateFoodItemUseCase(updatedFood);
 
           // Update the list of foods locally to avoid a full fetch
           final updatedFoodItems = currentState.foodItems.map((item) {
@@ -244,7 +200,7 @@ class AddCategoryBloc extends Bloc<AddCategoryEvent, AddCategoryState> {
     String? selectedId,
   }) async {
     final categories = await getCategoriesUseCase();
-    final allFoodItems = await getAllFoodItemsUseCase.execute();
+    final allFoodItems = await getAllFoodItemsUseCase();
 
     // Update itemCount for each category
     final updatedCategories = categories.map((cat) {

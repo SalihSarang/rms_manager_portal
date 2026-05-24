@@ -50,7 +50,7 @@ class _StaffFilterChipsState extends State<StaffFilterChips> {
                   filter,
                   style: TextStyle(
                     color: isSelected
-                        ? TextColors.inverse
+                        ? TextColors.primary
                         : TextColors.secondary,
                     fontWeight: FontWeight.w500,
                     fontSize: 14,

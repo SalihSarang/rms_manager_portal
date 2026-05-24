@@ -40,7 +40,7 @@ class MenuItemDisplayCell extends StatelessWidget {
           child: Text(
             itemName,
             style: const TextStyle(
-              color: TextColors.inverse,
+              color: TextColors.primary,
               fontWeight: FontWeight.w500,
             ),
             overflow: TextOverflow.ellipsis,

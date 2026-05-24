@@ -48,7 +48,7 @@ class StaffTableRow extends DataRow2 {
                        ? Text(
                            StaffUtils.getInitials(staff.name),
                            style: const TextStyle(
-                             color: TextColors.inverse,
+                             color: TextColors.primary,
                              fontSize: 11,
                              fontWeight: FontWeight.bold,
                            ),
@@ -60,7 +60,7 @@ class StaffTableRow extends DataRow2 {
                    child: Text(
                      staff.name,
                      style: const TextStyle(
-                       color: TextColors.inverse,
+                       color: TextColors.primary,
                        fontWeight: FontWeight.w500,
                      ),
                      overflow: TextOverflow.ellipsis,

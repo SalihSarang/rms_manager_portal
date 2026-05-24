@@ -28,7 +28,7 @@ class CategoriesSidebar extends StatelessWidget {
               builder: (context, state) {
                 if (state is MenuLoading) {
                   return const Center(
-                    child: CircularProgressIndicator(color: TextColors.inverse),
+                    child: CircularProgressIndicator(color: TextColors.primary),
                   );
                 } else if (state is CategoriesLoaded) {
                   if (state.categories.isEmpty) {

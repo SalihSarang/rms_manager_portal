@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:manager_portal/core/utils/error_handler.dart';
+import 'package:rms_shared_package/utils/error_handler.dart';
 import 'package:manager_portal/features/auth/domain/usecases/check_auth_status.dart';
 import 'package:manager_portal/features/auth/domain/usecases/sign_in_manager.dart';
 import 'package:manager_portal/features/auth/domain/usecases/sign_out_manager.dart';

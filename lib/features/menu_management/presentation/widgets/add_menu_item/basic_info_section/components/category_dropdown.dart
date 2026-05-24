@@ -4,6 +4,7 @@ import 'package:manager_portal/features/menu_management/presentation/bloc/add_ca
 import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_state.dart';
 import 'package:manager_portal/features/menu_management/presentation/bloc/add_menu_item/add_menu_item_bloc.dart';
 import 'package:rms_design_system/app_colors/neutral_colors.dart';
+import 'package:rms_design_system/app_colors/semantic_colors.dart';
 import 'package:rms_design_system/app_colors/text_colors.dart';
 
 /// [CategoryDropdown] allows for selecting a menu category.
@@ -17,9 +18,17 @@ class CategoryDropdown extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Category',
-          style: TextStyle(color: NeutralColors.white, fontSize: 14),
+        RichText(
+          text: const TextSpan(
+            text: 'Category ',
+            style: TextStyle(color: TextColors.primary, fontSize: 14),
+            children: [
+              TextSpan(
+                text: '*',
+                style: TextStyle(color: SemanticColors.error),
+              ),
+            ],
+          ),
         ),
         const SizedBox(height: 8),
         BlocBuilder<AddCategoryBloc, AddCategoryState>(
@@ -35,7 +44,7 @@ class CategoryDropdown extends StatelessWidget {
                 return DropdownButtonFormField<String>(
                   initialValue: state.category?.id,
                   dropdownColor: NeutralColors.surface,
-                  style: const TextStyle(color: TextColors.inverse),
+                  style: const TextStyle(color: TextColors.primary),
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: NeutralColors.background,
@@ -60,6 +69,12 @@ class CategoryDropdown extends StatelessWidget {
                       color: TextColors.secondary.withValues(alpha: 0.5),
                     ),
                   ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please select a category';
+                    }
+                    return null;
+                  },
                   items: categories.map<DropdownMenuItem<String>>((cat) {
                     return DropdownMenuItem<String>(
                       value: cat.id,

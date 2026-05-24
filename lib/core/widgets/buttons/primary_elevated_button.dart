@@ -33,7 +33,7 @@ class PrimaryElevatedButton extends StatelessWidget {
               width: 20,
               child: CircularProgressIndicator(
                 strokeWidth: 2,
-                valueColor: AlwaysStoppedAnimation<Color>(TextColors.inverse),
+                valueColor: AlwaysStoppedAnimation<Color>(TextColors.primary),
               ),
             )
           : Row(
@@ -44,7 +44,7 @@ class PrimaryElevatedButton extends StatelessWidget {
                 Text(
                   label,
                   style: const TextStyle(
-                    color: TextColors.inverse,
+                    color: TextColors.primary,
                     fontWeight: FontWeight.w600,
                     fontSize: 16,
                   ),
