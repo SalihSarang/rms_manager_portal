@@ -1,6 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+<<<<<<< HEAD
+import 'package:manager_portal/core/utils/error_handler.dart';
+=======
 import 'package:rms_shared_package/utils/error_handler.dart';
+>>>>>>> main
 import 'package:manager_portal/features/staff_management/domain/usecases/delete_staff.dart';
 import 'package:manager_portal/features/staff_management/domain/usecases/get_all_staffs.dart';
 import 'package:manager_portal/features/staff_management/domain/usecases/get_staff_details.dart';

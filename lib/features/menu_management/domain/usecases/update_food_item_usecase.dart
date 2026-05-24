@@ -1,12 +1,12 @@
-import 'package:manager_portal/features/menu_management/domain/repository/food_repository.dart';
+import 'package:manager_portal/features/menu_management/domain/repository/category_repository.dart';
 import 'package:rms_shared_package/models/menu_models/food_model/food_model.dart';
 
-class UpdateFoodItemUseCase {
-  final IFoodRepository repository;
+class UpdateFoodItemUsecase {
+  final MenuRepository repository;
 
-  UpdateFoodItemUseCase(this.repository);
+  UpdateFoodItemUsecase(this.repository);
 
-  Future<void> call(FoodModel food) async {
+  Future<void> execute(FoodModel food) async {
     return await repository.updateFoodItem(food);
   }
 }

@@ -1,26 +1,39 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rms_shared_package/utils/error_handler.dart';
+import 'package:manager_portal/core/utils/error_handler.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/add_category_usecase.dart';
+import 'package:manager_portal/features/menu_management/domain/usecases/get_all_food_items_usecase.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/get_all_food_items_usecase.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/get_categories_usecase.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/get_food_items_by_category_usecase.dart';
+import 'package:manager_portal/features/menu_management/domain/usecases/get_food_items_by_category_usecase.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/update_category_usecase.dart';
+import 'package:manager_portal/features/menu_management/domain/usecases/update_food_item_usecase.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/update_food_item_usecase.dart';
 import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_event.dart';
 import 'package:manager_portal/features/menu_management/presentation/bloc/add_category/add_category_state.dart';
 import 'package:rms_shared_package/models/menu_models/category_model/category_model.dart';
+import 'package:rms_shared_package/models/menu_models/food_model/food_model.dart';
 import 'package:rms_shared_package/models/menu_models/food_model/food_model.dart';
 
 /// Business logic component for managing menu categories and their associated food items.
 ///
 /// This BLoC handles loading categories, selecting a category, adding/editing categories,
 /// and toggling the availability status of food items.
+/// Business logic component for managing menu categories and their associated food items.
+///
+/// This BLoC handles loading categories, selecting a category, adding/editing categories,
+/// and toggling the availability status of food items.
 class AddCategoryBloc extends Bloc<AddCategoryEvent, AddCategoryState> {
+  /// Use case for fetching all categories.
   /// Use case for fetching all categories.
   final GetCategoriesUseCase getCategoriesUseCase;
 
   /// Use case for adding a new category.
+
+  /// Use case for adding a new category.
   final AddCategoryUseCase addCategoryUseCase;
+
+  /// Use case for updating an existing category.
 
   /// Use case for updating an existing category.
   final UpdateCategoryUseCase updateCategoryUseCase;
@@ -32,7 +45,7 @@ class AddCategoryBloc extends Bloc<AddCategoryEvent, AddCategoryState> {
   final GetAllFoodItemsUseCase getAllFoodItemsUseCase;
 
   /// Use case for updating food item details.
-  final UpdateFoodItemUseCase updateFoodItemUseCase;
+  final UpdateFoodItemUsecase updateFoodItemUsecase;
 
   /// Creates an [AddCategoryBloc] with the required use cases.
   AddCategoryBloc(
@@ -41,9 +54,14 @@ class AddCategoryBloc extends Bloc<AddCategoryEvent, AddCategoryState> {
     this.updateCategoryUseCase,
     this.getFoodItemsByCategoryUseCase,
     this.getAllFoodItemsUseCase,
-    this.updateFoodItemUseCase,
+    this.updateFoodItemUsecase,
   ) : super(MenuInitial()) {
     on<LoadCategories>((event, emit) async {
+      if (state is CategoriesLoaded) {
+        emit((state as CategoriesLoaded).copyWith(isLoading: true));
+      } else {
+        emit(MenuLoading());
+      }
       if (state is CategoriesLoaded) {
         emit((state as CategoriesLoaded).copyWith(isLoading: true));
       } else {
@@ -55,6 +73,7 @@ class AddCategoryBloc extends Bloc<AddCategoryEvent, AddCategoryState> {
           selectedId: event.selectedCategoryId,
         );
       } catch (e) {
+        emit(MenuError(ErrorHandler.getFriendlyMessage(e)));
         emit(MenuError(ErrorHandler.getFriendlyMessage(e)));
       }
     });
@@ -70,16 +89,44 @@ class AddCategoryBloc extends Bloc<AddCategoryEvent, AddCategoryState> {
     on<LoadFoodItems>((event, emit) async {
       if (state is CategoriesLoaded) {
         final currentState = state as CategoriesLoaded;
-        emit(currentState.copyWith(isFoodLoading: true)); // Only flag food as loading
+        emit(
+          currentState.copyWith(isFoodLoading: true),
+        ); // Only flag food as loading
         try {
           final foodItems = await getFoodItemsByCategoryUseCase(
             event.categoryId,
           );
-          emit(currentState.copyWith(
-            foodItems: foodItems,
-            selectedCategoryId: event.categoryId,
-            isFoodLoading: false,
-          ));
+          emit(
+            currentState.copyWith(
+              foodItems: foodItems,
+              selectedCategoryId: event.categoryId,
+              isFoodLoading: false,
+            ),
+          );
+        } catch (e) {
+          emit(MenuError(ErrorHandler.getFriendlyMessage(e)));
+        }
+        add(LoadFoodItems(event.categoryId));
+      }
+    });
+
+    on<LoadFoodItems>((event, emit) async {
+      if (state is CategoriesLoaded) {
+        final currentState = state as CategoriesLoaded;
+        emit(
+          currentState.copyWith(isFoodLoading: true),
+        ); // Only flag food as loading
+        try {
+          final foodItems = await getFoodItemsByCategoryUseCase(
+            event.categoryId,
+          );
+          emit(
+            currentState.copyWith(
+              foodItems: foodItems,
+              selectedCategoryId: event.categoryId,
+              isFoodLoading: false,
+            ),
+          );
         } catch (e) {
           emit(MenuError(ErrorHandler.getFriendlyMessage(e)));
         }
@@ -106,7 +153,15 @@ class AddCategoryBloc extends Bloc<AddCategoryEvent, AddCategoryState> {
           await addCategoryUseCase(newCategory);
 
           // Refresh categories and items to ensure sync and update counts
-          await _loadCategoriesAndItems(emit, selectedId: currentState.selectedCategoryId);
+          await _loadCategoriesAndItems(
+            emit,
+            selectedId: currentState.selectedCategoryId,
+          );
+          // Refresh categories and items to ensure sync and update counts
+          await _loadCategoriesAndItems(
+            emit,
+            selectedId: currentState.selectedCategoryId,
+          );
         } catch (e) {
           emit(
             currentState.copyWith(
@@ -127,7 +182,15 @@ class AddCategoryBloc extends Bloc<AddCategoryEvent, AddCategoryState> {
           await updateCategoryUseCase(event.category);
 
           // Refresh categories and items
-          await _loadCategoriesAndItems(emit, selectedId: currentState.selectedCategoryId);
+          await _loadCategoriesAndItems(
+            emit,
+            selectedId: currentState.selectedCategoryId,
+          );
+          // Refresh categories and items
+          await _loadCategoriesAndItems(
+            emit,
+            selectedId: currentState.selectedCategoryId,
+          );
         } catch (e) {
           emit(
             currentState.copyWith(
@@ -157,7 +220,7 @@ class AddCategoryBloc extends Bloc<AddCategoryEvent, AddCategoryState> {
             isCustomNotes: event.food.isCustomNotes,
           );
 
-          await updateFoodItemUseCase(updatedFood);
+          await updateFoodItemUsecase.execute(updatedFood);
 
           // Update the list of foods locally to avoid a full fetch
           final updatedFoodItems = currentState.foodItems.map((item) {
@@ -166,28 +229,40 @@ class AddCategoryBloc extends Bloc<AddCategoryEvent, AddCategoryState> {
 
           emit(currentState.copyWith(foodItems: updatedFoodItems));
         } catch (e) {
-          emit(currentState.copyWith(submissionError: ErrorHandler.getFriendlyMessage(e)));
+          emit(
+            currentState.copyWith(
+              submissionError: ErrorHandler.getFriendlyMessage(e),
+            ),
+          );
         }
       }
     });
   }
 
-  Future<void> _loadCategoriesAndItems(Emitter<AddCategoryState> emit, {String? selectedId}) async {
+  Future<void> _loadCategoriesAndItems(
+    Emitter<AddCategoryState> emit, {
+    String? selectedId,
+  }) async {
     final categories = await getCategoriesUseCase();
-    final allFoodItems = await getAllFoodItemsUseCase();
+    final allFoodItems = await getAllFoodItemsUseCase.execute();
 
     // Update itemCount for each category
     final updatedCategories = categories.map((cat) {
-      final count = allFoodItems.where((food) => food.category.id == cat.id).length;
+      final count = allFoodItems
+          .where((food) => food.category.id == cat.id)
+          .length;
       return cat.copyWith(itemCount: count);
     }).toList();
 
-    final String finalSelectedId = selectedId ??
+    final String finalSelectedId =
+        selectedId ??
         (updatedCategories.isNotEmpty ? updatedCategories.first.id : '');
 
     List<FoodModel> foodItems = [];
     if (finalSelectedId.isNotEmpty) {
-      foodItems = allFoodItems.where((food) => food.category.id == finalSelectedId).toList();
+      foodItems = allFoodItems
+          .where((food) => food.category.id == finalSelectedId)
+          .toList();
     }
 
     emit(

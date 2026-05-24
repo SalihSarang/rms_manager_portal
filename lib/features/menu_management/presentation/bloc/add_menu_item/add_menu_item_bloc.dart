@@ -1,6 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rms_shared_package/utils/error_handler.dart';
+import 'package:manager_portal/core/utils/error_handler.dart';
 import 'package:manager_portal/core/utils/image_picker_service/feature_specific_usecase/food_img_picker.dart';
+import 'package:manager_portal/features/menu_management/domain/usecases/add_food_item_usecase.dart';
+import 'package:manager_portal/features/menu_management/domain/usecases/update_food_item_usecase.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/add_food_item_usecase.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/update_food_item_usecase.dart';
 import 'package:rms_shared_package/models/menu_models/portions_and_price/portions_and_price.dart';
@@ -17,21 +19,26 @@ export 'add_menu_item_event.dart';
 ///
 /// Manages the state of the food item form, including image picking,
 /// portions, add-ons, and basic details.
+/// Business logic component for adding or editing individual food items.
+///
+/// Manages the state of the food item form, including image picking,
+/// portions, add-ons, and basic details.
 class AddMenuItemBloc extends Bloc<AddMenuItemEvent, AddMenuItemState> {
+  /// Service for picking and uploading food images.
   /// Service for picking and uploading food images.
   final FoodImgPickerUsecase foodImgPickerUsecase;
 
   /// Use case for saving a new food item.
-  final AddFoodItemUseCase addFoodItemUseCase;
+  final AddFoodItemUsecase addFoodItemUsecase;
 
   /// Use case for updating an existing food item.
-  final UpdateFoodItemUseCase updateFoodItemUseCase;
+  final UpdateFoodItemUsecase updateFoodItemUsecase;
 
   /// Creates an [AddMenuItemBloc] with the required dependencies.
   AddMenuItemBloc({
     required this.foodImgPickerUsecase,
-    required this.addFoodItemUseCase,
-    required this.updateFoodItemUseCase,
+    required this.addFoodItemUsecase,
+    required this.updateFoodItemUsecase,
   }) : super(const AddMenuItemState()) {
     on<InitializeForEdit>(_onInitializeForEdit);
     on<NameChanged>(_onNameChanged);
@@ -172,10 +179,16 @@ class AddMenuItemBloc extends Bloc<AddMenuItemEvent, AddMenuItemState> {
   ) async {
     // Basic validation
     if (state.name.isEmpty) {
-      emit(state.copyWith(errorMessage: 'Please enter a name for the food item.'));
+      emit(
+        state.copyWith(errorMessage: 'Please enter a name for the food item.'),
+      );
+      emit(
+        state.copyWith(errorMessage: 'Please enter a name for the food item.'),
+      );
       return;
     }
     if (state.category == null) {
+      emit(state.copyWith(errorMessage: 'Please select a category.'));
       emit(state.copyWith(errorMessage: 'Please select a category.'));
       return;
     }
@@ -193,7 +206,7 @@ class AddMenuItemBloc extends Bloc<AddMenuItemEvent, AddMenuItemState> {
 
       // Create FoodModel object
       final foodItem = FoodModel(
-        id: state.editingFoodId, // Preserve ID if it's an update
+        id: state.editingFoodId,
         name: state.name,
         description: state.description,
         imageUrl: imageUrl,
@@ -208,15 +221,26 @@ class AddMenuItemBloc extends Bloc<AddMenuItemEvent, AddMenuItemState> {
 
       if (state.editingFoodId != null) {
         // Call usecase to update existing food item
-        await updateFoodItemUseCase(foodItem);
+        await updateFoodItemUsecase.execute(foodItem);
       } else {
         // Call usecase to save new food item to backend
-        await addFoodItemUseCase(foodItem);
+        await addFoodItemUsecase.execute(foodItem);
       }
 
       emit(state.copyWith(isSubmitting: false, isSuccess: true));
     } catch (e) {
-      emit(state.copyWith(isSubmitting: false, errorMessage: ErrorHandler.getFriendlyMessage(e)));
+      emit(
+        state.copyWith(
+          isSubmitting: false,
+          errorMessage: ErrorHandler.getFriendlyMessage(e),
+        ),
+      );
+      emit(
+        state.copyWith(
+          isSubmitting: false,
+          errorMessage: ErrorHandler.getFriendlyMessage(e),
+        ),
+      );
     }
   }
 }
