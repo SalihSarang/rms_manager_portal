@@ -58,18 +58,12 @@ class AddCategoryBloc extends Bloc<AddCategoryEvent, AddCategoryState> {
       } else {
         emit(MenuLoading());
       }
-      if (state is CategoriesLoaded) {
-        emit((state as CategoriesLoaded).copyWith(isLoading: true));
-      } else {
-        emit(MenuLoading());
-      }
       try {
         await _loadCategoriesAndItems(
           emit,
           selectedId: event.selectedCategoryId,
         );
       } catch (e) {
-        emit(MenuError(ErrorHandler.getFriendlyMessage(e)));
         emit(MenuError(ErrorHandler.getFriendlyMessage(e)));
       }
     });
@@ -78,30 +72,6 @@ class AddCategoryBloc extends Bloc<AddCategoryEvent, AddCategoryState> {
       if (state is CategoriesLoaded) {
         final currentState = state as CategoriesLoaded;
         emit(currentState.copyWith(selectedCategoryId: event.categoryId));
-        add(LoadFoodItems(event.categoryId));
-      }
-    });
-
-    on<LoadFoodItems>((event, emit) async {
-      if (state is CategoriesLoaded) {
-        final currentState = state as CategoriesLoaded;
-        emit(
-          currentState.copyWith(isFoodLoading: true),
-        ); // Only flag food as loading
-        try {
-          final foodItems = await getFoodItemsByCategoryUseCase(
-            event.categoryId,
-          );
-          emit(
-            currentState.copyWith(
-              foodItems: foodItems,
-              selectedCategoryId: event.categoryId,
-              isFoodLoading: false,
-            ),
-          );
-        } catch (e) {
-          emit(MenuError(ErrorHandler.getFriendlyMessage(e)));
-        }
         add(LoadFoodItems(event.categoryId));
       }
     });
@@ -153,11 +123,6 @@ class AddCategoryBloc extends Bloc<AddCategoryEvent, AddCategoryState> {
             emit,
             selectedId: currentState.selectedCategoryId,
           );
-          // Refresh categories and items to ensure sync and update counts
-          await _loadCategoriesAndItems(
-            emit,
-            selectedId: currentState.selectedCategoryId,
-          );
         } catch (e) {
           emit(
             currentState.copyWith(
@@ -177,11 +142,6 @@ class AddCategoryBloc extends Bloc<AddCategoryEvent, AddCategoryState> {
         try {
           await updateCategoryUseCase(event.category);
 
-          // Refresh categories and items
-          await _loadCategoriesAndItems(
-            emit,
-            selectedId: currentState.selectedCategoryId,
-          );
           // Refresh categories and items
           await _loadCategoriesAndItems(
             emit,
