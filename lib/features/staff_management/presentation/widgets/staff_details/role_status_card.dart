@@ -5,6 +5,7 @@ import 'components/glass_card.dart';
 import 'components/glass_divider.dart';
 import 'components/card_header.dart';
 import 'components/verify_row.dart';
+import 'package:manager_portal/features/staff_management/presentation/utils/staff_utils.dart';
 
 class StaffDetailsRoleStatusCard extends StatelessWidget {
   final StaffModel staff;
@@ -45,7 +46,7 @@ class StaffDetailsRoleStatusCard extends StatelessWidget {
             icon: Icons.access_time_outlined,
             label: 'Last Active',
             value: staff.lastActive != null
-                ? _fmtDate(staff.lastActive!)
+                ? StaffUtils.formatDateTime12Hour(staff.lastActive!)
                 : 'Never',
             isEmpty: false,
           ),
@@ -53,8 +54,4 @@ class StaffDetailsRoleStatusCard extends StatelessWidget {
       ),
     );
   }
-
-  String _fmtDate(DateTime d) =>
-      '${d.day.toString().padLeft(2, '0')}/${d.month.toString().padLeft(2, '0')}/${d.year}  '
-      '${d.hour.toString().padLeft(2, '0')}:${d.minute.toString().padLeft(2, '0')}';
 }

@@ -46,7 +46,7 @@ class EmptySelectionHint extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
-                    color: NeutralColors.white,
+                    color: TextColors.primary,
                   ),
                 ),
                 SizedBox(height: 2),

@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:manager_portal/core/utils/error_handler.dart';
+import 'package:rms_shared_package/utils/error_handler.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/add_category_usecase.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/get_all_food_items_usecase.dart';
 import 'package:manager_portal/features/menu_management/domain/usecases/get_categories_usecase.dart';
@@ -41,7 +41,7 @@ class AddCategoryBloc extends Bloc<AddCategoryEvent, AddCategoryState> {
   final GetAllFoodItemsUseCase getAllFoodItemsUseCase;
 
   /// Use case for updating food item details.
-  final UpdateFoodItemUsecase updateFoodItemUsecase;
+  final UpdateFoodItemUseCase updateFoodItemUseCase;
 
   /// Creates an [AddCategoryBloc] with the required use cases.
   AddCategoryBloc(
@@ -50,7 +50,7 @@ class AddCategoryBloc extends Bloc<AddCategoryEvent, AddCategoryState> {
     this.updateCategoryUseCase,
     this.getFoodItemsByCategoryUseCase,
     this.getAllFoodItemsUseCase,
-    this.updateFoodItemUsecase,
+    this.updateFoodItemUseCase,
   ) : super(MenuInitial()) {
     on<LoadCategories>((event, emit) async {
       if (state is CategoriesLoaded) {
@@ -216,7 +216,7 @@ class AddCategoryBloc extends Bloc<AddCategoryEvent, AddCategoryState> {
             isCustomNotes: event.food.isCustomNotes,
           );
 
-          await updateFoodItemUsecase.execute(updatedFood);
+          await updateFoodItemUseCase(updatedFood);
 
           // Update the list of foods locally to avoid a full fetch
           final updatedFoodItems = currentState.foodItems.map((item) {
@@ -240,7 +240,7 @@ class AddCategoryBloc extends Bloc<AddCategoryEvent, AddCategoryState> {
     String? selectedId,
   }) async {
     final categories = await getCategoriesUseCase();
-    final allFoodItems = await getAllFoodItemsUseCase.execute();
+    final allFoodItems = await getAllFoodItemsUseCase();
 
     // Update itemCount for each category
     final updatedCategories = categories.map((cat) {

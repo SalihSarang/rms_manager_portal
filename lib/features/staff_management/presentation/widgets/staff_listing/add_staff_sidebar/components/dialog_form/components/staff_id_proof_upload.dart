@@ -52,7 +52,7 @@ class StaffIdProofUpload extends StatelessWidget {
                       : 'No file selected',
                   style: TextStyle(
                     color: idProof.isNotEmpty || pickedIdProof != null
-                        ? TextColors.inverse
+                        ? TextColors.primary
                         : TextColors.secondary,
                   ),
                   maxLines: 1,
@@ -74,7 +74,7 @@ class StaffIdProofUpload extends StatelessWidget {
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: NeutralColors.background,
-                  foregroundColor: Colors.white,
+                  foregroundColor: TextColors.primary,
                   padding: const EdgeInsets.symmetric(
                     horizontal: 16,
                     vertical: 14,
@@ -95,7 +95,7 @@ class StaffIdProofUpload extends StatelessWidget {
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: PrimaryColors.defaultColor,
-                foregroundColor: Colors.white,
+                foregroundColor: TextColors.primary,
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16,
                   vertical: 14,

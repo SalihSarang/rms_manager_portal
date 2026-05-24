@@ -63,4 +63,17 @@ class StaffUtils {
     ];
     return months[month - 1];
   }
+
+  static String formatDateTime12Hour(DateTime d) {
+    final monthStr = _getMonthName(d.month);
+    final dayStr = d.day.toString().padLeft(2, '0');
+    
+    int hour12 = d.hour % 12;
+    if (hour12 == 0) hour12 = 12;
+    final hourStr = hour12.toString().padLeft(2, '0');
+    final minStr = d.minute.toString().padLeft(2, '0');
+    final amPm = d.hour >= 12 ? 'PM' : 'AM';
+    
+    return '$monthStr $dayStr, ${d.year} $hourStr:$minStr $amPm';
+  }
 }

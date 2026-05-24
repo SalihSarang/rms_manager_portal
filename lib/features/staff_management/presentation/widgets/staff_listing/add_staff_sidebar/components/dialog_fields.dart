@@ -55,7 +55,7 @@ class LabeledTextField extends StatelessWidget {
           autovalidateMode: autovalidateMode,
           onChanged: onChanged,
           inputFormatters: inputFormatters,
-          style: const TextStyle(color: TextColors.inverse),
+          style: const TextStyle(color: TextColors.primary),
           decoration: InputDecoration(
             hintText: hint,
             hintStyle: TextStyle(

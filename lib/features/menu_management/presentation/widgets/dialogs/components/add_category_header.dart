@@ -15,7 +15,7 @@ class AddCategoryHeader extends StatelessWidget {
         Text(
           isEditing ? 'Edit Category' : 'Add Category',
           style: const TextStyle(
-            color: TextColors.inverse,
+            color: TextColors.primary,
             fontSize: 20,
             fontWeight: FontWeight.w600,
           ),

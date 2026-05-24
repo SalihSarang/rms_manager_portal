@@ -43,9 +43,51 @@ class StaffRoleChanged extends AddStaffEvent {
   List<Object> get props => [role];
 }
 
+class BaseWageChanged extends AddStaffEvent {
+  final String baseWage;
+  const BaseWageChanged(this.baseWage);
+  @override
+  List<Object> get props => [baseWage];
+}
+
+class WageTypeChanged extends AddStaffEvent {
+  final WageType wageType;
+  const WageTypeChanged(this.wageType);
+  @override
+  List<Object> get props => [wageType];
+}
+
 class AvatarChanged extends AddStaffEvent {}
 
 class IdProofChanged extends AddStaffEvent {}
+
+class BankNameChanged extends AddStaffEvent {
+  final String bankName;
+  const BankNameChanged(this.bankName);
+  @override
+  List<Object> get props => [bankName];
+}
+
+class AccountNumberChanged extends AddStaffEvent {
+  final String accountNumber;
+  const AccountNumberChanged(this.accountNumber);
+  @override
+  List<Object> get props => [accountNumber];
+}
+
+class IfscCodeChanged extends AddStaffEvent {
+  final String ifscCode;
+  const IfscCodeChanged(this.ifscCode);
+  @override
+  List<Object> get props => [ifscCode];
+}
+
+class UpiIdChanged extends AddStaffEvent {
+  final String upiId;
+  const UpiIdChanged(this.upiId);
+  @override
+  List<Object> get props => [upiId];
+}
 
 class SubmitStaffAddForm extends AddStaffEvent {}
 

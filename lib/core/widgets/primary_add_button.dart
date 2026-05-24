@@ -52,7 +52,7 @@ class PrimaryAddButton extends StatelessWidget {
                 height: 24,
                 child: CircularProgressIndicator(
                   strokeWidth: 2,
-                  color: Colors.white,
+                  color: TextColors.primary,
                 ),
               )
             : Row(
@@ -62,14 +62,14 @@ class PrimaryAddButton extends StatelessWidget {
                     Icon(
                       icon,
                       size: iconSize,
-                      color: textColor ?? TextColors.inverse,
+                      color: textColor ?? TextColors.primary,
                     ),
                     const SizedBox(width: 6),
                   ],
                   Text(
                     label,
                     style: TextStyle(
-                      color: textColor ?? TextColors.inverse,
+                      color: textColor ?? TextColors.primary,
                       fontWeight: FontWeight.w600,
                     ),
                   ),

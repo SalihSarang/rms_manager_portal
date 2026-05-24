@@ -37,7 +37,7 @@ class EditorActionsGroup extends StatelessWidget {
           SnackBar(
             content: const Row(
               children: [
-                Icon(Icons.check_circle, color: NeutralColors.white, size: 18),
+                Icon(Icons.check_circle, color: TextColors.primary, size: 18),
                 SizedBox(width: 8),
                 Expanded(
                   child: Text(

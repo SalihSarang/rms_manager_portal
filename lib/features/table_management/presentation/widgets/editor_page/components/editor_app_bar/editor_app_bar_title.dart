@@ -28,21 +28,15 @@ class EditorAppBarTitle extends StatelessWidget {
             color: PrimaryColors.defaultColor,
             borderRadius: BorderRadius.circular(10),
           ),
-          child: const Icon(Icons.grid_view_rounded,
-              color: NeutralColors.white, size: 20),
+          child: const Icon(
+            Icons.grid_view_rounded,
+            color: TextColors.primary,
+            size: 20,
+          ),
         ),
         const SizedBox(width: 12),
         Flexible(
-          child: Text(
-            readOnly ? 'Hall View' : 'Table Layout Editor',
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w800,
-              color: NeutralColors.white,
-              letterSpacing: 0.3,
-            ),
-            overflow: TextOverflow.ellipsis,
-          ),
+          child: RmsAppBarTitle(readOnly ? 'Hall View' : 'Table Layout Editor'),
         ),
       ],
     );

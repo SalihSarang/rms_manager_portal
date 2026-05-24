@@ -30,7 +30,7 @@ class MenuDetailsScreen extends StatelessWidget {
           builder: (context, state) {
             if (state is MenuDetailsLoading) {
               return const Center(
-                child: CircularProgressIndicator(color: TextColors.inverse),
+                child: CircularProgressIndicator(color: TextColors.primary),
               );
             } else if (state is MenuDetailsLoaded) {
               return MenuDetailsBody(item: state.foodItem);

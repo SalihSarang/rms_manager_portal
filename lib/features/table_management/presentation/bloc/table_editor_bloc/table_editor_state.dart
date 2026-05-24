@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:equatable/equatable.dart';
 import 'package:rms_shared_package/rms_shared_package.dart';
 
@@ -14,6 +15,8 @@ class TableEditorState extends Equatable {
   final bool isViewing;
   final bool isLoading;
   final String? error;
+  final double zoomScale;
+  final Size? viewportSize;
 
   const TableEditorState({
     this.halls = const [],
@@ -26,6 +29,8 @@ class TableEditorState extends Equatable {
     this.isViewing = false,
     this.isLoading = false,
     this.error,
+    this.zoomScale = 1.0,
+    this.viewportSize,
   });
 
   TableEditorState copyWith({
@@ -39,6 +44,8 @@ class TableEditorState extends Equatable {
     bool? isViewing,
     bool? isLoading,
     String? error,
+    double? zoomScale,
+    Size? viewportSize,
   }) {
     return TableEditorState(
       halls: halls ?? this.halls,
@@ -51,6 +58,8 @@ class TableEditorState extends Equatable {
       isViewing: isViewing ?? this.isViewing,
       isLoading: isLoading ?? this.isLoading,
       error: error ?? this.error,
+      zoomScale: zoomScale ?? this.zoomScale,
+      viewportSize: viewportSize ?? this.viewportSize,
     );
   }
 
@@ -67,6 +76,8 @@ class TableEditorState extends Equatable {
       isViewing: isViewing,
       isLoading: isLoading,
       error: error,
+      zoomScale: zoomScale,
+      viewportSize: viewportSize,
     );
   }
 
@@ -82,5 +93,7 @@ class TableEditorState extends Equatable {
     isViewing,
     isLoading,
     error,
+    zoomScale,
+    viewportSize,
   ];
 }

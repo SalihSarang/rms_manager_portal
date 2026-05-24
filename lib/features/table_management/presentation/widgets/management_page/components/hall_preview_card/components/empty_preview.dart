@@ -31,7 +31,7 @@ class EmptyPreview extends StatelessWidget {
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w700,
-            color: NeutralColors.white,
+            color: TextColors.primary,
           ),
         ),
         const SizedBox(height: 4),
@@ -39,7 +39,7 @@ class EmptyPreview extends StatelessWidget {
           'Tap to open the editor',
           style: TextStyle(
             fontSize: 11,
-            color: NeutralColors.white.withValues(alpha: 0.35),
+            color: TextColors.primary.withValues(alpha: 0.35),
           ),
         ),
       ],

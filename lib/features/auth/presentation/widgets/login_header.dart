@@ -19,7 +19,7 @@ class LoginHeader extends StatelessWidget {
           'Welcome Back',
           textAlign: TextAlign.center,
           style: TextStyle(
-            color: TextColors.inverse,
+            color: TextColors.primary,
             fontSize: 24,
             fontWeight: FontWeight.w600,
           ),

@@ -9,6 +9,13 @@ class MenuValidators {
     return null;
   }
 
+  static String? validateDescription(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return 'Description is required';
+    }
+    return null;
+  }
+
   static String? validatePrice(String? value) {
     if (value == null || value.trim().isEmpty) {
       return 'Price is required';

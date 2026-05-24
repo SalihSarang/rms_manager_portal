@@ -33,7 +33,7 @@ class CategorySidebarItem extends StatelessWidget {
               size: 16,
               color: isSelected
                   ? PrimaryColors.defaultColor
-                  : TextColors.inverse,
+                  : TextColors.primary,
             ),
             const SizedBox(width: 12),
             Expanded(
@@ -45,7 +45,7 @@ class CategorySidebarItem extends StatelessWidget {
                     style: TextStyle(
                       color: isSelected
                           ? PrimaryColors.defaultColor
-                          : TextColors.inverse,
+                          : TextColors.primary,
                       fontWeight: isSelected
                           ? FontWeight.w600
                           : FontWeight.normal,
@@ -69,7 +69,7 @@ class CategorySidebarItem extends StatelessWidget {
               icon: const Icon(
                 Icons.edit_outlined,
                 size: 16,
-                color: TextColors.inverse,
+                color: TextColors.primary,
               ),
             ),
           ],

@@ -22,7 +22,7 @@ class MenuAddOns extends StatelessWidget {
         const Text(
           'Add-ons',
           style: TextStyle(
-            color: TextColors.inverse,
+            color: TextColors.primary,
             fontSize: 22,
             fontWeight: FontWeight.bold,
             letterSpacing: -0.5,
@@ -39,7 +39,7 @@ class MenuAddOns extends StatelessWidget {
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.05),
+                color: NeutralColors.shadow.withValues(alpha: 0.05),
                 blurRadius: 10,
                 offset: const Offset(0, 4),
               ),

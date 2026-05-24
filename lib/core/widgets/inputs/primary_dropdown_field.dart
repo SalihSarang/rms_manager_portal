@@ -26,7 +26,7 @@ class PrimaryDropdownField<T> extends StatelessWidget {
       items: items,
       onChanged: onChanged,
       validator: validator,
-      style: const TextStyle(color: TextColors.inverse),
+      style: const TextStyle(color: TextColors.primary),
       dropdownColor: NeutralColors.surface,
       icon: const Icon(
         Icons.keyboard_arrow_down_rounded,

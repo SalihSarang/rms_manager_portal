@@ -31,7 +31,7 @@ class MenuAppbarActions extends StatelessWidget {
           child: PrimaryOutlinedButton(
             onPressed: onAddCategoryPressed,
             label: isIconOnly ? null : 'Category',
-            icon: const Icon(Icons.add, color: TextColors.inverse, size: 20),
+            icon: const Icon(Icons.add, color: TextColors.primary, size: 20),
           ),
         ),
 

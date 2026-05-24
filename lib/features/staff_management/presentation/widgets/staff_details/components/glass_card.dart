@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:rms_design_system/app_colors/neutral_colors.dart';
+import 'package:rms_design_system/app_colors/text_colors.dart';
 
 class StaffDetailsGlassCard extends StatelessWidget {
   final Widget child;
@@ -23,10 +24,10 @@ class StaffDetailsGlassCard extends StatelessWidget {
           decoration: BoxDecoration(
             color: NeutralColors.surface.withValues(alpha: 0.7),
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
+            border: Border.all(color: TextColors.primary.withValues(alpha: 0.08)),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.25),
+                color: NeutralColors.shadow.withValues(alpha: 0.25),
                 blurRadius: 20,
                 offset: const Offset(0, 4),
               ),

@@ -28,7 +28,7 @@ class PropertiesHeader extends StatelessWidget {
             style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w700,
-              color: NeutralColors.white,
+              color: TextColors.primary,
             ),
           ),
         ],

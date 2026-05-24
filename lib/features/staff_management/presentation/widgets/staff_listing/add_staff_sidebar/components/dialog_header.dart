@@ -29,7 +29,7 @@ class DialogHeader extends StatelessWidget {
                   Text(
                     title,
                     style: const TextStyle(
-                      color: TextColors.inverse,
+                      color: TextColors.primary,
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                     ),
@@ -38,7 +38,7 @@ class DialogHeader extends StatelessWidget {
                   Text(
                     subtitle,
                     style: TextStyle(
-                      color: TextColors.inverse.withValues(alpha: 0.6),
+                      color: TextColors.primary.withValues(alpha: 0.6),
                       fontSize: 12,
                     ),
                   ),

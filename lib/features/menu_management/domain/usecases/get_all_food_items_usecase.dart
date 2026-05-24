@@ -6,7 +6,7 @@ class GetAllFoodItemsUseCase {
 
   GetAllFoodItemsUseCase(this.repository);
 
-  Future<List<FoodModel>> execute() async {
+  Future<List<FoodModel>> call() async {
     return await repository.getAllFoodItems();
   }
 }

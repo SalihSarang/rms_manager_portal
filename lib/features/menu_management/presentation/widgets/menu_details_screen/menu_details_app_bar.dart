@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rms_design_system/app_colors/neutral_colors.dart';
-import 'package:rms_design_system/app_colors/text_colors.dart';
+import 'package:rms_design_system/rms_design_system.dart';
 
 class MenuDetailsAppBar extends StatelessWidget implements PreferredSizeWidget {
   const MenuDetailsAppBar({super.key});
@@ -13,7 +12,7 @@ class MenuDetailsAppBar extends StatelessWidget implements PreferredSizeWidget {
       leading: IconButton(
         icon: const Icon(
           Icons.arrow_back_ios_new_rounded,
-          color: TextColors.inverse,
+          color: TextColors.primary,
           size: 20,
         ),
         onPressed: () => Navigator.of(context).pop(),
@@ -25,15 +24,7 @@ class MenuDetailsAppBar extends StatelessWidget implements PreferredSizeWidget {
           height: 1.0,
         ),
       ),
-      title: const Text(
-        'Item Details',
-        style: TextStyle(
-          color: TextColors.inverse,
-          fontSize: 18,
-          fontWeight: FontWeight.w600,
-          letterSpacing: 0.5,
-        ),
-      ),
+      title: const RmsAppBarTitle('Item Details'),
       centerTitle: true,
     );
   }

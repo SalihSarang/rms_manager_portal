@@ -12,8 +12,14 @@ class AddStaffState extends Equatable {
   final String phoneNumber;
   final String password;
   final UserRole? role;
+  final String baseWage;
+  final WageType? wageType;
   final String avatar;
   final String idProof;
+  final String bankName;
+  final String accountNumber;
+  final String ifscCode;
+  final String upiId;
   final XFile? pickedFile;
   final XFile? pickedIdProof;
   final String? errorMessage;
@@ -27,8 +33,14 @@ class AddStaffState extends Equatable {
     this.phoneNumber = '',
     this.password = '',
     this.role,
+    this.baseWage = '',
+    this.wageType,
     this.avatar = '',
     this.idProof = '',
+    this.bankName = '',
+    this.accountNumber = '',
+    this.ifscCode = '',
+    this.upiId = '',
     this.pickedFile,
     this.pickedIdProof,
     this.errorMessage,
@@ -43,8 +55,14 @@ class AddStaffState extends Equatable {
     String? phoneNumber,
     String? password,
     UserRole? role,
+    String? baseWage,
+    WageType? wageType,
     String? avatar,
     String? idProof,
+    String? bankName,
+    String? accountNumber,
+    String? ifscCode,
+    String? upiId,
     XFile? pickedFile,
     XFile? pickedIdProof,
     String? errorMessage,
@@ -58,8 +76,14 @@ class AddStaffState extends Equatable {
       phoneNumber: phoneNumber ?? this.phoneNumber,
       password: password ?? this.password,
       role: role ?? this.role,
+      baseWage: baseWage ?? this.baseWage,
+      wageType: wageType ?? this.wageType,
       avatar: avatar ?? this.avatar,
       idProof: idProof ?? this.idProof,
+      bankName: bankName ?? this.bankName,
+      accountNumber: accountNumber ?? this.accountNumber,
+      ifscCode: ifscCode ?? this.ifscCode,
+      upiId: upiId ?? this.upiId,
       pickedFile: pickedFile ?? this.pickedFile,
       pickedIdProof: pickedIdProof ?? this.pickedIdProof,
       errorMessage: errorMessage ?? this.errorMessage,
@@ -76,8 +100,14 @@ class AddStaffState extends Equatable {
     phoneNumber,
     password,
     role,
+    baseWage,
+    wageType,
     avatar,
     idProof,
+    bankName,
+    accountNumber,
+    ifscCode,
+    upiId,
     pickedFile,
     pickedIdProof,
     errorMessage,

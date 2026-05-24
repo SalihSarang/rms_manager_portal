@@ -44,7 +44,7 @@ class ActionDropdown extends StatelessWidget {
               Text(
                 'Edit',
                 style: TextStyle(
-                  color: TextColors.inverse,
+                  color: TextColors.primary,
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
                 ),

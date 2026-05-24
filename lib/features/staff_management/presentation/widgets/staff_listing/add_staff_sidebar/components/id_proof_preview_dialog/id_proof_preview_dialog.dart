@@ -32,7 +32,7 @@ class IdProofPreviewDialog extends StatelessWidget {
                 const Text(
                   'ID Proof Preview',
                   style: TextStyle(
-                    color: TextColors.inverse,
+                    color: TextColors.primary,
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
                   ),

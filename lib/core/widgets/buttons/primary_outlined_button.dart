@@ -39,7 +39,7 @@ class PrimaryOutlinedButton extends StatelessWidget {
             Text(
               label!,
               style: const TextStyle(
-                color: TextColors.inverse,
+                color: TextColors.primary,
                 fontWeight: FontWeight.w500,
                 fontSize: 16,
               ),

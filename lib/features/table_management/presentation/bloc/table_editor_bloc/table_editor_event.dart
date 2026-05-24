@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:equatable/equatable.dart';
 import 'package:rms_shared_package/rms_shared_package.dart';
 import 'table_editor_state.dart';
@@ -110,4 +111,20 @@ class TableEditorModeSet extends TableEditorEvent {
 
   @override
   List<Object?> get props => [mode];
+}
+
+class TableEditorZoomUpdated extends TableEditorEvent {
+  final double scale;
+  const TableEditorZoomUpdated(this.scale);
+
+  @override
+  List<Object?> get props => [scale];
+}
+
+class TableEditorViewportSizeUpdated extends TableEditorEvent {
+  final Size size;
+  const TableEditorViewportSizeUpdated(this.size);
+
+  @override
+  List<Object?> get props => [size];
 }

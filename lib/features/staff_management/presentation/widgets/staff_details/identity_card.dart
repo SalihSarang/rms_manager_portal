@@ -40,7 +40,7 @@ class StaffDetailsIdentityCard extends StatelessWidget {
                     child: Text(
                       staff.name.isNotEmpty ? staff.name[0].toUpperCase() : '?',
                       style: const TextStyle(
-                        color: TextColors.inverse,
+                        color: TextColors.primary,
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
                       ),
@@ -55,7 +55,7 @@ class StaffDetailsIdentityCard extends StatelessWidget {
                 Text(
                   staff.name,
                   style: const TextStyle(
-                    color: TextColors.inverse,
+                    color: TextColors.primary,
                     fontSize: 22,
                     fontWeight: FontWeight.w700,
                   ),

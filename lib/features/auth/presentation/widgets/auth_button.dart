@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rms_design_system/app_colors/primary_colors.dart';
+import 'package:rms_design_system/app_colors/text_colors.dart';
 
 /// A full-width primary button styled for authentication actions.
 ///
@@ -30,7 +31,7 @@ class AuthButton extends StatelessWidget {
         onPressed: isLoading ? null : onPressed,
         style: ElevatedButton.styleFrom(
           backgroundColor: PrimaryColors.defaultColor,
-          foregroundColor: Colors.white,
+          foregroundColor: TextColors.primary,
           padding: const EdgeInsets.symmetric(vertical: 20),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           elevation: 0,
@@ -42,7 +43,7 @@ class AuthButton extends StatelessWidget {
                 width: 20,
                 child: CircularProgressIndicator(
                   strokeWidth: 2,
-                  color: Colors.white,
+                  color: TextColors.primary,
                 ),
               )
             : Text(

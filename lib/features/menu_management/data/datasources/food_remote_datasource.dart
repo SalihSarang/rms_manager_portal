@@ -8,6 +8,7 @@ abstract class IFoodRemoteDataSource {
   Future<void> updateFoodItem(FoodModel food);
   Future<List<FoodModel>> getFoodItemsByCategory(String categoryId);
   Future<List<FoodModel>> getAllFoodItems();
+  Stream<List<FoodModel>> watchAllFoodItems();
 }
 
 class FoodRemoteDataSourceImpl with BaseRemoteDataSource implements IFoodRemoteDataSource {
@@ -70,5 +71,12 @@ class FoodRemoteDataSourceImpl with BaseRemoteDataSource implements IFoodRemoteD
       },
       taskName: 'FoodRemoteDataSource.getAllFoodItems',
     );
+  }
+
+  @override
+  Stream<List<FoodModel>> watchAllFoodItems() {
+    return _foodCollection.snapshots().map((snapshot) {
+      return snapshot.docs.map((doc) => doc.data()).toList();
+    });
   }
 }

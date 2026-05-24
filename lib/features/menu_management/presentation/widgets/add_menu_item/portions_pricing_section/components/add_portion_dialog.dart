@@ -55,7 +55,7 @@ class _AddPortionDialogState extends State<AddPortionDialog> {
       backgroundColor: NeutralColors.surface,
       title: const Text(
         'Add Portion',
-        style: TextStyle(color: TextColors.inverse),
+        style: TextStyle(color: TextColors.primary),
       ),
       content: SingleChildScrollView(
         child: Form(
@@ -221,7 +221,7 @@ class _AddPortionDialogState extends State<AddPortionDialog> {
           },
           child: const Text(
             'Add',
-            style: TextStyle(color: NeutralColors.white),
+            style: TextStyle(color: TextColors.primary),
           ),
         ),
       ],

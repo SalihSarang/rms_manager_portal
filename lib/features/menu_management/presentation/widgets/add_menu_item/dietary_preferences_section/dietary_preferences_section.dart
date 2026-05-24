@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:manager_portal/features/menu_management/presentation/widgets/add_menu_item/dietary_preferences_section/components/dietary_tags_selector.dart';
 import 'package:manager_portal/features/menu_management/presentation/widgets/add_menu_item/dietary_preferences_section/components/visibility_status_toggles.dart';
 import 'package:rms_design_system/app_colors/neutral_colors.dart';
+import 'package:rms_design_system/app_colors/text_colors.dart';
 
 /// [DietaryPreferencesSection] allows for capturing food dietary tags and status toggles.
 /// It organizes selection tools for Veg/Non-Veg preferences and visibility features.
@@ -23,7 +24,7 @@ class DietaryPreferencesSection extends StatelessWidget {
           Text(
             'Dietary & Preferences',
             style: TextStyle(
-              color: NeutralColors.white,
+              color: TextColors.primary,
               fontSize: 18,
               fontWeight: FontWeight.w600,
             ),

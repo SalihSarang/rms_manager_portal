@@ -21,7 +21,7 @@ class StaffDetailsCardHeader extends StatelessWidget {
         Text(
           title,
           style: const TextStyle(
-            color: TextColors.inverse,
+            color: TextColors.primary,
             fontSize: 14,
             fontWeight: FontWeight.w600,
           ),

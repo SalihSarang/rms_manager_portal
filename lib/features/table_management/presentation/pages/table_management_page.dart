@@ -6,8 +6,9 @@ import 'package:manager_portal/features/table_management/presentation/bloc/table
 import 'package:manager_portal/features/table_management/presentation/bloc/table_editor_bloc/table_editor_event.dart';
 import 'package:manager_portal/features/table_management/presentation/bloc/table_editor_bloc/table_editor_state.dart';
 import 'package:manager_portal/features/table_management/presentation/pages/table_layout_editor.dart';
-import '../widgets/management_page/management_header.dart';
-import '../widgets/management_page/hall_grid.dart';
+import '../widgets/management_page/table_management_app_bar.dart';
+import '../widgets/management_page/table_management_loading_view.dart';
+import '../widgets/management_page/table_management_loaded_view.dart';
 
 /// The main management page for restaurant floor plans and tables.
 ///
@@ -28,11 +29,10 @@ class TableManagementPage extends StatelessWidget {
         listenWhen: (prev, curr) =>
             curr.error != null && prev.error != curr.error,
         listener: (context, state) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.error!),
-              backgroundColor: SemanticColors.error,
-            ),
+          RmsSnackbar.show(
+            context,
+            message: state.error!,
+            type: RmsSnackbarType.error,
           );
         },
         child: BlocBuilder<TableEditorBloc, TableEditorState>(
@@ -40,56 +40,21 @@ class TableManagementPage extends StatelessWidget {
             if (state.isEditing || state.isViewing) {
               return TableLayoutEditorPage(
                 readOnly: state.isViewing,
-                onBack: () =>
-                    context.read<TableEditorBloc>().add(TableEditorNavigationReset()),
-                onEdit: () => context.read<TableEditorBloc>().add(const TableEditorEditModeSet(true)),
+                onBack: () => context.read<TableEditorBloc>().add(
+                  TableEditorNavigationReset(),
+                ),
+                onEdit: () => context.read<TableEditorBloc>().add(
+                  const TableEditorEditModeSet(true),
+                ),
               );
             }
 
             return Scaffold(
               backgroundColor: NeutralColors.background,
-              appBar: AppBar(
-                backgroundColor: NeutralColors.surface,
-                elevation: 0,
-                centerTitle: false,
-                title: const Text(
-                  'Table Management',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w800,
-                    fontSize: 22,
-                    color: NeutralColors.white,
-                  ),
-                ),
-              ),
+              appBar: const TableManagementAppBar(),
               body: state.isLoading
-                  ? const Center(
-                      child: CircularProgressIndicator(
-                        color: PrimaryColors.defaultColor,
-                      ),
-                    )
-                  : SingleChildScrollView(
-                      padding: const EdgeInsets.all(32),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ManagementHeader(
-                            hallCount: state.halls.length,
-                            totalTables: state.allTables.length,
-                          ),
-                          const SizedBox(height: 48),
-                          const Text(
-                            'Floor Sections',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w800,
-                              color: NeutralColors.white,
-                            ),
-                          ),
-                          const SizedBox(height: 24),
-                          HallGrid(state: state),
-                        ],
-                      ),
-                    ),
+                  ? const TableManagementLoadingView()
+                  : TableManagementLoadedView(state: state),
             );
           },
         ),

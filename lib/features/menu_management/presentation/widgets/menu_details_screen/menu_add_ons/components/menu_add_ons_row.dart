@@ -22,7 +22,7 @@ class MenuAddOnsRow extends StatelessWidget {
                 child: Text(
                   addOn.name,
                   style: const TextStyle(
-                    color: TextColors.inverse,
+                    color: TextColors.primary,
                     fontSize: 15,
                     fontWeight: FontWeight.w500,
                   ),
@@ -47,7 +47,7 @@ class MenuAddOnsRow extends StatelessWidget {
                 child: Text(
                   '+\$${addOn.price.toStringAsFixed(2)}',
                   style: const TextStyle(
-                    color: TextColors.inverse,
+                    color: TextColors.primary,
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),
