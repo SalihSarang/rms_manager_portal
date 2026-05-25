@@ -4,6 +4,7 @@ import 'package:manager_portal/core/di/injector.dart';
 import 'package:manager_portal/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:manager_portal/features/auth/presentation/bloc/auth_state.dart';
 import 'package:manager_portal/features/settings/presentation/cubit/settings_cubit.dart';
+import 'package:manager_portal/features/settings/presentation/widgets/settings/application_links_section.dart';
 import 'package:manager_portal/features/settings/presentation/widgets/settings/profile_section.dart';
 import 'package:manager_portal/features/settings/presentation/widgets/settings/restaurant_section.dart';
 import 'package:rms_design_system/app_colors/neutral_colors.dart';
@@ -48,6 +49,7 @@ class SettingsPage extends StatelessWidget {
                       managerEmail: managerEmail,
                     ),
                     const RestaurantSection(),
+                    const ApplicationLinksSection(),
                   ],
                 ),
               );

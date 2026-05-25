@@ -1,17 +1,78 @@
-# manager_portal
+# Manager Portal – Firebase Web Hosting
 
-A new Flutter project.
+This README explains how to build and host this Flutter web app on Firebase Hosting.
 
-## Getting Started
+## Prerequisites
 
-This project is a starting point for a Flutter application.
+- [Flutter SDK](https://docs.flutter.dev/get-started/install)
+- [Firebase CLI](https://firebase.google.com/docs/cli)
+- A Firebase project (created in [Firebase Console](https://console.firebase.google.com))
+- Logged in to Firebase from terminal:
 
-A few resources to get you started if this is your first Flutter project:
+```bash
+firebase login
+```
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+## One-Time Setup
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+If Firebase is not initialized yet, run:
+ 
+```bash
+firebase init hosting
+```
+
+Use these selections:
+- **Public directory**: `build/web`
+- **Single-page app rewrite**: `Yes`
+- **Set up automatic builds and deploys with GitHub**: optional
+- **Overwrite `index.html`**: `No`
+
+## Build Flutter Web
+
+From project root:
+
+```bash
+flutter clean
+flutter pub get
+flutter build web --release
+```
+
+This creates production files in `build/web`.
+
+## Deploy to Firebase Hosting
+
+Deploy current build:
+
+```bash
+firebase deploy --only hosting
+```
+
+After deploy, Firebase prints the live hosting URL.
+
+## Useful Commands
+
+Deploy to a specific Firebase project:
+
+```bash
+firebase use <project-id>
+firebase deploy --only hosting
+```
+
+Preview locally before deploy:
+
+```bash
+firebase emulators:start --only hosting
+```
+
+## Common Troubleshooting
+
+- **Blank page after deploy**: ensure app is built using `flutter build web --release` before deploy.
+- **404 on refresh/routes**: ensure Firebase Hosting rewrite to `/index.html` exists in `firebase.json`.
+- **Wrong project deployed**: run `firebase use` and confirm the active project alias.
+
+## Deployment Checklist
+
+1. Confirm correct branch/code.
+2. Run `flutter build web --release`.
+3. Run `firebase deploy --only hosting: site name in firebase`.
+4. Open hosting URL and test key pages.
