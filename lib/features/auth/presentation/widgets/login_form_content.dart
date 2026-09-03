@@ -15,8 +15,8 @@ class LoginFormContent extends StatelessWidget {
         const LoginHeader(),
         const SizedBox(height: 32),
         const LoginBody(),
-        const SizedBox(height: 32),
-        LoginFooter(onHelpTap: () {}),
+        // const SizedBox(height: 32),
+        // LoginFooter(onHelpTap: () {}),
       ],
     );
   }

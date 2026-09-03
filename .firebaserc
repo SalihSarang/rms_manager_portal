@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "rms-project-b8903"
+  },
+  "targets": {
+    "rms-project-b8903": {
+      "hosting": {
+        "rms-manager-portal": [
+          "rms-manager-portal"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}
