@@ -5,7 +5,6 @@ import 'package:manager_portal/features/auth/presentation/bloc/auth_event.dart';
 import 'package:manager_portal/features/auth/presentation/bloc/auth_state.dart';
 import 'package:manager_portal/features/auth/presentation/widgets/auth_button.dart';
 import 'package:manager_portal/features/auth/presentation/widgets/auth_text_field.dart';
-import 'package:rms_design_system/app_colors/primary_colors.dart';
 import 'package:rms_design_system/app_colors/text_colors.dart';
 import 'package:rms_design_system/app_colors/semantic_colors.dart';
 
@@ -68,22 +67,22 @@ class LoginBody extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8),
-            Align(
-              alignment: Alignment.centerRight,
-              child: MouseRegion(
-                cursor: SystemMouseCursors.click,
-                child: GestureDetector(
-                  onTap: () {},
-                  child: const Text(
-                    'Forgot password?',
-                    style: TextStyle(
-                      color: PrimaryColors.defaultColor,
-                      fontSize: 12,
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            // Align(
+            //   alignment: Alignment.centerRight,
+            //   child: MouseRegion(
+            //     cursor: SystemMouseCursors.click,
+            //     child: GestureDetector(
+            //       onTap: () {},
+            //       child: const Text(
+            //         'Forgot password?',
+            //         style: TextStyle(
+            //           color: PrimaryColors.defaultColor,
+            //           fontSize: 12,
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // ),
             const SizedBox(height: 20),
 
             // Sign In Button
