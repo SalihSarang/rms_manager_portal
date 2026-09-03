@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:manager_portal/features/auth/presentation/widgets/login_body.dart';
-import 'package:manager_portal/features/auth/presentation/widgets/login_footer.dart';
 import 'package:manager_portal/features/auth/presentation/widgets/login_header.dart';
 
 class LoginFormContent extends StatelessWidget {

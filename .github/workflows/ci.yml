@@ -25,10 +25,8 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.10.6'
           channel: stable
-          architecture: x64
-          cache: false
+          cache: true
 
       - name: Check Flutter
         run: flutter --version
