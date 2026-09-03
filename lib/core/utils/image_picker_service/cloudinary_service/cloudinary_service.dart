@@ -93,6 +93,5 @@ class CloudinaryServiceImpl implements CloudinaryService {
       '[CloudinaryService] deleteImage -> publicId: $publicId',
       name: 'CloudinaryService',
     );
-    // TODO: implement delete via Cloudinary Admin API
   }
 }
