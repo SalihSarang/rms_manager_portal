@@ -1,5 +1,6 @@
 class StaffUtils {
-  static String getInitials(String name) {
+  static String getInitials(String? name) {
+    if (name == null) return "NA";
     final trimmedName = name.trim();
     if (trimmedName.isEmpty) return "NA";
 

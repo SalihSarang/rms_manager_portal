@@ -25,9 +25,9 @@ class ActivityContainer extends StatelessWidget {
           int notActiveStaffs = 0;
 
           if (state is StaffListingLoaded) {
-            totalStaffs = state.staffs.length;
-            activeStaffs = state.staffs.where((staff) => staff.isActive).length;
-            notActiveStaffs = state.staffs
+            totalStaffs = state.allStaffs.length;
+            activeStaffs = state.allStaffs.where((staff) => staff.isActive).length;
+            notActiveStaffs = state.allStaffs
                 .where((staff) => !staff.isActive)
                 .length;
           }

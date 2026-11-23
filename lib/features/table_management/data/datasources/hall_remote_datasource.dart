@@ -16,7 +16,7 @@ class HallRemoteDataSourceImpl
   HallRemoteDataSourceImpl(this._firestore);
 
   CollectionReference<HallModel> get _hallsCollection => _firestore
-      .collection(TableDbConstants.halls)
+      .rmsCollection(TableDbConstants.halls)
       .withConverter<HallModel>(
         fromFirestore: (snapshot, _) =>
             HallModel.fromMap(snapshot.data()!, snapshot.id),

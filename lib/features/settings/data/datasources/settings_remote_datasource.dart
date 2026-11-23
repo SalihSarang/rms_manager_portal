@@ -14,7 +14,7 @@ class SettingsRemoteDataSourceImpl implements ISettingsRemoteDataSource {
   @override
   Future<RestaurantModel> getRestaurantSettings() async {
     final doc = await _firestore
-        .collection(SettingsDbConstants.restaurantSettings)
+        .rmsCollection(SettingsDbConstants.restaurantSettings)
         .doc(SettingsDbConstants.businessProfileDoc)
         .get();
 
@@ -36,7 +36,7 @@ class SettingsRemoteDataSourceImpl implements ISettingsRemoteDataSource {
   @override
   Future<void> updateRestaurantSettings(RestaurantModel settings) async {
     await _firestore
-        .collection(SettingsDbConstants.restaurantSettings)
+        .rmsCollection(SettingsDbConstants.restaurantSettings)
         .doc(SettingsDbConstants.businessProfileDoc)
         .set(settings.toJson(), SetOptions(merge: true));
   }

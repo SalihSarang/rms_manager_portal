@@ -1,22 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:rms_design_system/app_colors/neutral_colors.dart';
 import 'package:rms_design_system/app_colors/status_colors.dart';
 import 'package:rms_design_system/app_colors/text_colors.dart';
+import 'package:rms_shared_package/models/shift_models/shift_session.dart';
 import 'package:rms_shared_package/models/staff_model/staff_model.dart';
 
 class StaffRecentShiftsTable extends StatelessWidget {
   final StaffModel staff;
+  final List<ShiftSession> history;
 
-  const StaffRecentShiftsTable({super.key, required this.staff});
+  const StaffRecentShiftsTable({
+    super.key,
+    required this.staff,
+    this.history = const [],
+  });
 
   @override
   Widget build(BuildContext context) {
-    // Mock shift history data for demonstration.
-    final List<_ShiftRow> rows = [
-      _ShiftRow('2026-04-25', '12:02 PM - 4:22 PM', '4h 20m'),
-      _ShiftRow('2026-04-24', '10:17 AM - 10:20 AM', '0h 2m'),
-      _ShiftRow('2026-04-23', '9:00 AM - 5:00 PM', '8h 0m'),
-    ];
+    final List<_ShiftRow> rows = history.map((session) {
+      final dateStr = session.actualStart != null
+          ? DateFormat('yyyy-MM-dd').format(session.actualStart!)
+          : '-';
+      final startStr = session.actualStart != null
+          ? DateFormat('hh:mm a').format(session.actualStart!)
+          : '-';
+      final endStr = session.actualEnd != null
+          ? DateFormat('hh:mm a').format(session.actualEnd!)
+          : 'Active';
+      final hours = session.workedMinutes ~/ 60;
+      final minutes = session.workedMinutes % 60;
+      final workedStr = '${hours}h ${minutes}m';
+      return _ShiftRow(dateStr, '$startStr - $endStr', workedStr);
+    }).toList();
 
     return Container(
       decoration: BoxDecoration(

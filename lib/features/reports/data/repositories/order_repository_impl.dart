@@ -8,7 +8,7 @@ class OrderRepositoryImpl implements IOrderRepository {
   OrderRepositoryImpl(this._firestore);
 
   CollectionReference<OrderModel> get _ordersCollection => _firestore
-      .collection(OrderDbConstants.orders)
+      .rmsCollection(OrderDbConstants.orders)
       .withConverter<OrderModel>(
         fromFirestore: (snapshot, _) =>
             OrderModel.fromJson({...snapshot.data()!, 'id': snapshot.id}),

@@ -1,21 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:rms_design_system/app_colors/neutral_colors.dart';
 import 'package:rms_design_system/app_colors/status_colors.dart';
 import 'package:rms_design_system/app_colors/text_colors.dart';
+import 'package:rms_shared_package/enums/enums.dart';
+import 'package:rms_shared_package/models/shift_models/shift_session.dart';
 import 'package:rms_shared_package/models/staff_model/staff_model.dart';
 
 class StaffDailyEarningsTable extends StatelessWidget {
   final StaffModel staff;
+  final List<ShiftSession> history;
 
-  const StaffDailyEarningsTable({super.key, required this.staff});
+  const StaffDailyEarningsTable({
+    super.key,
+    required this.staff,
+    this.history = const [],
+  });
 
   @override
   Widget build(BuildContext context) {
-    // Mock daily earnings data for demonstration.
-    final List<_EarningsRow> rows = [
-      _EarningsRow('2026-04-25', '292.3h', '₹0/hr', '₹0.00'),
-      _EarningsRow('2026-04-24', '0.0h', '₹0/hr', '₹0.00'),
-    ];
+    final ratePerHr = staff.baseWage ?? 0.0;
+    final rateLabel = staff.wageType == WageType.monthly
+        ? 'Monthly'
+        : '₹${ratePerHr.toStringAsFixed(0)}/hr';
+
+    final List<_EarningsRow> rows = history.map((session) {
+      final dateStr = session.actualStart != null
+          ? DateFormat('yyyy-MM-dd').format(session.actualStart!)
+          : '-';
+      final workedHours = session.workedMinutes / 60.0;
+      final totalPay = staff.wageType == WageType.monthly
+          ? (ratePerHr / 30) // estimated daily equivalent for monthly wage
+          : (workedHours * ratePerHr);
+
+      return _EarningsRow(
+        dateStr,
+        '${workedHours.toStringAsFixed(1)}h',
+        rateLabel,
+        '₹${totalPay.toStringAsFixed(2)}',
+      );
+    }).toList();
 
     return Container(
       decoration: BoxDecoration(

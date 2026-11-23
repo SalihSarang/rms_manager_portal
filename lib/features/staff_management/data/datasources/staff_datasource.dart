@@ -1,8 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:rms_shared_package/utils/base_remote_datasource.dart';
-
-import 'package:rms_shared_package/models/staff_model/staff_model.dart';
-import 'package:rms_shared_package/constants/db_constants.dart';
+import 'package:rms_shared_package/rms_shared_package.dart';
 
 abstract class IStaffRemoteDataSource {
   Future<List<StaffModel?>> getAllStaffs();
@@ -21,7 +18,7 @@ class StaffRemoteDataSourceImpl
   StaffRemoteDataSourceImpl({required this.firestore});
 
   CollectionReference<StaffModel> get _staffCollection => firestore
-      .collection(StaffDbConstants.staff)
+      .rmsCollection(StaffDbConstants.staff)
       .withConverter<StaffModel>(
         fromFirestore: (snapshot, _) =>
             StaffModel.fromMap(snapshot.data()!, snapshot.id),

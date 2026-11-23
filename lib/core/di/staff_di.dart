@@ -14,8 +14,16 @@ import 'package:manager_portal/features/staff_management/domain/usecases/update_
 import 'package:manager_portal/features/staff_management/presentation/bloc/add_staff/add_staff_bloc.dart';
 import 'package:manager_portal/features/staff_management/presentation/bloc/staff_details/staff_details_bloc.dart';
 import 'package:manager_portal/features/staff_management/presentation/bloc/staff_listing/staff_listing_bloc.dart';
+import 'package:rms_shared_package/repositories/firestore_shift_repository.dart';
+import 'package:rms_shared_package/repositories/shift_repository.dart';
 
 void setUpStaffDI() {
+  // Shift Repository for Staff Details & Shifts
+  if (!getIt.isRegistered<ShiftRepository>()) {
+    getIt.registerLazySingleton<ShiftRepository>(
+      () => FirestoreShiftRepository(firestore: getIt<FirebaseFirestore>()),
+    );
+  }
   // Datasource
   getIt.registerLazySingleton<IStaffRemoteDataSource>(
     () => StaffRemoteDataSourceImpl(
@@ -70,6 +78,9 @@ void setUpStaffDI() {
 
   // Staff Details Bloc
   getIt.registerFactory<StaffDetailsBloc>(
-    () => StaffDetailsBloc(getStaffDetails: getIt()),
+    () => StaffDetailsBloc(
+      getStaffDetails: getIt(),
+      shiftRepository: getIt(),
+    ),
   );
 }

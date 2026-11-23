@@ -33,6 +33,9 @@ class StaffListContainer extends StatelessWidget {
             if (state is StaffListingLoading) {
               return const Center(child: CircularProgressIndicator());
             } else if (state is StaffListingLoaded) {
+              final isFiltered =
+                  (state.searchQuery).isNotEmpty ||
+                  (state.selectedRole) != 'All';
               if (state.staffs.isEmpty) {
                 return Center(
                   child: Column(
@@ -44,13 +47,30 @@ class StaffListContainer extends StatelessWidget {
                         size: 64,
                       ),
                       const SizedBox(height: 16),
-                      const Text(
-                        'No staff members found',
-                        style: TextStyle(
+                      Text(
+                        isFiltered
+                            ? 'No staff members match your search'
+                            : 'No staff members found',
+                        style: const TextStyle(
                           color: NeutralColors.border,
                           fontSize: 16,
                         ),
                       ),
+                      if (isFiltered) ...[
+                        const SizedBox(height: 12),
+                        TextButton.icon(
+                          onPressed: () {
+                            context.read<StaffListingBloc>().add(
+                              const SearchStaff(''),
+                            );
+                            context.read<StaffListingBloc>().add(
+                              const FilterStaffByRole('All'),
+                            );
+                          },
+                          icon: const Icon(Icons.clear_all_rounded, size: 18),
+                          label: const Text('Clear Filters'),
+                        ),
+                      ],
                     ],
                   ),
                 );

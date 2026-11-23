@@ -9,6 +9,22 @@ sealed class StaffListingEvent extends Equatable {
 
 class LoadStaffs extends StaffListingEvent {}
 
+class SearchStaff extends StaffListingEvent {
+  final String query;
+  const SearchStaff(this.query);
+
+  @override
+  List<Object?> get props => [query];
+}
+
+class FilterStaffByRole extends StaffListingEvent {
+  final String role;
+  const FilterStaffByRole(this.role);
+
+  @override
+  List<Object?> get props => [role];
+}
+
 class SelectStaff extends StaffListingEvent {
   final StaffModel staff;
   const SelectStaff(this.staff);

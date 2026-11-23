@@ -94,8 +94,16 @@ class WaitStaffPodium extends StatelessWidget {
               ),
               child: CircleAvatar(
                 radius: isWinner ? 54 : 42,
-                backgroundImage: NetworkImage(entry.staff.avatar),
+                backgroundImage: (entry.staff.avatar.isNotEmpty && Uri.tryParse(entry.staff.avatar)?.hasScheme == true)
+                    ? NetworkImage(entry.staff.avatar)
+                    : null,
+                onBackgroundImageError: (entry.staff.avatar.isNotEmpty && Uri.tryParse(entry.staff.avatar)?.hasScheme == true)
+                    ? (_, _) {}
+                    : null,
                 backgroundColor: NeutralColors.border,
+                child: (entry.staff.avatar.isEmpty || Uri.tryParse(entry.staff.avatar)?.hasScheme != true)
+                    ? Icon(Icons.person, color: NeutralColors.icon, size: isWinner ? 48 : 36)
+                    : null,
               ),
             ),
             Positioned(

@@ -30,6 +30,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required this.authStatus,
   }) : super(const LogInInitialState()) {
     on<LoginSubmitted>(_onSubmitted);
+    on<DemoLoginSubmitted>(_onDemoSubmitted);
     on<LogOutSubmitted>(_onLogoutSubmitted);
     on<LoginEmailChanged>(_onEmailChanged);
     on<LoginPasswordChanged>(_onPasswordChanged);
@@ -109,6 +110,27 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       log('LoginSuccess');
       log('User Name ${user.name}');
       log('User Email ${user.email}');
+    } catch (e) {
+      emit(LoginFailure(ErrorHandler.getFriendlyMessage(e)));
+    }
+  }
+
+  Future<void> _onDemoSubmitted(
+    DemoLoginSubmitted event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(LoadingState());
+    try {
+      final user = await signin.demoSignIn(sessionCode: event.sessionCode);
+
+      if (user == null) {
+        emit(const LoginFailure('Could not initialize demo manager session.'));
+        return;
+      }
+
+      emit(LoginSuccess(user));
+      emit(Authenticated(user));
+      log('Demo LoginSuccess: ${user.name}');
     } catch (e) {
       emit(LoginFailure(ErrorHandler.getFriendlyMessage(e)));
     }

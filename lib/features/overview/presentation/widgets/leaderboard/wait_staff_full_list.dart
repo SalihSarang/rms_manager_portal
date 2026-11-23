@@ -48,8 +48,16 @@ class WaitStaffFullList extends StatelessWidget {
                     ),
                     CircleAvatar(
                       radius: 20,
-                      backgroundImage: NetworkImage(entry.staff.avatar),
+                      backgroundImage: (entry.staff.avatar.isNotEmpty && Uri.tryParse(entry.staff.avatar)?.hasScheme == true)
+                          ? NetworkImage(entry.staff.avatar)
+                          : null,
+                      onBackgroundImageError: (entry.staff.avatar.isNotEmpty && Uri.tryParse(entry.staff.avatar)?.hasScheme == true)
+                          ? (_, _) {}
+                          : null,
                       backgroundColor: NeutralColors.border,
+                      child: (entry.staff.avatar.isEmpty || Uri.tryParse(entry.staff.avatar)?.hasScheme != true)
+                          ? const Icon(Icons.person, color: NeutralColors.icon, size: 20)
+                          : null,
                     ),
                     const SizedBox(width: 16),
                     Expanded(
