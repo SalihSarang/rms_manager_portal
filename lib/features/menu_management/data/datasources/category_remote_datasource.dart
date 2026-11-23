@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:rms_shared_package/utils/base_remote_datasource.dart';
-import 'package:rms_shared_package/constants/db_constants.dart';
-import 'package:rms_shared_package/models/menu_models/category_model/category_model.dart';
+import 'package:rms_shared_package/rms_shared_package.dart';
 
 abstract class ICategoryRemoteDataSource {
   Future<List<CategoryModel>> getCategories();
@@ -15,7 +13,7 @@ class CategoryRemoteDataSourceImpl with BaseRemoteDataSource implements ICategor
   CategoryRemoteDataSourceImpl({required this.firestore});
 
   CollectionReference<CategoryModel> get _categoryCollection =>
-      firestore.collection(MenuDbConstants.categories).withConverter<CategoryModel>(
+      firestore.rmsCollection(MenuDbConstants.categories).withConverter<CategoryModel>(
             fromFirestore: (snapshot, _) => CategoryModel.fromMap(snapshot.data()!..['id'] = snapshot.id),
             toFirestore: (category, _) => category.toMap(),
           );

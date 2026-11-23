@@ -33,22 +33,25 @@ class ManagerSidebarX extends StatelessWidget {
       footerBuilder: (context, extended) {
         return Column(
           children: [
-            ListTile(
-              onTap: () {
-                debugPrint('Logout tapped');
-                context.read<AuthBloc>().add(LogOutSubmitted());
-              },
-              leading: const Icon(
-                Icons.logout,
-                color: SemanticColors.error,
-                size: 24,
+            Material(
+              type: MaterialType.transparency,
+              child: ListTile(
+                onTap: () {
+                  debugPrint('Logout tapped');
+                  context.read<AuthBloc>().add(LogOutSubmitted());
+                },
+                leading: const Icon(
+                  Icons.logout,
+                  color: SemanticColors.error,
+                  size: 24,
+                ),
+                title: extended
+                    ? const Text(
+                        'Logout',
+                        style: TextStyle(color: TextColors.secondary),
+                      )
+                    : null,
               ),
-              title: extended
-                  ? const Text(
-                      'Logout',
-                      style: TextStyle(color: TextColors.secondary),
-                    )
-                  : null,
             ),
           ],
         );

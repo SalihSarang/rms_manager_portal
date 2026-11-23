@@ -34,6 +34,14 @@ class LoginSubmitted extends AuthEvent {
   const LoginSubmitted(this.email, this.password);
 }
 
+class DemoLoginSubmitted extends AuthEvent {
+  final String? sessionCode;
+  const DemoLoginSubmitted({this.sessionCode});
+
+  @override
+  List<Object> get props => [sessionCode ?? ''];
+}
+
 class LogOutSubmitted extends AuthEvent {
   const LogOutSubmitted();
 }

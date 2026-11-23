@@ -28,12 +28,16 @@ class AuthTextField extends StatelessWidget {
   /// Optional validator function for form validation.
   final String? Function(String?)? validator;
 
+  /// Optional controller to manage and programmatically fill the text field value.
+  final TextEditingController? controller;
+
   /// Creates an [AuthTextField].
   const AuthTextField({
     super.key,
     required this.label,
     required this.hintText,
     required this.onChanged,
+    this.controller,
     this.obscureText = false,
     this.suffixIcon,
     this.labelSuffix,
@@ -61,6 +65,7 @@ class AuthTextField extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         TextFormField(
+          controller: controller,
           onChanged: onChanged,
           obscureText: obscureText,
           validator: validator,

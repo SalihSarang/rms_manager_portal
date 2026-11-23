@@ -41,10 +41,19 @@ class StaffTableRow extends DataRow2 {
                  CircleAvatar(
                    backgroundColor: NeutralColors.card,
                    radius: 16,
-                   backgroundImage: staff.avatar.isNotEmpty
+                   backgroundImage:
+                       (staff.avatar.isNotEmpty &&
+                           Uri.tryParse(staff.avatar)?.hasScheme == true)
                        ? NetworkImage(staff.avatar)
                        : null,
-                   child: staff.avatar.isEmpty
+                   onBackgroundImageError:
+                       (staff.avatar.isNotEmpty &&
+                           Uri.tryParse(staff.avatar)?.hasScheme == true)
+                       ? (_, _) {}
+                       : null,
+                   child:
+                       (staff.avatar.isEmpty ||
+                           Uri.tryParse(staff.avatar)?.hasScheme != true)
                        ? Text(
                            StaffUtils.getInitials(staff.name),
                            style: const TextStyle(
@@ -58,7 +67,7 @@ class StaffTableRow extends DataRow2 {
                  const SizedBox(width: 10),
                  Flexible(
                    child: Text(
-                     staff.name,
+                     staff.name.isEmpty ? 'Unnamed Staff' : staff.name,
                      style: const TextStyle(
                        color: TextColors.primary,
                        fontWeight: FontWeight.w500,

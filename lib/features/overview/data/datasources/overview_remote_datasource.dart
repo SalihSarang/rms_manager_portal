@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:rms_shared_package/models/order_model/order_model.dart';
-import 'package:rms_shared_package/constants/db_constants.dart';
-import 'package:rms_shared_package/utils/base_remote_datasource.dart';
+import 'package:rms_shared_package/rms_shared_package.dart';
 
 abstract class OverviewRemoteDataSource {
   Future<List<OrderModel>> getAllOrders();
@@ -20,7 +18,7 @@ class OverviewRemoteDataSourceImpl
     return performSafeCall(
       () async {
         final snapshot = await firestore
-            .collection(OrderDbConstants.orders)
+            .rmsCollection(OrderDbConstants.orders)
             .get();
 
         return snapshot.docs.map((doc) {
@@ -39,7 +37,7 @@ class OverviewRemoteDataSourceImpl
   @override
   Stream<List<OrderModel>> watchAllOrders() {
     return firestore
-        .collection(OrderDbConstants.orders)
+        .rmsCollection(OrderDbConstants.orders)
         .snapshots()
         .map((snapshot) {
       return snapshot.docs.map((doc) {

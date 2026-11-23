@@ -41,7 +41,10 @@ class StaffDetailsStateView extends StatelessWidget {
           );
         }
         if (state is StaffDetailsLoaded) {
-          return StaffDetailsBody(staff: state.staff);
+          return StaffDetailsBody(
+            staff: state.staff,
+            history: state.shiftHistory,
+          );
         }
         return const SizedBox.shrink();
       },

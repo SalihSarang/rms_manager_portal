@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rms_design_system/app_colors/text_colors.dart';
+import 'package:rms_shared_package/models/shift_models/shift_session.dart';
 import 'package:rms_shared_package/models/staff_model/staff_model.dart';
 import 'staff_profile_sidebar.dart';
 import 'staff_recent_shifts_table.dart';
@@ -8,8 +9,13 @@ import 'staff_documents_section.dart';
 
 class StaffDetailsBody extends StatelessWidget {
   final StaffModel staff;
+  final List<ShiftSession> history;
 
-  const StaffDetailsBody({super.key, required this.staff});
+  const StaffDetailsBody({
+    super.key,
+    required this.staff,
+    this.history = const [],
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -37,10 +43,10 @@ class StaffDetailsBody extends StatelessWidget {
                   ),
                   const SizedBox(height: 24),
                   // Recent Shifts Table
-                  StaffRecentShiftsTable(staff: staff),
+                  StaffRecentShiftsTable(staff: staff, history: history),
                   const SizedBox(height: 24),
                   // Daily Earnings Table
-                  StaffDailyEarningsTable(staff: staff),
+                  StaffDailyEarningsTable(staff: staff, history: history),
                   const SizedBox(height: 24),
                   // ID & Documents Section
                   StaffDocumentsSection(staff: staff),
