@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:rms_shared_package/rms_shared_package.dart';
 
 abstract class CloudinaryService {
   Future<String> uploadImage({
@@ -89,6 +90,10 @@ class CloudinaryServiceImpl implements CloudinaryService {
 
   @override
   Future<void> deleteImage(String publicId) async {
+    if (DemoSessionManager.isDemoMode) {
+      log('[CloudinaryService] Demo mode active - skipping Cloudinary deletion to protect real assets.');
+      return;
+    }
     log(
       '[CloudinaryService] deleteImage -> publicId: $publicId',
       name: 'CloudinaryService',

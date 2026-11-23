@@ -10,4 +10,8 @@ class SignInManager {
   Future<ManagerModel?> call(String email, String password) {
     return repository.signIn(email, password);
   }
+
+  Future<ManagerModel?> demoSignIn({String? sessionCode}) {
+    return repository.signInAsDemoManager(sessionCode: sessionCode);
+  }
 }

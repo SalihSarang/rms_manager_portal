@@ -56,13 +56,13 @@ class StaffSmallScreenLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return SingleChildScrollView(
       padding: const EdgeInsets.all(20),
       child: Column(
         children: const [
           SearchBarContainer(),
           SizedBox(height: 20),
-          Expanded(child: StaffListContainer()),
+          StaffListContainer(),
           SizedBox(height: 20),
           ActivityContainer(),
         ],

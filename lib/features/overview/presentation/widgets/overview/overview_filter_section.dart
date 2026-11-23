@@ -31,14 +31,22 @@ class OverviewFilterSection extends StatelessWidget {
               ),
             ],
           ),
-          child: Row(
+          child: Wrap(
+            alignment: WrapAlignment.spaceBetween,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            spacing: 16,
+            runSpacing: 12,
             children: [
-              _buildFilterLabel(),
-              const SizedBox(width: 24),
-              _buildTimeframeSelector(context, state),
-              const SizedBox(width: 16),
-              if (state.timeframe == Timeframe.custom) _buildDateDisplay(context, state),
-              const Spacer(),
+              Wrap(
+                crossAxisAlignment: WrapCrossAlignment.center,
+                spacing: 16,
+                runSpacing: 8,
+                children: [
+                  _buildFilterLabel(),
+                  _buildTimeframeSelector(context, state),
+                  if (state.timeframe == Timeframe.custom) _buildDateDisplay(context, state),
+                ],
+              ),
               _buildQuickActions(context),
             ],
           ),

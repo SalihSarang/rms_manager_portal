@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:rms_shared_package/utils/base_remote_datasource.dart';
-import 'package:rms_shared_package/constants/db_constants.dart';
-import 'package:rms_shared_package/models/menu_models/food_model/food_model.dart';
+import 'package:rms_shared_package/rms_shared_package.dart';
 
 abstract class IFoodRemoteDataSource {
   Future<void> addFoodItem(FoodModel food);
@@ -17,7 +15,7 @@ class FoodRemoteDataSourceImpl with BaseRemoteDataSource implements IFoodRemoteD
   FoodRemoteDataSourceImpl({required this.firestore});
 
   CollectionReference<FoodModel> get _foodCollection =>
-      firestore.collection(MenuDbConstants.foods).withConverter<FoodModel>(
+      firestore.rmsCollection(MenuDbConstants.foods).withConverter<FoodModel>(
             fromFirestore: (snapshot, _) => FoodModel.fromJson(snapshot.data()!, docId: snapshot.id),
             toFirestore: (food, _) => food.toJson(),
           );

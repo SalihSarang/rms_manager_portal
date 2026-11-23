@@ -13,11 +13,12 @@ class StaffDetailsLoading extends StaffDetailsState {}
 
 class StaffDetailsLoaded extends StaffDetailsState {
   final StaffModel staff;
+  final List<ShiftSession> shiftHistory;
 
-  const StaffDetailsLoaded(this.staff);
+  const StaffDetailsLoaded(this.staff, {this.shiftHistory = const []});
 
   @override
-  List<Object> get props => [staff];
+  List<Object> get props => [staff, shiftHistory];
 }
 
 class StaffDetailsError extends StaffDetailsState {

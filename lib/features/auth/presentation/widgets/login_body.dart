@@ -5,16 +5,56 @@ import 'package:manager_portal/features/auth/presentation/bloc/auth_event.dart';
 import 'package:manager_portal/features/auth/presentation/bloc/auth_state.dart';
 import 'package:manager_portal/features/auth/presentation/widgets/auth_button.dart';
 import 'package:manager_portal/features/auth/presentation/widgets/auth_text_field.dart';
-import 'package:rms_design_system/app_colors/text_colors.dart';
-import 'package:rms_design_system/app_colors/semantic_colors.dart';
+import 'package:rms_design_system/rms_design_system.dart';
+import 'package:rms_shared_package/rms_shared_package.dart';
 
 /// The main form area of the login screen.
 ///
-/// Contains email and password input fields, forgot password link,
-/// and the sign-in button. It interacts with [AuthBloc] to handle input and submission.
-class LoginBody extends StatelessWidget {
-  /// Creates a [LoginBody].
+/// Contains email and password input fields, sign-in button,
+/// and the Demo Credentials button for one-tap evaluator testing.
+class LoginBody extends StatefulWidget {
   const LoginBody({super.key});
+
+  @override
+  State<LoginBody> createState() => _LoginBodyState();
+}
+
+class _LoginBodyState extends State<LoginBody> {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  String? _selectedSessionCode;
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  void _openDemoCredentialsDialog() {
+    RmsDemoCredentialsDialog.show(
+      context,
+      currentPortalSpec: DemoConfig.manager,
+      initialSessionCode: _selectedSessionCode ?? DemoSessionManager.activeSessionId,
+      onAutoFill: (email, password, sessionCode) {
+        _selectedSessionCode = sessionCode;
+        _emailController.text = email;
+        _passwordController.text = password;
+        final bloc = context.read<AuthBloc>();
+        bloc.add(LoginEmailChanged(email));
+        bloc.add(LoginPasswordChanged(password));
+      },
+      onAutoFillAndSignIn: (email, password, sessionCode) {
+        _selectedSessionCode = sessionCode;
+        _emailController.text = email;
+        _passwordController.text = password;
+        final bloc = context.read<AuthBloc>();
+        bloc.add(LoginEmailChanged(email));
+        bloc.add(LoginPasswordChanged(password));
+        bloc.add(DemoLoginSubmitted(sessionCode: sessionCode));
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +77,7 @@ class LoginBody extends StatelessWidget {
           children: [
             // Email Input
             AuthTextField(
+              controller: _emailController,
               label: 'Email Address',
               hintText: 'name@company.com',
               onChanged: (value) {
@@ -47,6 +88,7 @@ class LoginBody extends StatelessWidget {
 
             // Password Input
             AuthTextField(
+              controller: _passwordController,
               label: 'Password',
               hintText: '••••••••',
               obscureText: !isVisible,
@@ -66,23 +108,6 @@ class LoginBody extends StatelessWidget {
                 },
               ),
             ),
-            const SizedBox(height: 8),
-            // Align(
-            //   alignment: Alignment.centerRight,
-            //   child: MouseRegion(
-            //     cursor: SystemMouseCursors.click,
-            //     child: GestureDetector(
-            //       onTap: () {},
-            //       child: const Text(
-            //         'Forgot password?',
-            //         style: TextStyle(
-            //           color: PrimaryColors.defaultColor,
-            //           fontSize: 12,
-            //         ),
-            //       ),
-            //     ),
-            //   ),
-            // ),
             const SizedBox(height: 20),
 
             // Sign In Button
@@ -91,9 +116,19 @@ class LoginBody extends StatelessWidget {
               isLoading: state is LoadingState,
               onPressed: () {
                 final bloc = context.read<AuthBloc>();
-                final form = bloc.currentFormState;
-                bloc.add(LoginSubmitted(form.email, form.password));
+                final email = _emailController.text.trim();
+                final password = _passwordController.text;
+                if (DemoConfig.isDemoEmail(email)) {
+                  bloc.add(DemoLoginSubmitted(sessionCode: _selectedSessionCode));
+                } else {
+                  bloc.add(LoginSubmitted(email, password));
+                }
               },
+            ),
+
+            // Demo Credentials Button
+            RmsDemoCredentialsButton(
+              onPressed: _openDemoCredentialsDialog,
             ),
           ],
         );

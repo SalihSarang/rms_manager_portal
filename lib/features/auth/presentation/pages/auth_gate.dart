@@ -3,9 +3,11 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:manager_portal/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:manager_portal/features/auth/presentation/bloc/auth_event.dart';
 import 'package:manager_portal/features/auth/presentation/bloc/auth_state.dart';
 import 'package:manager_portal/features/auth/presentation/pages/login_screen.dart';
 import 'package:manager_portal/features/sidebar/presentation/page/sidebar.dart';
+import 'package:rms_design_system/rms_design_system.dart';
 
 /// A top-level widget that manages the application's entry point based on authentication state.
 ///
@@ -21,7 +23,15 @@ class AuthGate extends StatelessWidget {
       builder: (context, state) {
         if (state is Authenticated) {
           log('User Name ${state.manager.name}');
-          return const Sidebar();
+          return Material(
+            color: NeutralColors.background,
+            child: RmsDemoBannerWrapper(
+              onExit: () {
+                context.read<AuthBloc>().add(const LogOutSubmitted());
+              },
+              child: const Sidebar(),
+            ),
+          );
         }
 
         if (state is StatusCheckingFailure) {

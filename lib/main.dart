@@ -6,10 +6,12 @@ import 'package:manager_portal/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:manager_portal/features/auth/presentation/pages/auth_gate.dart';
 import 'package:manager_portal/firebase_options.dart';
 import 'package:rms_design_system/app_colors/primary_colors.dart';
+import 'package:rms_shared_package/rms_shared_package.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await DemoSessionManager.initialize();
   setupDI();
 
   runApp(const MyApp());

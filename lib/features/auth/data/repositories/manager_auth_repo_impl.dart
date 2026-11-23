@@ -14,6 +14,11 @@ class ManagerAuthRepoImpl implements ManagerAuthRepository {
     return await remoteDataSource.signIn(email, password);
   }
 
+  @override
+  Future<ManagerModel?> signInAsDemoManager({String? sessionCode}) async {
+    return await remoteDataSource.signInAsDemoManager(sessionCode: sessionCode);
+  }
+
   // Sign-out Manager
   @override
   Future<void> signOut() async => await remoteDataSource.signOut();
@@ -22,5 +27,18 @@ class ManagerAuthRepoImpl implements ManagerAuthRepository {
   @override
   Future<ManagerModel?> getCurrentManager() async {
     return await remoteDataSource.getCurrentManager();
+  }
+
+  @override
+  Future<void> updateManagerProfile(String name, String email) async {
+    await remoteDataSource.updateManagerProfile(name, email);
+  }
+
+  @override
+  Future<void> changePassword(
+    String currentPassword,
+    String newPassword,
+  ) async {
+    await remoteDataSource.changePassword(currentPassword, newPassword);
   }
 }

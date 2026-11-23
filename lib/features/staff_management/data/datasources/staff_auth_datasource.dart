@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:rms_shared_package/utils/base_remote_datasource.dart';
+import 'package:rms_shared_package/rms_shared_package.dart';
 import 'package:manager_portal/firebase_options.dart';
 
 abstract class IStaffAuthRemoteDataSource {
@@ -24,6 +24,10 @@ class StaffAuthRemoteDataSourceImpl with BaseRemoteDataSource implements IStaffA
   }) {
     return performSafeCall(
       () async {
+        if (DemoSessionManager.isDemoMode) {
+          return 'demo_staff_${DateTime.now().millisecondsSinceEpoch}';
+        }
+
         FirebaseApp? secondaryApp;
         try {
           secondaryApp = await Firebase.initializeApp(

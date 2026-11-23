@@ -18,7 +18,7 @@ class TableRemoteDataSourceImpl
   TableRemoteDataSourceImpl(this._firestore);
 
   CollectionReference<TableModel> get _tablesCollection => _firestore
-      .collection(TableDbConstants.tables)
+      .rmsCollection(TableDbConstants.tables)
       .withConverter<TableModel>(
         fromFirestore: (snapshot, _) =>
             TableModel.fromMap(snapshot.data()!, snapshot.id),

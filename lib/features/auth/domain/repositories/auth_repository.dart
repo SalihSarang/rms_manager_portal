@@ -7,9 +7,18 @@ abstract class ManagerAuthRepository {
   /// Returns the [ManagerModel] if successful, or `null` otherwise.
   Future<ManagerModel?> signIn(String email, String password);
 
+  /// Signs in using the demo manager credentials inside an isolated session.
+  Future<ManagerModel?> signInAsDemoManager({String? sessionCode});
+
   /// Signs out the currently authenticated manager.
   Future<void> signOut();
 
   /// Returns the currently authenticated [ManagerModel], if any.
   Future<ManagerModel?> getCurrentManager();
+
+  /// Updates the manager's profile information.
+  Future<void> updateManagerProfile(String name, String email);
+
+  /// Changes the manager's password after re-authenticating with [currentPassword].
+  Future<void> changePassword(String currentPassword, String newPassword);
 }
