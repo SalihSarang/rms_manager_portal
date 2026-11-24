@@ -31,11 +31,17 @@ dependencies:
   flutter:
     sdk: flutter
 
-  rms_shared_package: 
-    path: ../rms_packages/rms_shared_package
+  rms_shared_package:
+    git:
+      url: https://github.com/SalihSarang/rms_packages.git
+      ref: 6221707c0ca2636f56b8439a36b1d1ab6486946e
+      path: rms_shared_package
 
-  rms_design_system: 
-    path: ../rms_packages/rms_design_system_package
+  rms_design_system:
+    git:
+      url: https://github.com/SalihSarang/rms_packages.git
+      ref: 6221707c0ca2636f56b8439a36b1d1ab6486946e
+      path: rms_design_system_package
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
